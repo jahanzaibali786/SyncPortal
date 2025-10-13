@@ -1,0 +1,290 @@
+/* =====  Button ===== */
+button:focus{
+    box-shadow: none !important;
+}
+button.disabled, button:disabled {
+    opacity: .65;
+}
+
+.btn-primary{
+    text-transform: capitalize;
+    padding: 9px 11px;
+    background: linear-gradient(90deg,
+        var(--gradientColor1) -0.06%,
+        var(--gradientColor2) 33.96%,
+        var(--gradientColor3) 72.98%,
+        var(--gradientColor4) 100%) !important;
+    color: $white !important;
+    border: 1px solid transparent !important;
+    border-radius: 2rem !important;
+    position: relative;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease !important;
+
+    &:hover{
+        background: linear-gradient(90deg,
+            var(--gradientColor1) -0.06%,
+            var(--gradientColor2) 33.96%,
+            var(--gradientColor3) 72.98%,
+            var(--gradientColor4) 100%) !important;
+        border: 1px solid transparent !important;
+        color: $white !important;
+        opacity: 0.9;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    &:focus,
+    &.focus {
+        background: linear-gradient(90deg,
+            var(--gradientColor1) -0.06%,
+            var(--gradientColor2) 33.96%,
+            var(--gradientColor3) 72.98%,
+            var(--gradientColor4) 100%) !important;
+        color: $white !important;
+        box-shadow: 0 0 0 0.2rem rgba(123, 121, 184, 0.5);
+    }
+
+    &:active,
+    &.active {
+        background: linear-gradient(90deg,
+            var(--gradientColor1) -0.06%,
+            var(--gradientColor2) 33.96%,
+            var(--gradientColor3) 72.98%,
+            var(--gradientColor4) 100%) !important;
+        color: $white !important;
+        transform: translateY(0);
+    }
+}
+
+.btn-primary.disabled, .btn-primary:disabled{
+    background: linear-gradient(90deg,
+        var(--gradientColor1) -0.06%,
+        var(--gradientColor2) 33.96%,
+        var(--gradientColor3) 72.98%,
+        var(--gradientColor4) 100%) !important;
+    color: $white !important;
+    opacity: 0.5 !important;
+
+    &:hover{
+        background: linear-gradient(90deg,
+            var(--gradientColor1) -0.06%,
+            var(--gradientColor2) 33.96%,
+            var(--gradientColor3) 72.98%,
+            var(--gradientColor4) 100%) !important;
+        border: 1px solid transparent !important;
+        color: $white !important;
+        cursor: not-allowed;
+        opacity: 0.5 !important;
+        transform: none;
+    }
+}
+
+// white_btn
+.btn-secondary{
+    text-transform: capitalize;
+    padding: 9px 11px;
+    border: solid 1px $dark_grey;
+    background-color: $white !important;
+    color: $dark_grey !important;
+    position: relative;
+    &:hover{
+        background-color: darken($color: $white, $amount: 100%) !important;
+        border: solid 1px $black !important;
+        color: #fff !important;
+    }
+}
+
+.btn-secondary.disabled, .btn-secondary:disabled{
+    &:hover{    
+        border: solid 1px $dark_grey !important;
+        background-color: $white !important;
+        color: $dark_grey !important;
+        cursor: not-allowed;
+    }
+}
+
+.btn-cancel{
+    text-transform: capitalize;
+    padding: 9px 11px;
+    border: 1px solid #fff;
+    background-color: $white !important;
+    color: $light_text !important;
+    position: relative;
+    &:hover{
+        background-color: darken($color: $white, $amount: 100%) !important;
+        border: solid 1px $black !important;
+        color: #fff !important;
+    }
+}
+
+.btn-cancel.disabled, .btn-cancel:disabled{
+    &:hover{    
+        border: 1px solid #fff !important;
+        background-color: $white !important;
+        color: $light_text !important;
+        cursor: not-allowed;
+    }
+}
+
+.btn-danger{
+    text-transform: capitalize;
+    background: linear-gradient(90deg,
+        var(--gradientColor1) -0.06%,
+        var(--gradientColor2) 33.96%,
+        var(--gradientColor3) 72.98%,
+        var(--gradientColor4) 100%) !important;
+    color: $white !important;
+    border: 1px solid transparent !important;
+    border-radius: 2rem !important;
+    position: relative;
+    padding: 9px 11px;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease !important;
+
+    &:hover{
+        background: linear-gradient(90deg,
+            var(--gradientColor1) -0.06%,
+            var(--gradientColor2) 33.96%,
+            var(--gradientColor3) 72.98%,
+            var(--gradientColor4) 100%) !important;
+        color: $white !important;
+        opacity: 0.9;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    &:focus,
+    &.focus {
+        background: linear-gradient(90deg,
+            var(--gradientColor1) -0.06%,
+            var(--gradientColor2) 33.96%,
+            var(--gradientColor3) 72.98%,
+            var(--gradientColor4) 100%) !important;
+        color: $white !important;
+        box-shadow: 0 0 0 0.2rem rgba(123, 121, 184, 0.5);
+    }
+
+    &:active,
+    &.active {
+        background: linear-gradient(90deg,
+            var(--gradientColor1) -0.06%,
+            var(--gradientColor2) 33.96%,
+            var(--gradientColor3) 72.98%,
+            var(--gradientColor4) 100%) !important;
+        color: $white !important;
+        transform: translateY(0);
+    }
+}
+
+.btn-danger.disabled, .btn-danger:disabled{
+    background: linear-gradient(90deg,
+        var(--gradientColor1) -0.06%,
+        var(--gradientColor2) 33.96%,
+        var(--gradientColor3) 72.98%,
+        var(--gradientColor4) 100%) !important;
+    color: $white !important;
+    opacity: 0.5 !important;
+
+    &:hover{
+        background: linear-gradient(90deg,
+            var(--gradientColor1) -0.06%,
+            var(--gradientColor2) 33.96%,
+            var(--gradientColor3) 72.98%,
+            var(--gradientColor4) 100%) !important;
+        border: 1px solid transparent !important;
+        color: $white !important;
+        cursor: not-allowed;
+        opacity: 0.5 !important;
+        transform: none;
+    }
+}
+
+// Global button styling with gradient for other button types
+.btn-success,
+.btn-info,
+.btn-warning {
+    text-transform: capitalize;
+    padding: 9px 11px;
+    background: linear-gradient(90deg,
+        var(--gradientColor1) -0.06%,
+        var(--gradientColor2) 33.96%,
+        var(--gradientColor3) 72.98%,
+        var(--gradientColor4) 100%) !important;
+    color: $white !important;
+    border: 1px solid transparent !important;
+    border-radius: 2rem !important;
+    position: relative;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease !important;
+
+    &:hover{
+        background: linear-gradient(90deg,
+            var(--gradientColor1) -0.06%,
+            var(--gradientColor2) 33.96%,
+            var(--gradientColor3) 72.98%,
+            var(--gradientColor4) 100%) !important;
+        color: $white !important;
+        opacity: 0.9;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    &:focus,
+    &.focus {
+        background: linear-gradient(90deg,
+            var(--gradientColor1) -0.06%,
+            var(--gradientColor2) 33.96%,
+            var(--gradientColor3) 72.98%,
+            var(--gradientColor4) 100%) !important;
+        color: $white !important;
+        box-shadow: 0 0 0 0.2rem rgba(123, 121, 184, 0.5);
+    }
+
+    &:active,
+    &.active {
+        background: linear-gradient(90deg,
+            var(--gradientColor1) -0.06%,
+            var(--gradientColor2) 33.96%,
+            var(--gradientColor3) 72.98%,
+            var(--gradientColor4) 100%) !important;
+        color: $white !important;
+        transform: translateY(0);
+    }
+
+    &.disabled,
+    &:disabled {
+        background: linear-gradient(90deg,
+            var(--gradientColor1) -0.06%,
+            var(--gradientColor2) 33.96%,
+            var(--gradientColor3) 72.98%,
+            var(--gradientColor4) 100%) !important;
+        color: $white !important;
+        opacity: 0.5 !important;
+        cursor: not-allowed !important;
+
+        &:hover {
+            background: linear-gradient(90deg,
+                var(--gradientColor1) -0.06%,
+                var(--gradientColor2) 33.96%,
+                var(--gradientColor3) 72.98%,
+                var(--gradientColor4) 100%) !important;
+            color: $white !important;
+            opacity: 0.5 !important;
+            transform: none;
+        }
+    }
+}
+
+// Global button styling - applies to all buttons
+.btn {
+    border-radius: 2rem !important;
+    transition: all 0.3s ease !important;
+}
+
