@@ -9543,8 +9543,7 @@ fieldset:disabled a.btn {
       var(--gradientColor3) 72.98%,
       var(--gradientColor4) 100%);
   color: white !important;
-  ;
-  border: none;
+  border-color: transparent!important;
 }
 
 .btn-secondary:focus,
@@ -11272,7 +11271,7 @@ input[type=button].btn-block {
 
 .nav-link {
   display: block;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.8rem;
 }
 
 .nav-link:hover,

@@ -211,39 +211,29 @@ $addTicketPermission = user()->permission('add_tickets');
     <div class="content-wrapper">
         <div class="row row-cols-lg-5">
 
-            <div class="col mb-4">
-                {{-- <a href="javascript:;" data-status="all" class="widget-filter-status"> --}}
+            <div class="col col-lg-4 mb-4">
                     <x-cards.widget :title="__('modules.tickets.totalTickets')" value="0" icon="ticket-alt"
                         widgetId="totalTickets" />
-                {{-- </a> --}}
             </div>
 
-            <div class="col mb-4">
-                {{-- <a href="javascript:;" data-status="closed" class="widget-filter-status"> --}}
-                    <x-cards.widget :title="__('modules.tickets.totalClosedTickets')" value="0" icon="ticket-alt"
-                        widgetId="closedTickets" />
-                {{-- </a> --}}
-            </div>
-
-            <div class="col mb-4">
-                {{-- <a href="javascript:;" data-status="open" class="widget-filter-status"> --}}
+            <div class="col col-lg-4 mb-4">
                     <x-cards.widget :title="__('modules.tickets.totalOpenTickets')" value="0" icon="ticket-alt"
                         widgetId="openTickets" class="border border-additional-grey"/>
-                {{-- </a> --}}
             </div>
 
-            <div class="col mb-4">
-                {{-- <a href="javascript:;" data-status="pending" class="widget-filter-status"> --}}
+            <div class="col col-lg-4 mb-4">
+                    <x-cards.widget :title="__('modules.tickets.totalClosedTickets')" value="0" icon="ticket-alt"
+                        widgetId="closedTickets" />
+            </div>
+
+            <div class="col col-lg-4 mb-4">
                     <x-cards.widget :title="__('modules.tickets.totalPendingTickets')" value="0" icon="ticket-alt"
                         widgetId="pendingTickets" />
-                {{-- </a> --}}
             </div>
 
-            <div class="col">
-                {{-- <a href="javascript:;" data-status="resolved" class="widget-filter-status"> --}}
+            <div class="col col-lg-4 mb-4">
                     <x-cards.widget :title="__('modules.tickets.totalResolvedTickets')" value="0" icon="ticket-alt"
                         widgetId="resolvedTickets" />
-                {{-- </a> --}}
             </div>
 
         </div>
