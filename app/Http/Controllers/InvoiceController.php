@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChartOfAccount;
 use App\Models\JournalEntry;
 use App\Models\JournalEntryLine;
 use App\Models\Utility;
@@ -193,7 +194,8 @@ class InvoiceController extends AccountBaseController
         if ($getCustomFieldGroupsWithFields) {
             $this->fields = $getCustomFieldGroupsWithFields->fields;
         }
-
+        $chartOfAccounts = ChartOfAccount::where('company_id', company()->id)->get();
+        $this->chartOfAccounts = $chartOfAccounts;
         $this->view = 'invoices.ajax.create';
 
         if (request()->ajax()) {

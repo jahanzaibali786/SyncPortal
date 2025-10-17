@@ -59,8 +59,8 @@
                         <td>{{ $meeting->meeting_minutes ?? '—' }}</td>
                         <td>
                             @if ($meeting->join_url)
-                                <a href="{{ $meeting->join_url }}" target="_blank" rel="noopener noreferrer">
-                                    {{ $meeting->join_url }}
+                                <a class="btn btn-primary" href="{{ $meeting->join_url }}" target="_blank" rel="noopener noreferrer">
+                                    <i class="fa fa-link"></i> join
                                 </a>
                             @else
                                 —

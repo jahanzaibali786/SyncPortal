@@ -460,8 +460,8 @@
                 {{-- <div class="col-md-12"> --}}
                 <div class="form-group">
                     {{ Form::label('cohost_email', __('Cohost Email'), ['class' => 'form-label']) }}
-                    {{-- {{ Form::text('cohost_email', 'uzairaftab332211@gmail.com', ['class' => 'form-control', 'placeholder' => __('Enter Cohost Email')]) }} --}}
-                    {{ Form::text('cohost_email', '33384@iqraisb.edu.pk', ['class' => 'form-control', 'placeholder' => __('Enter Cohost Email')]) }}
+                    {{ Form::text('cohost_email', 'uzairaftab332211@gmail.com', ['class' => 'form-control', 'placeholder' => __('Enter Cohost Email')]) }}
+                    {{-- {{ Form::text('cohost_email', '33384@iqraisb.edu.pk', ['class' => 'form-control', 'placeholder' => __('Enter Cohost Email')]) }} --}}
                     @error('cohost_email')
                         <span class="invalid-cohost_email" role="alert">
                             <strong class="text-danger">{{ $message }}</strong>
