@@ -9,6 +9,7 @@ use App\DataTables\DealsDataTable;
 use App\DataTables\ProposalDataTable;
 use App\Enums\Salutation;
 use App\Events\AutoFollowUpReminderEvent;
+use App\Models\GoogleMeetings;
 use App\Models\LeadCall;
 use App\Models\Meeting;
 use ReflectionClass;
@@ -240,9 +241,9 @@ class DealController extends AccountBaseController
                 // --- MEETING TAB ---
                 $this->dealMeetings = Meeting::where('lead_id', $id)->get();
 
-                if (user()->permission('view_lead_meeting') == 'added') {
-                    $this->dealMeetings = $this->dealMeetings->where('added_by', user()->id);
-                }
+                // if (user()->permission('view_lead_meeting') == 'added') {
+                //     $this->dealMeetings = $this->dealMeetings->where('added_by', user()->id);
+                // }
 
                 $this->tab = 'leads.ajax.meeting';
                 break;

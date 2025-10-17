@@ -671,6 +671,7 @@ return array(
         'addPaymentDetails' => 'Add Payment Detail',
         'title' => 'Title',
         'paymentDetails' => 'Payment Details',
+        'chartOfAccount' => 'Chart of Account',
     ),
     'issues' => array(
         'pending' => 'Pending',

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\GoogleCalanderAccounts;
 use App\Models\GoogleMeetings;
 use App\Models\Lead;
+use App\Models\Meeting;
 use App\Models\User;
 use App\Services\GoogleCalendarService;
 use Carbon\Carbon;
@@ -38,7 +39,7 @@ class GoogleMeetController extends Controller
 
     public function handleGoogleCallback()
     {
-        dd($request->all());
+        // dd($request->all());
         // Drop stateless() so Socialite validates state
         try {
             $socialUser = Socialite::driver('google')->user();
@@ -70,7 +71,7 @@ class GoogleMeetController extends Controller
         session(['google_token' => $socialUser->token]);
         $calendarService = new GoogleCalendarService(); // create object
         $this->syncLocalMeetingsToGoogle($calendarService);
-        return redirect()->back()
+        return redirect()->route('deals')
             ->with('success', 'Google Meet access granted. Now you create Meeting.');
     }
 
@@ -259,7 +260,7 @@ class GoogleMeetController extends Controller
     //                 'google_meet_password' => optional($createdEvent->getConferenceData()->getEntryPoints()[0])->getUri(),
     //                 'cohost_email' => $cohostEmailToUse, // Store co-host email
     //             ]);
-                
+
     //             return redirect()->route('google.calander.view')
     //                 ->with('success', 'Google Meet created successfully with co-host invitation sent.');
     //         } else {
@@ -285,132 +286,151 @@ class GoogleMeetController extends Controller
     //     }
     // }
     public function createMeet(Request $request, GoogleCalendarService $calendarService)
-{
-    $validator = \Validator::make($request->all(), [
-        'description' => 'nullable|string',
-        'lead_id' => 'required',
-        'user_id' => 'nullable',
-        'time' => 'required',
-        'mint' => 'required|integer',
-        'date' => 'required|date_format:d-m-Y',
-        'cohost_email' => 'nullable|email',
-    ]);
-
-    if ($validator->fails()) {
-        $messages = $validator->getMessageBag();
-        return response()->json([
-            'status' => 'error',
-            'message' => $messages->first()
-        ], 422);
-    }
-
-    try {
-        // Get the company Google client
-        $client = $calendarService->getClient();
-        $service = new Google_Service_Calendar($client);
-
-        // Parse date from d-m-Y format
-        $dateObj = \Carbon\Carbon::createFromFormat('d-m-Y', $request->date);
-        $startTime = $dateObj->setTimeFromTimeString($request->time);
-        $endTime = $startTime->copy()->addMinutes($request->mint);
-
-        // Get lead name
-        $lead = Lead::findOrFail($request->lead_id);
-        $title = $lead->name;
-
-        // Prepare attendees array for co-host
-        $attendees = [];
-        $cohostEmailToUse = $request->cohost_email ?? $this->cohostEmail;
-        if ($cohostEmailToUse) {
-            $emailList = array_map('trim', explode(',', $cohostEmailToUse));
-            foreach ($emailList as $email) {
-                if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    $attendees[] = new Google_Service_Calendar_EventAttendee([
-                        'email' => $email,
-                        'responseStatus' => 'needsAction'
-                    ]);
-                }
-            }
-        }
-
-        $event = new Google_Service_Calendar_Event([
-            'summary' => $title,
-            'description' => $request->description,
-            'start' => [
-                'dateTime' => $startTime->toRfc3339String(),
-                'timeZone' => 'Asia/Karachi',
-            ],
-            'end' => [
-                'dateTime' => $endTime->toRfc3339String(),
-                'timeZone' => 'Asia/Karachi',
-            ],
-            'attendees' => $attendees,
-            'conferenceData' => [
-                'createRequest' => [
-                    'conferenceSolutionKey' => ['type' => 'hangoutsMeet'],
-                    'requestId' => uniqid(),
-                ],
-            ],
+    {
+        $validator = \Validator::make($request->all(), [
+            'description' => 'nullable|string',
+            'lead_id' => 'required',
+            'user_id' => 'nullable',
+            'time' => 'required',
+            'mint' => 'required|integer',
+            'date' => 'required|date_format:d-m-Y',
+            'cohost_email' => 'nullable|email',
         ]);
 
-        $createdEvent = $service->events->insert('primary', $event, [
-            'conferenceDataVersion' => 1,
-            'sendUpdates' => 'all' // Send invitations to attendees including co-host
-        ]);
-
-        if ($createdEvent->getStatus() == 'confirmed') {
-            // Store in your database
-            GoogleMeetings::create([
-                'title' => $title,
-                'lead_id' => $request->lead_id,
-                'start' => $startTime,
-                'end' => $endTime,
-                'description' => $request->description,
-                'assigned_to' => auth()->check() ? auth()->id() : decrypt($request->user_id),
-                'google_meet_link' => $createdEvent->getHangoutLink(),
-                'google_meet_id' => $createdEvent->getId(),
-                'google_meet_password' => optional($createdEvent->getConferenceData()->getEntryPoints()[0])->getUri(),
-                'cohost_email' => $cohostEmailToUse,
-            ]);
-            
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Google Meet created successfully with co-host invitation sent.',
-                'redirect' => route('google.calander.view')
-            ]);
-        } else {
+        if ($validator->fails()) {
+            $messages = $validator->getMessageBag();
             return response()->json([
                 'status' => 'error',
-                'message' => 'Failed to create Google Meet.'
-            ], 500);
+                'message' => $messages->first()
+            ], 422);
         }
 
-    } catch (\Exception $e) {
-        \Log::error('Error creating Google Meet: ' . $e->getMessage());
-        
-        // Check if it's a Google authentication error
-        if (method_exists($e, 'getResponse') && $e->getResponse()) {
-            $response = $e->getResponse();
-            if (method_exists($response, 'getContent')) {
-                $content = $response->getContent();
-                $data = json_decode($content, true);
+        try {
+            // Get the company Google client
+            $client = $calendarService->getClient();
+            $service = new Google_Service_Calendar($client);
 
-                if (isset($data['redirect'])) {
-                    return response()->json([
-                        'status' => 'error',
-                        'message' => $data['message'] ?? 'Authentication required. Please connect Google Calendar.',
-                        'redirect' => $data['redirect']
-                    ], 401);
+            // Parse date from d-m-Y format
+            $dateObj = \Carbon\Carbon::createFromFormat('d-m-Y', $request->date);
+            $startTime = $dateObj->setTimeFromTimeString($request->time);
+            $endTime = $startTime->copy()->addMinutes($request->mint);
+
+            // Get lead name
+            $lead = Lead::where('lead_id', $request->lead_id)->first();
+            $title = $lead->company_name;
+
+            // Prepare attendees array for co-host
+            $attendees = [];
+            $cohostEmailToUse = $request->cohost_email ?? $this->cohostEmail;
+            if ($cohostEmailToUse) {
+                $emailList = array_map('trim', explode(',', $cohostEmailToUse));
+                foreach ($emailList as $email) {
+                    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        $attendees[] = new Google_Service_Calendar_EventAttendee([
+                            'email' => $email,
+                            'responseStatus' => 'needsAction'
+                        ]);
+                    }
                 }
             }
-        }
 
-        return response()->json([
-            'status' => 'error',
-            'message' => 'Error creating Google Meet: ' . $e->getMessage()
-        ], 500);
+            $event = new Google_Service_Calendar_Event([
+                'summary' => $title,
+                'description' => $request->description,
+                'start' => [
+                    'dateTime' => $startTime->toRfc3339String(),
+                    'timeZone' => 'Asia/Karachi',
+                ],
+                'end' => [
+                    'dateTime' => $endTime->toRfc3339String(),
+                    'timeZone' => 'Asia/Karachi',
+                ],
+                'attendees' => $attendees,
+                'conferenceData' => [
+                    'createRequest' => [
+                        'conferenceSolutionKey' => ['type' => 'hangoutsMeet'],
+                        'requestId' => uniqid(),
+                    ],
+                ],
+            ]);
+
+            $createdEvent = $service->events->insert('primary', $event, [
+                'conferenceDataVersion' => 1,
+                'sendUpdates' => 'all' // Send invitations to attendees including co-host
+            ]);
+
+            if ($createdEvent->getStatus() == 'confirmed') {
+                // Store in your database
+               $gmeet = GoogleMeetings::create([
+                    'title' => $title,
+                    'lead_id' => $request->lead_id,
+                    'start' => $startTime,
+                    'end' => $endTime,
+                    'description' => $request->description,
+                    'assigned_to' => auth()->check() ? auth()->id() : decrypt($request->user_id),
+                    'google_meet_link' => $createdEvent->getHangoutLink(),
+                    'google_meet_id' => $createdEvent->getId(),
+                    'google_meet_password' => optional($createdEvent->getConferenceData()->getEntryPoints()[0])->getUri(),
+                    'cohost_email' => $cohostEmailToUse,
+                ]);
+                if($gmeet){
+                    //meeting create
+                    $meeting = new Meeting();
+                    $meeting->lead_id = $request->lead_id;
+                    $meeting->user_id = auth()->check() ? auth()->id() : decrypt($request->user_id);
+                    $meeting->name = $title;
+                    $meeting->email = $cohostEmailToUse;
+                    $meeting->date = $dateObj;
+                    $meeting->time = $startTime;
+                    $meeting->total_min = $request->mint;
+                    $meeting->meeting_id = $gmeet->id;
+                    $meeting->password = $gmeet->google_meet_password;
+                    $meeting->start_url = $gmeet->google_meet_link;
+                    $meeting->join_url = $gmeet->google_meet_link;
+                    $meeting->meeting_date = $dateObj;
+                    $meeting->meeting_time = $startTime;
+                    $meeting->meeting_minutes = $request->mint;
+                    $meeting->status = 'Scheduled';
+                    $meeting->save();
+                }
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'Google Meet created successfully with co-host invitation sent.',
+                    'redirect' => route('deals.show', $request->lead_id . '?tab=meeting')
+                ]);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Failed to create Google Meet.'
+                ], 500);
+            }
+
+        } catch (\Exception $e) {
+            \Log::error('Error creating Google Meet: ' . $e->getMessage());
+
+            // Check if it's a Google authentication error
+            if (method_exists($e, 'getResponse') && $e->getResponse()) {
+                $response = $e->getResponse();
+                if (method_exists($response, 'getContent')) {
+                    $content = $response->getContent();
+                    $data = json_decode($content, true);
+
+                    if (isset($data['redirect'])) {
+                        return response()->json([
+                            'status' => 'error',
+                            'message' => $data['message'] ?? 'Authentication required. Please connect Google Calendar.',
+                            'redirect' => $data['redirect']
+                        ], 401);
+                    }
+                }
+            }
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Error creating Google Meet: ' . $e->getMessage()
+            ], 500);
+        }
     }
-}
     public function edit($id)
     {
         $meeting = GoogleMeetings::findOrFail($id);
