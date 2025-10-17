@@ -29,6 +29,8 @@ class StorePurchaseProductRequest extends CoreRequest
             'track_inventory' => 'sometimes',
             'type' => 'required|in:goods,service',
             'selling_price' => 'required|numeric',
+            'income_account' => 'required',
+            'expense_account' => 'required',
             'purchase_information' => 'sometimes',
             'opening_stock' => 'required_if:track_inventory,1',
             'purchase_price' => 'required_if:purchase_information,1,numeric',

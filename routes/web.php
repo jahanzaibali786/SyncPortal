@@ -140,9 +140,14 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     Route::post('vouchers/apply-quick-action', [VoucherController::class, 'applyQuickAction'])
         ->name('vouchers.apply_quick_action');
     // Ledger report
-    Route::post('/chart-of-accounts/{id}', [chartOfAccounts::class, 'update'])
-    ->name('chart-of-accounts.update');
+    Route::post('/chart-of-accounts/store',[chartOfAccounts::class,'store'])->name('coa.store');
+    Route::post('/chart-of-accounts/{id}', [chartOfAccounts::class, 'update'])->name('chart-of-accounts.update');
     Route::get('/chart-of-accounts',[chartOfAccounts::class,'index'])->name('coa.index');
+    // create a create and store option
+    Route::get('/chart-of-accounts/create',[chartOfAccounts::class,'create'])->name('coa.create');
+    Route::get('/coa/get-parents', [chartOfAccounts::class, 'getParents'])->name('coa.getParents');
+
+
     Route::get('/ledger', [VoucherController::class, 'ledger'])->name('ledger.index');
     Route::get('trial-balance', [TrialBalanceController::class, 'index'])->name('trial-balance.index');
     Route::get('/profit-loss', [VoucherController::class, 'profitLoss'])->name('reports.profit_loss');

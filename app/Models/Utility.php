@@ -15,8 +15,9 @@ class Utility
      */
     public static function createInvoiceJV(Invoice $invoice)
     {
-        DB::beginTransaction();
 
+        // return 45;
+        DB::beginTransaction();
         try {
             $invoiceItems = $invoice->items;
 
@@ -29,6 +30,7 @@ class Utility
                 ->value('receivable_account_id');
 
             foreach ($invoiceItems as $item) {
+                dd($receivableAccount,$item,$item->product);
                 $product = $item->product;
                 $incomeAccount = $product->income_account;
 
@@ -113,6 +115,7 @@ class Utility
             return $journalEntry->id;
 
         } catch (\Exception $e) {
+
             DB::rollBack();
             throw $e;
         }
@@ -165,6 +168,64 @@ class Utility
         return $journalEntry;
     }
 
+    public static function createReceiveVoucher(Invoice $invoice)
+    {
+        $voucherType = $invoice->bankAccount->type == 'bank' ? 'BRV' : 'CRV';
+        $response = Company::fetchNumber($voucherType);
+        $data = json_decode($response->getContent(), true);
+        $voucher_no = $data['number'];
+
+        $journalEntry = JournalEntry::create([
+            'company_id' => company()->id,
+            'date' => now(),
+            'number' => $voucher_no,
+            'deposit_slip' => $invoice->bill ?? null,
+            'posted_at' => now(),
+            'bank_id' => $invoice->bank_account_id,
+            'memo' => 'Receipt for Invoice: ' . $invoice->item_name,
+            'voucher_type' => $voucherType,
+            'source_type' => 'App\Models\Invoice',
+            'source_id' => $invoice->id,
+            'created_by' => user()->id,
+            'approved_by' => $invoice->approver_id,
+        ]);
+
+        $RevicePayableAccountId = InvoiceSetting::where('company_id', company()->id)->value('receivable_account_id');
+
+        JournalEntryLine::create([
+            'journal_entry_id' => $journalEntry->id,
+            'company_id' => company()->id,
+            'chart_of_account_id' => $RevicePayableAccountId,
+            'debit' => $invoice->total,
+            'credit' => 0,
+            'memo' => 'Receipt for Invoice: ' . $invoice->item_name,
+            'source_line_type' => 'App\Models\Invoice',
+            'source_line_id' => $invoice->id,
+        ]);
+
+        $paymentAccountId = null;
+
+        $bankAccount = BankAccount::find($invoice->bank_account_id);
+        $paymentAccountId = $bankAccount->chart_account_id;
+        if(!$paymentAccountId){
+            // dd($bankAccount);
+            return 'Receive account not found';
+        }
+    
+        JournalEntryLine::create([
+            'journal_entry_id' => $journalEntry->id,
+            'company_id' => company()->id,
+            'chart_of_account_id' => $paymentAccountId,
+            'debit' => 0,
+            'credit' => $invoice->total,
+            'memo' => $voucherType == 'BRV' ? 'Bank Receipt' : 'Cash Receipt',
+            'source_line_type' => 'App\Models\Invoice',
+            'source_line_id' => $invoice->id,
+        ]);
+        // dd($journalEntry);
+        return $journalEntry;
+    }
+
     /**
      * Create payment voucher for expense (CPV or BPV)
      * 
@@ -211,7 +272,7 @@ class Utility
         $bankAccount = BankAccount::find($expense->bank_account_id);
         $paymentAccountId = $bankAccount->chart_account_id;
         if(!$paymentAccountId){
-            dd($bankAccount);
+            // dd($bankAccount);
             return 'Payment account not found';
         }
     

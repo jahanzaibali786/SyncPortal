@@ -126,6 +126,33 @@
                                     @endif
                                 </x-forms.input-group>
                             </div>
+                            <div class="col-md-6">
+                                <x-forms.label class="my-3" fieldId="income_account_id" :fieldLabel="__('modules.accounts.incomeAccount')"  fieldRequired="true">
+                                </x-forms.label>
+                                <x-forms.input-group>
+                                    <select class="form-control select-picker" name="income_account_id"
+                                        id="income_account_id" data-live-search="true">
+                                        <option value="">--</option>
+                                        @foreach ($accounts as $account)
+                                                <option value="{{ $account->id }}">{{ $account->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </x-forms.input-group>
+                            </div>
+
+                            <div class="col-md-6">
+                                <x-forms.label class="my-3" fieldId="expense_account_id" :fieldLabel="__('modules.accounts.expenseAccount')"  fieldRequired="true">
+                                </x-forms.label>
+                                <x-forms.input-group>
+                                    <select class="form-control select-picker" name="expense_account_id"
+                                        id="expense_account_id" data-live-search="true">
+                                        <option value="">--</option>
+                                        @foreach ($accounts as $account)
+                                                <option value="{{ $account->id }}">{{ $account->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </x-forms.input-group>
+                            </div>
 
                             <div class="col-md-6">
                                 <div class="row mt-5">

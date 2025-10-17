@@ -25,6 +25,12 @@ ApiRoute::group(['namespace' => 'Modules\RestAPI\Http\Controllers'], function ()
 
 ApiRoute::group(['namespace' => 'Modules\RestAPI\Http\Controllers', 'middleware' => ['auth:sanctum', 'api.auth']], function () {
 
+    ApiRoute::post('daystart', ['as' => 'autoMonthlyTask', 'uses' => 'TrakerController@autoMonthlyTask']);
+    ApiRoute::post('/timepause', ['as' => 'timerpause', 'uses' => 'TrakerController@pauseTimer']);
+    ApiRoute::post('/timeresume', ['as' => 'timerresume', 'uses' => 'TrakerController@resumeTimer']);
+    ApiRoute::post('/dayend', ['as' => 'timerstop', 'uses' => 'TrakerController@stopTimer']);
+    ApiRoute::post('/screenshot', ['as' => 'screenshot', 'uses' => 'TrakerController@screenshot']);
+
     ApiRoute::post('auth/logout', ['as' => 'api.auth.logout', 'uses' => 'AuthController@logout']);
     ApiRoute::get('auth/refresh', ['as' => 'api.auth.refresh', 'uses' => 'AuthController@refresh']);
 

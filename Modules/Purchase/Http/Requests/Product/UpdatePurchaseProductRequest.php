@@ -22,10 +22,11 @@ class UpdatePurchaseProductRequest extends CoreRequest
             'type' => 'required|in:goods,service',
             'selling_price' => 'required|numeric',
             'purchase_information' => 'sometimes',
+            'income_account' => 'required',
+            'expense_account' => 'required',
             'downloadable_file' => 'nullable|file',
             'opening_stock' => 'required_if:track_inventory,1',
             'purchase_price' => 'required_if:purchase_information,1,numeric',
-
         ];
 
         $rules = $this->customFieldRules($rules);

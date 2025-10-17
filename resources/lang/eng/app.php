@@ -470,8 +470,8 @@ return array(
         'weeklyTimesheets' => 'Weekly Timesheets',
         'affiliates' => 'Affiliates',
         'vouchers' => 'Vouchers',
-
         'coa' => 'Chart of Accounts',
+        'chartOfAccounts' => 'Chart of Accounts',
         'financeReports' => 'Finance Reports',
         'ledgerReport' => 'Ledger Report',
         'trialBalanceReport' => 'Trial Balance Report',
