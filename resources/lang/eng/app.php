@@ -284,6 +284,7 @@ return array(
         'invoicePaymentDetails' => 'Invoice Payment Details',
         'projectCalendar' => 'Project Calendar',
         'customLink' => 'Custom Link',
+        'globalImport' => 'Global Import',
         'pusher' => array(
             'appId' => 'App Id',
             'appKey' => 'App Key',

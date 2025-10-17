@@ -50,8 +50,9 @@ return [
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => env('GOOGLE_REDIRECT'),
-        'redirect_uri' => (env('APP_URL') . '/account/settings/google-auth'),
+        'redirect' => env('GOOGLE_REDIRECT_URL'),
+        // 'redirect_uri' => (env('APP_URL') . '/account/settings/google-auth'),
+        'redirect_uri' => env('GOOGLE_REDIRECT_URL'),
         // Let the user know what we will be using from his Google account.
         'scopes' => [
             // Getting access to the user's email.
