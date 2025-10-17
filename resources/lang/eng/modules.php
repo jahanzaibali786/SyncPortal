@@ -2488,5 +2488,7 @@ return array(
         'receivableAccount' => 'Receivable Account',
         'payableAccount' => 'Payable Account',
         'coa' => 'Chart of Accounts',
+        'createCoa' => 'Create Chart of Accounts',
+        'createCoaTitle' => 'Create Chart of Accounts',
     )
 );

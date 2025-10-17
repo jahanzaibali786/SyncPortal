@@ -55,13 +55,19 @@
 
 @section('content')
     <div class="content-wrapper">
-        <div class="d-flex flex-column w-tables rounded mt-3 bg-white">
-            <div class="d-lg-flex d-md-flex d-block justify-content-between p-4 bg-white border-bottom-grey text-capitalize">
-                <h4 class="heading-h4 mb-0">
-                    Chart of Accounts
-                    <span class="text-lightest f-12 ml-2" id="date-range-display"></span>
-                </h4>
+        <div class="d-block d-lg-flex d-md-flex justify-content-between">
+            <div id="table-actions" class="flex-grow-1 align-items-center mb-2 mb-lg-0 mb-md-0">
+
+                    <x-forms.link-primary :link="route('coa.create')" class="mr-3 openRightModal float-left"
+                                          icon="plus">
+                        @lang('modules.accounts.createCoa')
+                    </x-forms.link-primary>
+
             </div>
+
+        </div>
+
+        <div class="d-flex flex-column w-tables rounded mt-3 bg-white">
 
             <div class="table-responsive p-2">
                 {!! $dataTable->table(['class' => 'table table-hover border-0 w-100 chartofaccounts-table']) !!}

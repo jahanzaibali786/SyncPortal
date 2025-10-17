@@ -25,6 +25,7 @@ use App\Models\GoogleCalendarModule;
 use App\Http\Controllers\QuickbookController;
 use App\Models\Payment;
 use App\Models\ProposalItemImage;
+use App\Models\Utility;
 use App\Traits\EmployeeActivityTrait;
 
 class InvoiceObserver
@@ -233,6 +234,9 @@ class InvoiceObserver
             $clientPayment->status = 'complete';
             $clientPayment->paid_on = now();
             $clientPayment->save();
+            $journalId = Utility::createReceiveVoucher($invoice);
+            $clientPayment->journal_id = $journalId->id;
+            $clientPayment->save();
         }
     }
 
@@ -390,6 +394,9 @@ class InvoiceObserver
             $clientPayment->gateway = $invoice->gateway;
             $clientPayment->status = 'complete';
             $clientPayment->paid_on = now();
+            $clientPayment->save();
+            $journalId = Utility::createReceiveVoucher($invoice);
+            $clientPayment->journal_id = $journalId->id;
             $clientPayment->save();
         }
 

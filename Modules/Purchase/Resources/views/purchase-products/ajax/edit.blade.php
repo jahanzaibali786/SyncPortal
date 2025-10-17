@@ -122,6 +122,33 @@ $addProductSubCategoryPermission = user()->permission('manage_product_sub_catego
                                     @endif
                                 </x-forms.input-group>
                             </div>
+                            <div class="col-lg-6 col-md-6">
+                                <x-forms.label class="my-3" fieldId="income_account_id" :fieldLabel="__('modules.accounts.incomeAccount')">
+                                </x-forms.label>
+                                <x-forms.input-group>
+                                    <select class="form-control select-picker" name="income_account_id"
+                                        id="income_account_id" data-live-search="true">
+                                        <option value="">--</option>
+                                        @foreach ($accounts as $account)
+                                                <option value="{{ $account->id }}" @if ($account->id == $product->) selected @endif >{{ $account->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </x-forms.input-group>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6">
+                                <x-forms.label class="my-3" fieldId="expense_account_id" :fieldLabel="__('modules.accounts.expenseAccount')">
+                                </x-forms.label>
+                                <x-forms.input-group>
+                                    <select class="form-control select-picker" name="expense_account_id"
+                                        id="expense_account_id" data-live-search="true">
+                                        <option value="">--</option>
+                                        @foreach ($accounts as $account)
+                                                <option value="{{ $account->id }}" @if ($account->id == $product->expense_account) selected @endif>{{ $account->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </x-forms.input-group>
+                            </div>
 
                             <div class="col-lg-6 col-md-6 mt-4 mb-4">
                                 <div class="row">
