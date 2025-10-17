@@ -24,7 +24,7 @@
         "froiden/envato": "^5.0",
         "froiden/laravel-installer": "^1.6",
         "froiden/laravel-rest-api": "^10.0",
-        "google/apiclient": "^2.10",
+        "google/apiclient": "2.15",
         "graham-campbell/gitlab": "^7.0",
         "graham-campbell/markdown": "^15.0",
         "guzzlehttp/guzzle": "^7.2",

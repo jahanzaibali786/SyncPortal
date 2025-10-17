@@ -16,6 +16,7 @@ trait ImportExcel
 
     public function importFileProcess($request, $importClass)
     {
+        // dd( $importClass);
         // get class name from $importClass
         $this->importClassName = (new ReflectionClass($importClass))->getShortName();
 

@@ -120,7 +120,8 @@ return [
     |
     */
 
-    'timezone' => env('DB_TIMEZONE', 'UTC'),
+    // 'timezone' => env('DB_TIMEZONE', 'UTC'),
+    'timezone' => env('APP_TIMEZONE', 'UTC'),
     'cron_timezone' => env('CRON_TIMEZONE', 'UTC'),
 
     /*
