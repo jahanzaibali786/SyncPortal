@@ -10,12 +10,17 @@ class LeadImport implements ToArray
     public static function fields(): array
     {
         return array(
+            array('id' => 'lead_id', 'name' => __('modules.lead.leadId'), 'required' => 'No'),
             array('id' => 'name', 'name' => __('modules.lead.clientName'), 'required' => 'Yes'),
             array('id' => 'email', 'name' => __('modules.lead.clientEmail'), 'required' => 'Yes'),
+            array('id' => 'mobile', 'name' => __('modules.lead.mobile'), 'required' => 'No'),
+            array('id' => 'numbers', 'name' => __('modules.lead.numbers'), 'required' => 'No'),
+            array('id' => 'subject', 'name' => __('modules.lead.subject'), 'required' => 'No'),
             array('id' => 'note', 'name' => __('app.note'), 'required' => 'No'),
             array('id' => 'company_name', 'name' => __('modules.lead.companyName'), 'required' => 'No'),
             array('id' => 'company_website', 'name' => __('modules.lead.website'), 'required' => 'No'),
-            array('id' => 'mobile', 'name' => __('modules.lead.mobile'), 'required' => 'No'),
+            array('id' => 'pipeline_id', 'name' => __('modules.lead.pipeline_id'), 'required' => 'Yes'),
+            array('id' => 'pipeline_stage_id', 'name' => __('modules.lead.pipeline_stage_id'), 'required' => 'Yes'),
             array('id' => 'company_phone', 'name' => __('modules.client.officePhoneNumber'), 'required' => 'No'),
             array('id' => 'country', 'name' => __('app.country'), 'required' => 'No'),
             array('id' => 'state', 'name' => __('modules.stripeCustomerAddress.state'), 'required' => 'No'),
@@ -23,6 +28,8 @@ class LeadImport implements ToArray
             array('id' => 'postal_code', 'name' => __('modules.stripeCustomerAddress.postalCode'), 'required' => 'No'),
             array('id' => 'address', 'name' => __('app.address'), 'required' => 'No'),
             array('id' => 'source', 'name' => __('modules.lead.leadSource'), 'required' => 'No'),
+            //label
+            array('id' => 'label', 'name' => __('modules.lead.label'), 'required' => 'No'),
             array('id' => 'created_at', 'name' => __('app.createdOn'), 'required' => 'No'),
         );
     }

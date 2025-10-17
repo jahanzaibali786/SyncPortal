@@ -141,11 +141,21 @@ $viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
 
                         <x-tab-item class="ajax-tab history" :active="request('tab') === 'history'"
                                     :link="route('deals.show', $deal->id).'?tab=history'">@lang('modules.tasks.history')</x-tab-item>
+                        <x-tab-item class="ajax-tab meeting-tab"  
+                            :active="request('tab') == 'meeting'"  
+                            :link="route('deals.show', $deal->id).'?tab=meeting'">
+                            @lang('modules.meeting.meeting')
+                        </x-tab-item>
+                        <x-tab-item class="ajax-tab call-tab"
+                            :active="request('tab') === 'call'"
+                            :link="route('deals.show', $deal->id).'?tab=call'">
+                            @lang('modules.call.call')
+                        </x-tab-item>
 
                     </x-tab-section>
 
                     <div class="s-b-n-content">
-                        <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-content" id="nav-tabContent" style="max-height:400px !important; overflow-y:scroll;">
                             @include($tab)
                         </div>
                     </div>

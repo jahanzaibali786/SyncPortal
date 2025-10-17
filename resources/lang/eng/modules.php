@@ -140,6 +140,24 @@ return array(
         'addNewProduct' => 'Add New Product',
         'totalDeals' => 'Total Deals',
     ),
+    'call' => array(
+        'call' => 'Call',
+        'user' => 'User',
+        'callLog' => 'Call Log',
+        'subject' => 'Subject',
+        'callType' => 'Call Type',
+        'start' => 'Start Time',
+        'end' => 'End Time',
+        'duration' => 'Duration',
+        'recording' => 'Recording',
+        'playRecording' => 'Play Recording',
+    ),
+    'meeting' => array(
+        'meeting' => 'Meeting',
+        'minutes' => 'Minutes',
+        'joinUrl' => 'Join Url',
+        'newMeeting' => 'New Meeting',
+    ),
     'client' => array(
         'createNote' => 'Add Note',
         'noteTitle' => 'Note Title',
@@ -651,7 +669,7 @@ return array(
         'sameIp' => 'It\'s the same IP which you have.',
         'startDate' => 'Start Date',
         'addPaymentDetails' => 'Add Payment Detail',
-        'title' =>  'Title',
+        'title' => 'Title',
         'paymentDetails' => 'Payment Details',
     ),
     'issues' => array(
@@ -1455,7 +1473,8 @@ return array(
         'addCategory' => 'Add Category',
         'editCategory' => 'Edit Category',
     ),
-    'events' => array('addEvent' => 'Add Event',
+    'events' => array(
+        'addEvent' => 'Add Event',
         'eventName' => 'Event Name',
         'startOnDate' => 'Starts On Date',
         'startOnTime' => 'Starts On Time',
@@ -2314,7 +2333,7 @@ return array(
         'leadStage' => 'Deal Stage',
         'contactName' => 'Contact Name',
         'leadName' => 'Lead Name',
-        'leadReport' =>'Deal Report',
+        'leadReport' => 'Deal Report',
     ),
     'deal' => array(
         'title' => 'Deal',
@@ -2361,7 +2380,7 @@ return array(
         'ticketSetting' => 'Ticket Setting',
         'ticketVisibilitySetting' => 'Ticket Visibility Setting',
         'information' => 'Information :',
-        'roundrobinNote' =>'<b>Round-Robin Method</b>',
+        'roundrobinNote' => '<b>Round-Robin Method</b>',
         'equalDistribution' => '<b> Equal Distribution:</b> Tasks are evenly distributed among team members.',
         'sequentialAssignment' => '<b> Sequential Assignment:</b> Each task is assigned to the next team member in order.',
         'fairRotation' => '<b> Fair Rotation:</b> Ensures balanced workloads and prevents overload.',
@@ -2465,7 +2484,7 @@ return array(
         'trialBalance' => 'Trial Balance',
         'incomeAccount' => 'Income Account',
         'expenseAccount' => 'Expense Account',
-        
+
         'receivableAccount' => 'Receivable Account',
         'payableAccount' => 'Payable Account',
         'coa' => 'Chart of Accounts',

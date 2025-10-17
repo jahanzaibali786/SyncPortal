@@ -42,6 +42,9 @@
         .edit-account {
             cursor: pointer;
         }
+        .btn-group {
+            padding-right: 2rem;
+        }
     </style>
 @endpush
 

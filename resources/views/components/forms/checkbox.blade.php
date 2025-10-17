@@ -11,7 +11,7 @@
     >
     @if ($fieldLabel != '')
         <label
-            class="form-check-label form_custom_label text-dark-grey pl-2 mr-4 justify-content-start cursor-pointer checkmark-20 pt-1 text-wrap text-break"
+            class="form-check-label form_custom_label text-dark-grey pl-2 justify-content-start cursor-pointer checkmark-20 pt-1 text-wrap text-break"
             for="{{ $fieldId }}">
             {{ $fieldLabel }}
             @if (!is_null($popover))

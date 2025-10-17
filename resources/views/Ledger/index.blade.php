@@ -5,12 +5,12 @@
 @endpush
 @section('filter-section')
  <style>
-        .dt-buttons {
+        /* .dt-buttons {
             position: fixed !important;
             top: 9% !important;
             right: 10px !important;
             z-index: 1000 !important;
-        }
+        } */
         .w-tables{
             box-shadow: none !important;
             border: 1px solid #ebebeb !important;
@@ -20,11 +20,16 @@
             padding: 30px 100px 30px !important;
         }
 
-        .dt-buttons {
+        /* .dt-buttons {
             position: fixed !important;
             top: 9% !important;
             right: 10px !important;
             z-index: 1000 !important;
+        } */
+
+        .dt-buttons {
+            padding-top: 1rem;
+            padding-left: 1rem;
         }
 
         .table-scroll {

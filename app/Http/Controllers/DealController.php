@@ -9,6 +9,8 @@ use App\DataTables\DealsDataTable;
 use App\DataTables\ProposalDataTable;
 use App\Enums\Salutation;
 use App\Events\AutoFollowUpReminderEvent;
+use App\Models\LeadCall;
+use App\Models\Meeting;
 use ReflectionClass;
 use Illuminate\Support\Facades\DB;
 use App\Helper\Reply;
@@ -182,60 +184,85 @@ class DealController extends AccountBaseController
         $tab = request('tab');
 
         switch ($tab) {
-        case 'files':
-            $this->tab = 'leads.ajax.files';
-            break;
-        case 'follow-up':
-            $this->dealFollowUps = DealFollowUp::where('deal_id', $id)->get();
+            case 'files':
+                $this->tab = 'leads.ajax.files';
+                break;
+            case 'follow-up':
+                $this->dealFollowUps = DealFollowUp::where('deal_id', $id)->get();
 
-            if (user()->permission('view_lead_follow_up') == 'added') {
-                $this->dealFollowUps = $this->dealFollowUps->where('added_by', user()->id);
-            }
+                if (user()->permission('view_lead_follow_up') == 'added') {
+                    $this->dealFollowUps = $this->dealFollowUps->where('added_by', user()->id);
+                }
 
-            $this->tab = 'leads.ajax.follow-up';
-            break;
-        case 'proposals':
-            abort_403(!in_array(user()->permission('view_lead_proposals'), ['all', 'added']));
+                $this->tab = 'leads.ajax.follow-up';
+                break;
+            case 'proposals':
+                abort_403(!in_array(user()->permission('view_lead_proposals'), ['all', 'added']));
 
-            $this->proposals = Proposal::where('deal_id', $id)->get();
+                $this->proposals = Proposal::where('deal_id', $id)->get();
 
-            if (user()->permission('view_lead_proposals') == 'added') {
-                $this->proposals = $this->proposals->where('added_by', user()->id);
-            }
+                if (user()->permission('view_lead_proposals') == 'added') {
+                    $this->proposals = $this->proposals->where('added_by', user()->id);
+                }
 
-            $this->tab = 'leads.ajax.proposal';
-            break;
-        case 'notes':
-            $this->notes = DealNote::where('deal_id', $id)->orderBy('created_at', 'desc')->get();
-            $viewNotesPermission = user()->permission('view_deal_note');
-            abort_403(!($viewNotesPermission == 'all' || $viewNotesPermission == 'added' || $viewNotesPermission == 'both' || $viewNotesPermission == 'owned'));
+                $this->tab = 'leads.ajax.proposal';
+                break;
+            case 'notes':
+                $this->notes = DealNote::where('deal_id', $id)->orderBy('created_at', 'desc')->get();
+                $viewNotesPermission = user()->permission('view_deal_note');
+                abort_403(!($viewNotesPermission == 'all' || $viewNotesPermission == 'added' || $viewNotesPermission == 'both' || $viewNotesPermission == 'owned'));
 
-            if (user()->permission('view_deal_note') == 'added') {
-                $this->notes->where('added_by', user()->id);
-            }
-            elseif (user()->permission('view_deal_note') == 'owned') {
-                $this->notes->where('added_by', '!=', user()->id);
-            }
+                if (user()->permission('view_deal_note') == 'added') {
+                    $this->notes->where('added_by', user()->id);
+                } elseif (user()->permission('view_deal_note') == 'owned') {
+                    $this->notes->where('added_by', '!=', user()->id);
+                }
 
-            $this->tab = 'leads.ajax.notes';
-            break;
-        case 'gdpr':
+                $this->tab = 'leads.ajax.notes';
+                break;
+            case 'gdpr':
 
-            $this->consents = PurposeConsent::with(['lead' => function ($query) use ($id) {
-                $query->where('lead_id', $id)
-                    ->orderByDesc('created_at');
-            }])->get();
+                $this->consents = PurposeConsent::with([
+                    'lead' => function ($query) use ($id) {
+                        $query->where('lead_id', $id)
+                            ->orderByDesc('created_at');
+                    }
+                ])->get();
 
-            $this->gdpr = GdprSetting::first();
+                $this->gdpr = GdprSetting::first();
 
-            return $this->gdpr();
-        case 'history':
-            $this->histories = DealHistory::where('deal_id', $id)->orderBy('created_at', 'desc')->get();
-            $this->tab = 'leads.ajax.history';
-            break;
-        default:
-            $this->tab = 'leads.ajax.files';
-            break;
+                return $this->gdpr();
+            case 'history':
+                $this->histories = DealHistory::where('deal_id', $id)->orderBy('created_at', 'desc')->get();
+                $this->tab = 'leads.ajax.history';
+                break;
+            case 'meeting':
+                // --- MEETING TAB ---
+                $this->dealMeetings = Meeting::where('lead_id', $id)->get();
+
+                if (user()->permission('view_lead_meeting') == 'added') {
+                    $this->dealMeetings = $this->dealMeetings->where('added_by', user()->id);
+                }
+
+                $this->tab = 'leads.ajax.meeting';
+                break;
+
+            case 'call':
+                // --- CALLS TAB ---
+                $this->dealCalls = LeadCall::where('lead_id', $id)
+                    ->with('user')
+                    ->orderByDesc( 'created_at')
+                    ->get();
+
+                if (user()->permission('view_lead_call') == 'added') {
+                    $this->dealCalls = $this->dealCalls->where('user_id', user()->id);
+                }
+
+                $this->tab = 'leads.ajax.call_tab'; // this is your blade file for calls
+                break;
+            default:
+                $this->tab = 'leads.ajax.files';
+                break;
         }
 
         if (request()->ajax()) {
@@ -406,7 +433,7 @@ class DealController extends AccountBaseController
         ));
 
         $this->tab = (!is_null(request('tab'))) ? request('tab') : null;
-         // Filter out active employees
+        // Filter out active employees
         $activeEmployees = $this->employees->filter(function ($employee) {
             return $employee->status !== 'deactive';
         });
@@ -482,7 +509,7 @@ class DealController extends AccountBaseController
         if (!is_null($request->agent_id)) {
             $leadAgent = LeadAgent::where('user_id', $request->agent_id)->where('lead_category_id', $request->category_id)->first();
             $deal->agent_id = $leadAgent->id;
-        }else{
+        } else {
             $deal->agent_id = $request->agent_id;
         }
 
@@ -561,22 +588,22 @@ class DealController extends AccountBaseController
     public function applyQuickAction(Request $request)
     {
         switch ($request->action_type) {
-        case 'delete':
-            $this->deleteRecords($request);
+            case 'delete':
+                $this->deleteRecords($request);
 
-            return Reply::success(__('messages.deleteSuccess'));
-        case 'change-status':
-            $this->changeBulkStatus($request);
+                return Reply::success(__('messages.deleteSuccess'));
+            case 'change-status':
+                $this->changeBulkStatus($request);
 
-            return Reply::success(__('messages.updateSuccess'));
+                return Reply::success(__('messages.updateSuccess'));
 
-        case 'change-deal-agents':
-            $this->changeAgentStatus($request);
+            case 'change-deal-agents':
+                $this->changeAgentStatus($request);
 
-            return Reply::success(__('messages.updateSuccess'));
+                return Reply::success(__('messages.updateSuccess'));
 
-        default:
-            return Reply::error(__('messages.selectAction'));
+            default:
+                return Reply::error(__('messages.selectAction'));
         }
     }
 
@@ -606,8 +633,8 @@ class DealController extends AccountBaseController
 
         $stage = PipelineStage::find($newStatus);
 
-        if($stage->slug === 'win' || $stage->slug === 'lost'){
-           Deal::whereIn('id', $rowIds)->whereNull('close_date')->update(['close_date' => now()->format('Y-m-d')]);
+        if ($stage->slug === 'win' || $stage->slug === 'lost') {
+            Deal::whereIn('id', $rowIds)->whereNull('close_date')->update(['close_date' => now()->format('Y-m-d')]);
         }
 
         Deal::whereIn('id', $rowIds)->update(['pipeline_stage_id' => $newStatus]);
@@ -623,8 +650,8 @@ class DealController extends AccountBaseController
         $leads = Deal::with('leadAgent', 'category')->whereIn('id', $rowIds)->get();
 
         foreach ($leads as $deal) {
-              // Find an agent from the list with matching category
-        $matchingAgent = $agentsWithSameUser->firstWhere('lead_category_id', $deal->category_id);
+            // Find an agent from the list with matching category
+            $matchingAgent = $agentsWithSameUser->firstWhere('lead_category_id', $deal->category_id);
 
             if ($matchingAgent) {
                 // Assign the matching agent to the deal
@@ -698,7 +725,7 @@ class DealController extends AccountBaseController
 
         $followUp->save();
 
-        event(new AutoFollowUpReminderEvent($followUp,true));
+        event(new AutoFollowUpReminderEvent($followUp, true));
 
         return Reply::success(__('messages.recordSaved'));
 
@@ -783,9 +810,11 @@ class DealController extends AccountBaseController
         $this->consentId = $request->consentId;
         $this->leadId = $leadId;
 
-        $this->consent = PurposeConsent::with(['lead' => function ($query) use ($leadId) {
-            $query->where('lead_id', $leadId)->orderByDesc('created_at');
-        }])
+        $this->consent = PurposeConsent::with([
+            'lead' => function ($query) use ($leadId) {
+                $query->where('lead_id', $leadId)->orderByDesc('created_at');
+            }
+        ])
             ->where('id', $request->consentId)
             ->first();
 
@@ -836,7 +865,7 @@ class DealController extends AccountBaseController
     {
         $rvalue = $this->importFileProcess($request, DealImport::class);
 
-        if($rvalue == 'abort'){
+        if ($rvalue == 'abort') {
             return Reply::error(__('messages.abortAction'));
         }
         $view = view('deals.ajax.import_progress', $this->data)->render();
@@ -851,7 +880,8 @@ class DealController extends AccountBaseController
         return Reply::successWithData(__('messages.importProcessStart'), ['batch' => $batch]);
     }
 
-    public function destroySession(){
+    public function destroySession()
+    {
 
         if (session()->has('is_imported')) {
             session()->forget('is_imported');
@@ -865,11 +895,11 @@ class DealController extends AccountBaseController
             session()->forget('leads_count');
         }
 
-        if(session()->has('total_leads')) {
+        if (session()->has('total_leads')) {
             session()->forget('total_leads');
         }
 
-        if(session()->has('is_deal')) {
+        if (session()->has('is_deal')) {
             session()->forget('is_deal');
         }
     }
@@ -948,20 +978,22 @@ class DealController extends AccountBaseController
     public function getAgents($id)
     {
         $currentUser = user()->id;
-        $leadCategory = LeadCategory::with(['enabledAgents' => function ($query) use ($currentUser) {
+        $leadCategory = LeadCategory::with([
+            'enabledAgents' => function ($query) use ($currentUser) {
 
-            if ($this->viewLeadAgentPermission == 'added') {
-                $query->where('added_by', $currentUser);
-            } elseif ($this->viewLeadAgentPermission == 'owned') {
-                $query->where('user_id', $currentUser);
-            } elseif ($this->viewLeadAgentPermission == 'both') {
-                $query->where(function ($query) use ($currentUser) {
-                    $query->where('added_by', $currentUser)
-                        ->orWhere('user_id', $currentUser);
-                });
+                if ($this->viewLeadAgentPermission == 'added') {
+                    $query->where('added_by', $currentUser);
+                } elseif ($this->viewLeadAgentPermission == 'owned') {
+                    $query->where('user_id', $currentUser);
+                } elseif ($this->viewLeadAgentPermission == 'both') {
+                    $query->where(function ($query) use ($currentUser) {
+                        $query->where('added_by', $currentUser)
+                            ->orWhere('user_id', $currentUser);
+                    });
+                }
+
             }
-
-        }])->where('id', $id)->first();
+        ])->where('id', $id)->first();
 
         $deal = Deal::where('id', request()->dealId)->first();
         $groupData = [];
@@ -996,8 +1028,7 @@ class DealController extends AccountBaseController
             }
 
             $groupData = $userData;
-        }
-        else {
+        } else {
             $data = '<option value="">--</option>';
         }
 
@@ -1032,7 +1063,8 @@ class DealController extends AccountBaseController
             $dealNote->deal_id = $request->dealId;
             $dealNote->details = $request->description;
             $dealNote->save();
-        };
+        }
+        ;
 
         return Reply::success(__('messages.updateSuccess'));
     }
