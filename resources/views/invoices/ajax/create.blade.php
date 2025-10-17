@@ -732,21 +732,17 @@
                             <table width="100%">
                                 <tbody>
                                     <tr class="text-dark-grey font-weight-bold f-14">
-                                        <td width="{{ $invoiceSetting->hsn_sac_code_show ? '40%' : '50%' }}"
+                                        <td width="{{ $invoiceSetting->hsn_sac_code_show ? '30%' : '35%' }}"
                                             class="border-0 inv-desc-mbl btlr">@lang('app.description')</td>
                                         @if ($invoiceSetting->hsn_sac_code_show)
-                                            <td width="10%" class="border-0" align="right">@lang('app.hsnSac')
+                                            <td width="8%" class="border-0" align="right">@lang('app.hsnSac')
                                             </td>
                                         @endif
-                                        <td width="10%" class="border-0" align="right">
-                                            @lang('modules.invoices.qty')
-                                        </td>
-                                        <td width="10%" class="border-0" align="right">
-                                            @lang('modules.invoices.unitPrice')
-                                        </td>
-                                        <td width="13%" class="border-0" align="right">@lang('modules.invoices.tax')
-                                        </td>
-                                        <td width="17%" class="border-0 bblr-mbl" align="right">
+                                        <td width="8%" class="border-0" align="right">@lang('modules.invoices.qty')</td>
+                                        <td width="10%" class="border-0" align="right">@lang('modules.invoices.unitPrice')</td>
+                                        <td width="12%" class="border-0" align="right">@lang('modules.invoices.tax')</td>
+                                        <td width="15%" class="border-0" align="right">@lang('modules.invoices.chartOfAccount')</td>
+                                        <td width="12%" class="border-0 bblr-mbl" align="right">
                                             @lang('modules.invoices.amount')</td>
                                     </tr>
                                     <tr>
@@ -795,6 +791,21 @@
                                                 </select>
                                             </div>
                                         </td>
+                                        <td class="border-bottom-0">
+                                            <!-- Chart of Accounts dropdown for manual items -->
+                                            <div class="select-others height-35 rounded border-0">
+                                                <select class="form-control select-picker chart-of-account-dropdown"
+                                                    name="chart_of_account_id[]" data-live-search="true"
+                                                    data-size="8" required>
+                                                    <option value="">Select @lang('modules.invoices.chartOfAccount')
+                                                    </option>
+                                                    @foreach ($chartOfAccounts as $account)
+                                                        <option value="{{ $account->id }}">
+                                                            {{ $account->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </td>
                                         <td rowspan="2" align="right" valign="top"
                                             class="bg-amt-grey btrr-bbrr">
                                             <span class="amount-html">0.00</span>
@@ -802,7 +813,7 @@
                                         </td>
                                     </tr>
                                     <tr class="d-none d-md-table-row d-lg-table-row">
-                                        <td colspan="{{ $invoiceSetting->hsn_sac_code_show ? '4' : '3' }}"
+                                        <td colspan="{{ $invoiceSetting->hsn_sac_code_show ? '5' : '4' }}"
                                             class="dash-border-top bblr border-right-0">
                                             <textarea class="f-14 border p-3 rounded w-100 desktop-description form-control" name="item_summary[]"
                                                 placeholder="@lang('placeholders.invoices.description')"></textarea>
@@ -1058,14 +1069,13 @@
         $(function() {
             $("#sortable").sortable();
         });
-    
-        $(document).ready(function() {
 
+        $(document).ready(function() {
             let defaultImage = '';
             let lastIndex = 0;
 
+            // Dropzone Configuration
             Dropzone.autoDiscover = false;
-            //Dropzone class
             invoiceDropzone = new Dropzone("div#file-upload-dropzone", {
                 dictDefaultMessage: "{{ __('app.dragDrop') }}",
                 url: "{{ route('invoice-files.store') }}",
@@ -1084,24 +1094,30 @@
                     invoiceDropzone = this;
                 }
             });
+
+            // Dropzone Events
             invoiceDropzone.on('sending', function(file, xhr, formData) {
                 const invoiceID = $('#invoiceID').val();
                 formData.append('invoice_id', invoiceID);
                 formData.append('default_image', defaultImage);
                 $.easyBlockUI();
             });
+
             invoiceDropzone.on('uploadprogress', function() {
                 $.easyBlockUI();
             });
+
             invoiceDropzone.on('queuecomplete', function() {
                 window.location.href = '{{ route('invoices.index') }}';
             });
+
             invoiceDropzone.on('removedfile', function() {
                 var grp = $('div#file-upload-dropzone').closest(".form-group");
                 var label = $('div#file-upload-box').siblings("label");
                 $(grp).removeClass("has-error");
                 $(label).removeClass("is-invalid");
             });
+
             invoiceDropzone.on('error', function(file, message) {
                 invoiceDropzone.removeFile(file);
                 var grp = $('div#file-upload-dropzone').closest(".form-group");
@@ -1116,8 +1132,8 @@
                 helpBlockContainer.append('<div class="help-block invalid-feedback">' + message + '</div>');
                 $(grp).addClass("has-error");
                 $(label).addClass("is-invalid");
-
             });
+
             invoiceDropzone.on('addedfile', function(file) {
                 lastIndex++;
 
@@ -1143,6 +1159,7 @@
                 file.previewTemplate.appendChild(div);
             });
 
+            // Product Category Functions
             $('.toggle-product-category').click(function() {
                 $('.product-category-filter').toggleClass('d-none');
                 var url = "{{ route('invoices.product_category', ':id') }}";
@@ -1172,11 +1189,9 @@
                             rData = response.data;
                             $.each(rData, function(index, value) {
                                 var selectData = '';
-                                {{-- if (value.opening_stock > 0) { --}}
                                 selectData = '<option value="' + value.id + '">' + value.name +
                                     '</option>';
                                 options.push(selectData);
-                                {{-- } --}}
                             });
                             $('#add-products').html(
                                 '<option value="" class="form-control" >{{ __('app.menu.selectProduct') }}</option>' +
@@ -1187,12 +1202,13 @@
                 });
             }
 
+            // Constants
             const hsn_status = {{ $invoiceSetting->hsn_sac_code_show }};
             const defaultClient = "{{ request('client_id') }}";
-
             const userRoles = @json($user->roles);
             const isClient = userRoles.some(role => role.name === "client");
 
+            // Date Pickers
             $('.custom-date-picker').each(function(ind, el) {
                 datepicker(el, {
                     position: 'bl',
@@ -1210,13 +1226,13 @@
                 ...datepickerConfig
             });
 
+            // Client Management
             $('#client_list_id').change(function() {
                 var id = $(this).val();
                 changeClient(id);
             });
 
             function changeClient(id) {
-
                 if (id == '') {
                     id = 0;
                 }
@@ -1277,10 +1293,8 @@
                                     $('#client_shipping_address').html(addShippingLink);
                                 } else {
                                     $('#client_shipping_address').html(nl2br(response.data
-                                        .client_details
-                                        .shipping_address));
+                                        .client_details.shipping_address));
                                 }
-
                             } else {
                                 $('#client_billing_address').html(
                                     "<span class='text-lightest'>@lang('messages.selectCustomerForBillingAddress')</span>"
@@ -1294,14 +1308,15 @@
                         }
                     }
                 });
-
             }
 
+            // Shipping Address Management
             $('body').on('click', '#show-shipping-field', function() {
                 $('#add-shipping-field').removeClass('d-none');
                 $('#client_shipping_address').addClass('d-none');
             });
 
+            // Product Management
             const resetAddProductButton = () => {
                 $("#add-products").val('').selectpicker("refresh");
             };
@@ -1315,6 +1330,7 @@
                 }
             });
 
+            // File Upload Management
             $(".itemOldImage").next(".dropify-clear").trigger("click");
 
             var file = $('#sortable .dropify').dropify({
@@ -1339,15 +1355,15 @@
                 }
             });
 
+            // Add Product Function
             function addProduct(id) {
-
                 var existingRow = $(`input[name="product_id[]"][value="${id}"]`).closest('.item-row');
 
                 if (existingRow.length) {
                     // Increase quantity
                     let qtyInput = existingRow.find('input.quantity');
                     let currentQty = parseFloat(qtyInput.val());
-                    qtyInput.val(currentQty + 1).trigger('change'); // Trigger change to recalculate amount
+                    qtyInput.val(currentQty + 1).trigger('change');
 
                     let cost = existingRow.find('input.cost_per_item');
                     let amountHtml = existingRow.find('span.amount-html');
@@ -1357,8 +1373,7 @@
                     amount.val(newAmount).trigger('change');
 
                     calculateTotal();
-
-                    return; // Exit the function
+                    return;
                 }
 
                 var currencyId = $('#currency_id').val();
@@ -1391,101 +1406,164 @@
                         $(document).find('#dropify' + i).dropify({
                             messages: dropifyMessages
                         });
+
+                        // Initialize chart of accounts dropdown for the new row
+                        var chartDropdown = $(document).find('#sortable .item-row:nth-child(' +
+                            noOfRows + ') .chart-of-account-dropdown');
+                        if (chartDropdown.length) {
+                            chartDropdown.selectpicker();
+                        }
                     }
                 });
             }
 
+            // Add Item Manually
             $(document).on('click', '#add-item', function() {
-
                 var i = $(document).find('.item_name').length;
                 var item =
-                    ` <div class="d-flex px-4 py-3 c-inv-desc item-row">
+                    `
+            <div class="d-flex px-4 py-3 c-inv-desc item-row">
                 <div class="d-flex align-items-center">
                     <span class="ui-icon ui-icon-arrowthick-2-n-s mr-2"></span>
-                    <input type="hidden" name="sort_order[]"
-                            value="${i+1}">
+                    <input type="hidden" name="sort_order[]" value="${i+1}">
                 </div>
                 <div class="c-inv-desc-table w-100 d-lg-flex d-md-flex d-block">
-                <table width="100%">
-                <tbody>
-                <tr class="text-dark-grey font-weight-bold f-14">
-                <td width="{{ $invoiceSetting->hsn_sac_code_show ? '40%' : '50%' }}" class="border-0 inv-desc-mbl btlr">@lang('app.description')</td>`;
+                    <table width="100%">
+                        <tbody>
+                            <tr class="text-dark-grey font-weight-bold f-14">
+                                <td width="{{ $invoiceSetting->hsn_sac_code_show ? '30%' : '35%' }}" class="border-0 inv-desc-mbl btlr">@lang('app.description')</td>`;
 
                 if (hsn_status == 1) {
-                    item += `<td width="10%" class="border-0" align="right">@lang('app.hsnSac')</td>`;
+                    item += `<td width="8%" class="border-0" align="right">@lang('app.hsnSac')</td>`;
                 }
 
                 item += `
-                    <td width="10%" class="border-0" align="right">@lang('modules.invoices.qty')</td>
-                    <td width="10%" class="border-0" align="right">@lang('modules.invoices.unitPrice')</td>
-                    <td width="13%" class="border-0" align="right">@lang('modules.invoices.tax')</td>
-                    <td width="17%" class="border-0 bblr-mbl" align="right">@lang('modules.invoices.amount')</td>
-                </tr>
-                <tr>
-                    <td class="border-bottom-0 btrr-mbl btlr">
-                    <input type="text" class="form-control f-14 border-0 w-100 item_name" name="item_name[]" placeholder="@lang('modules.expenses.itemName')">
-                    </td>
-                    <td class="border-bottom-0 d-block d-lg-none d-md-none">
-                    <textarea class="f-14 border-0 w-100 mobile-description form-control" name="item_summary[]" placeholder="@lang('placeholders.invoices.description')"></textarea>
-                    </td>
-                `;
+                                <td width="8%" class="border-0" align="right">@lang('modules.invoices.qty')</td>
+                                <td width="10%" class="border-0" align="right">@lang('modules.invoices.unitPrice')</td>
+                                <td width="12%" class="border-0" align="right">@lang('modules.invoices.tax')</td>
+                                <td width="15%" class="border-0" align="right">@lang('modules.invoices.chartOfAccount')</td>
+                                <td width="12%" class="border-0 bblr-mbl" align="right">@lang('modules.invoices.amount')</td>
+                            </tr>
+                            <tr>
+                                <td class="border-bottom-0 btrr-mbl btlr">
+                                    <input type="text" class="form-control f-14 border-0 w-100 item_name" name="item_name[]" placeholder="@lang('modules.expenses.itemName')">
+                                </td>
+                                <td class="border-bottom-0 d-block d-lg-none d-md-none">
+                                    <textarea class="f-14 border-0 w-100 mobile-description form-control" name="item_summary[]" placeholder="@lang('placeholders.invoices.description')"></textarea>
+                                </td>`;
 
                 if (hsn_status == 1) {
-                    item += `<td class="border-bottom-0">
-                    <input type="text" min="1" class="form-control f-14 border-0 w-100 text-right hsn_sac_code" name="hsn_sac_code[]" >
-                    </td>`;
+                    item += `
+                                                <td class="border-bottom-0">
+                                                    <input type="text" min="1" class="form-control f-14 border-0 w-100 text-right hsn_sac_code" name="hsn_sac_code[]">
+                                                </td>`;
                 }
-                item += `<td class="border-bottom-0">
-                <input type="number" min="1" class="form-control f-14 border-0 w-100 text-right quantity mt-3" value="1" name="quantity[]">
-                <select class="text-dark-grey float-right border-0 f-12" name="unit_id[]">
-                    @foreach ($units as $unit)
-                        <option @selected($unit->default == 1) value="{{ $unit->id }}">{{ $unit->unit_type }}</option>
-                    @endforeach
-                </select>
-                <input type="hidden" name="product_id[]" value="">
-                </td>
-                <td class="border-bottom-0">
-                <input type="number" min="1" class="f-14 border-0 w-100 text-right cost_per_item" placeholder="0.00" value="0" name="cost_per_item[]">
-                </td>
-                <td class="border-bottom-0">
-                <div class="select-others height-35 rounded border-0">
-                <select id="multiselect${i}" name="taxes[${i}][]" multiple="multiple" class="select-picker type customSequence" data-size="3">
-            @foreach ($taxes as $tax)
-                <option data-rate="{{ $tax->rate_percent }}" data-tax-text="{{ $tax->tax_name . ':' . $tax->rate_percent }}%" value="{{ $tax->id }}">
-                    {{ $tax->tax_name }}:{{ $tax->rate_percent }}%</option>
-            @endforeach
 
-                </select>
+                item += `
+                                <td class="border-bottom-0">
+                                    <input type="number" min="1" class="form-control f-14 border-0 w-100 text-right quantity mt-3" value="1" name="quantity[]">
+                                    <select class="text-dark-grey float-right border-0 f-12" name="unit_id[]">
+                                        @foreach ($units as $unit)
+                                            <option @selected($unit->default == 1) value="{{ $unit->id }}">{{ $unit->unit_type }}</option>
+                                        @endforeach
+                                    </select>
+                                    <input type="hidden" name="product_id[]" value="">
+                                </td>
+                                <td class="border-bottom-0">
+                                    <input type="number" min="1" class="f-14 border-0 w-100 text-right cost_per_item" placeholder="0.00" value="0" name="cost_per_item[]">
+                                </td>
+                                <td class="border-bottom-0">
+                                    <div class="select-others height-35 rounded border-0">
+                                        <select id="multiselect${i}" name="taxes[${i}][]" multiple="multiple" class="select-picker type customSequence border-0" data-size="3">
+                                            @foreach ($taxes as $tax)
+                                                <option data-rate="{{ $tax->rate_percent }}" data-tax-text="{{ $tax->tax_name . ':' . $tax->rate_percent }}%" value="{{ $tax->id }}">
+                                                    {{ $tax->tax_name }}:{{ $tax->rate_percent }}%
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </td>
+                                <td class="border-bottom-0">
+                                    <div class="select-others height-35 rounded border-0">
+                                        <select class="form-control select-picker chart-of-account-dropdown" id="chart_account_${i}" name="chart_of_account_id[]" data-live-search="true" data-size="8" required>
+                                            <option value="">Select @lang('modules.invoices.chartOfAccount')</option>
+                                            @foreach ($chartOfAccounts as $account)
+                                                <option value="{{ $account->id }}">{{ $account->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </td>
+                                <td rowspan="2" align="right" valign="top" class="bg-amt-grey btrr-bbrr">
+                                    <span class="amount-html">0.00</span>
+                                    <input type="hidden" class="amount" name="amount[]" value="0">
+                                </td>
+                            </tr>
+                            <tr class="d-none d-md-table-row d-lg-table-row">
+                                <td colspan="{{ $invoiceSetting->hsn_sac_code_show ? 5 : 4 }}" class="dash-border-top bblr">
+                                    <textarea class="f-14 border-0 w-100 desktop-description form-control" name="item_summary[]" placeholder="@lang('placeholders.invoices.description')"></textarea>
+                                </td>
+                                <td class="border-left-0">
+                                    <input type="file" class="dropify" id="dropify${i}" name="invoice_item_image[]" data-allowed-file-extensions="png jpg jpeg bmp" data-messages-default="test" data-height="70" />
+                                    <input type="hidden" name="invoice_item_image_url[]">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-                </td>
-                <td rowspan="2" align="right" valign="top" class="bg-amt-grey btrr-bbrr">
-                <span class="amount-html">0.00</span>
-                <input type="hidden" class="amount" name="amount[]" value="0">
-                </td>
-                </tr>
-                <tr class="d-none d-md-table-row d-lg-table-row">
-                    <td colspan="{{ $invoiceSetting->hsn_sac_code_show ? 4 : 3 }}" class="dash-border-top bblr">
-                        <textarea class="f-14 border-0 w-100 desktop-description form-control" name="item_summary[]" placeholder="@lang('placeholders.invoices.description')"></textarea>
-                    </td>
-                    <td class="border-left-0">
-                        <input type="file" class="dropify" id="dropify${i}" name="invoice_item_image[]" data-allowed-file-extensions="png jpg jpeg bmp" data-messages-default="test" data-height="70" />
-                        <input type="hidden" name="invoice_item_image_url[]">
-                    </td>
-                </tr>
-                </tbody>
-                </table>
-                </div>
-                <a href="javascript:;" class="d-flex align-items-center justify-content-center ml-3 remove-item"><i class="fa fa-times-circle f-20 text-lightest"></i></a>
-                </div>`;
+                <a href="javascript:;" class="d-flex align-items-center justify-content-center ml-3 remove-item">
+                    <i class="fa fa-times-circle f-20 text-lightest"></i>
+                </a>
+            </div>`;
+
                 $(item).hide().appendTo("#sortable").fadeIn(500);
                 $('#multiselect' + i).selectpicker();
+                $('#chart_account_' + i).selectpicker();
 
                 $('#dropify' + i).dropify({
                     messages: dropifyMessages
                 });
-
             });
 
+            // Chart of Accounts Validation Function
+            function validateChartOfAccounts() {
+                var isValid = true;
+                var errorMessage = '';
+
+                $('.item-row').each(function(index) {
+                    var productId = $(this).find('input[name="product_id[]"]').val();
+                    var chartAccountId = $(this).find('select[name="chart_of_account_id[]"]').val();
+                    var itemName = $(this).find('input[name="item_name[]"]').val();
+
+                    // If it's a manually added item (no product_id) and has item name, chart of account is required
+                    if ((!productId || productId === '') && itemName && itemName.trim() !== '' && (!
+                            chartAccountId || chartAccountId === '')) {
+                        isValid = false;
+                        errorMessage = '@lang('messages.chartOfAccountRequired')';
+                        $(this).find('.chart-of-account-dropdown').addClass('is-invalid');
+                    } else {
+                        $(this).find('.chart-of-account-dropdown').removeClass('is-invalid');
+                    }
+                });
+
+                if (!isValid) {
+                    Swal.fire({
+                        icon: 'error',
+                        text: errorMessage || '@lang('messages.selectChartOfAccount')',
+                        customClass: {
+                            confirmButton: 'btn btn-primary',
+                        },
+                        showClass: {
+                            popup: 'swal2-noanimation',
+                            backdrop: 'swal2-noanimation'
+                        },
+                        buttonsStyling: false
+                    });
+                }
+
+                return isValid;
+            }
+
+            // Remove Item Function
             $('#saveInvoiceForm').on('click', '.remove-item', function() {
                 $(this).closest('.item-row').fadeOut(300, function() {
                     $(this).remove();
@@ -1497,9 +1575,15 @@
                 });
             });
 
+            // Save Form Function
             $('.save-form').click(function() {
                 let totalAmt = $('.total-field').val();
                 var type = $(this).data('type');
+
+                // Validate chart of accounts before saving
+                if (!validateChartOfAccounts()) {
+                    return false;
+                }
 
                 if ((type == 'send' || type == 'mark_as_send') && totalAmt == 0) {
                     Swal.fire({
@@ -1527,20 +1611,9 @@
                 } else {
                     saveForm(type, 'direct');
                 }
-
             });
 
-            $('#saveInvoiceForm').on('click', '.remove-item', function() {
-                $(this).closest('.item-row').fadeOut(300, function() {
-                    $(this).remove();
-                    $('select.customSequence').each(function(index) {
-                        $(this).attr('name', 'taxes[' + index + '][]');
-                        $(this).attr('id', 'multiselect' + index + '');
-                    });
-                    calculateTotal();
-                });
-            });
-
+            // Calculation Event Handlers
             $('#saveInvoiceForm').on('keyup', '.quantity,.cost_per_item,.item_name, .discount_value', function() {
                 var quantity = $(this).closest('.item-row').find('.quantity').val();
                 var perItemCost = $(this).closest('.item-row').find('.cost_per_item').val();
@@ -1574,16 +1647,51 @@
                 calculateTotal();
             });
 
-            calculateTotal();
+            // Handle chart of account visibility when item name changes
+            $('#saveInvoiceForm').on('keyup change', '.item_name', function() {
+                var $row = $(this).closest('.item-row');
+                var itemName = $(this).val().trim();
+                var productId = $row.find('input[name="product_id[]"]').val();
+                var $chartDropdown = $row.find('.chart-of-account-dropdown');
 
+                // If it's a manual item (no product_id) and has item name, make chart of account required
+                if ((!productId || productId === '') && itemName !== '') {
+                    $chartDropdown.attr('required', true);
+                    $chartDropdown.closest('td').find('.text-danger').remove();
+                    $chartDropdown.closest('td').append('<small class="text-danger">*Required</small>');
+                } else if ((!productId || productId === '') && itemName === '') {
+                    $chartDropdown.attr('required', false);
+                    $chartDropdown.closest('td').find('.text-danger').remove();
+                }
+            });
+
+            // Initialize calculations
+            calculateTotal();
+            // Initialize chart of accounts dropdown for existing default row
+            $('.chart-of-account-dropdown').each(function() {
+                $(this).selectpicker();
+            });
+
+            // Make sure the default row chart of account requirement is handled
+            $('.item-row').each(function() {
+                var $row = $(this);
+                var productId = $row.find('input[name="product_id[]"]').val();
+                var $chartDropdown = $row.find('.chart-of-account-dropdown');
+
+                // If it's a manual item (no product_id), show required indicator
+                if (!productId || productId === '') {
+                    $chartDropdown.attr('required', true);
+                }
+            });
+            // Initialize modal
             init(RIGHT_MODAL);
 
+            // Initialize client if provided
             if (defaultClient != "" && isClient == false) {
                 changeClient(defaultClient);
             }
         });
-
-
+        // Save Form Function
         function saveForm(type, exceed) {
             $('#doItLater').val(exceed);
             if (KTUtil.isMobileDevice()) {
@@ -1601,7 +1709,6 @@
                 Swal.fire({
                     icon: 'error',
                     text: "{{ __('messages.discountExceed') }}",
-
                     customClass: {
                         confirmButton: 'btn btn-primary',
                     },
@@ -1615,19 +1722,21 @@
             }
 
             $.easyAjax({
-                url: "{{ route('invoices.store') }}" + "?type=" + type,
+                url: "{{ route('invoices.store') }}" +
+                    "?type=" + type,
                 container: '#saveInvoiceForm',
                 type: "POST",
                 blockUI: true,
                 redirect: true,
-                file: true, // Commented so that we dot get error of Input variables exceeded 1000
+                file: true,
                 data: $('#saveInvoiceForm').serialize(),
                 success: function(response) {
                     $(MODAL_DEFAULT).modal('hide');
                     if (response.status == 'error' && response.showValue === true && exceed == 'direct') {
                         const productIDs = response.data;
                         $('#do_it_later').val('true');
-                        const url = "{{ route('invoices.committed_modal') }}" + "?products=" + productIDs +
+                        const url = "{{ route('invoices.committed_modal') }}" +
+                            "?products=" + productIDs +
                             "&type=" + type;
 
                         $(MODAL_DEFAULT + ' ' + MODAL_HEADING).html('...');
@@ -1651,13 +1760,14 @@
             })
         }
 
-
+        // Utility Functions
         function ucWord(str) {
             str = str.toLowerCase().replace(/\b[a-z]/g, function(letter) {
                 return letter.toUpperCase();
             });
             return str;
         }
+
 
         $('#currency_id').change(function() {
             var curId = $(this).val();
@@ -1743,7 +1853,5 @@
                 $('#add_offline').addClass('d-none');
             }
         });
-
-    
     </script>
 @endif
