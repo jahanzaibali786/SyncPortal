@@ -207,204 +207,224 @@ class InvoiceController extends AccountBaseController
 
     public function store(StoreInvoice $request)
     {
-        dd($request->all());
-        $quantity = $request->quantity;
-        $product = $request->product_id;
-        $stockAdjustment = [];
-        $userId = UserService::getUserId();
 
-        if ((module_enabled('Purchase') && in_array('purchase', user_modules()) && $request->do_it_later == 'direct')) {
-            if (is_array($product)) {
+        try {
+            DB::beginTransaction();
+            $quantity = $request->quantity;
+            $product = $request->product_id;
+            $stockAdjustment = [];
+            $userId = UserService::getUserId();
 
-                $serviceProductIds = Product::whereIn('id', $product)->where('type', 'service')->pluck('id')->toArray();
-                $nonServiceProductIds = array_diff($product, $serviceProductIds);
+            if ((module_enabled('Purchase') && in_array('purchase', user_modules()) && $request->do_it_later == 'direct')) {
+                if (is_array($product)) {
 
-                foreach ($nonServiceProductIds as $key => $productId) {
-                    if (!is_null($productId)) {
-                        if (!isset($stockAdjustment[$productId])) {
-                            $stockAdjustment[$productId] = 0;
+                    $serviceProductIds = Product::whereIn('id', $product)->where('type', 'service')->pluck('id')->toArray();
+                    $nonServiceProductIds = array_diff($product, $serviceProductIds);
+
+                    foreach ($nonServiceProductIds as $key => $productId) {
+                        if (!is_null($productId)) {
+                            if (!isset($stockAdjustment[$productId])) {
+                                $stockAdjustment[$productId] = 0;
+                            }
+
+
+                            $stockAdjustment[$productId] += $quantity[$key];
                         }
-
-
-                        $stockAdjustment[$productId] += $quantity[$key];
                     }
                 }
-            }
 
-            $check = [];
-            $invoiceItems = InvoiceItems::whereHas('invoice', function ($invoiceQuery) {
-                $invoiceQuery->where('status', 'unpaid');
-            })->get();
+                $check = [];
+                $invoiceItems = InvoiceItems::whereHas('invoice', function ($invoiceQuery) {
+                    $invoiceQuery->where('status', 'unpaid');
+                })->get();
 
-            foreach ($stockAdjustment as $index => $quantityCount) {
-                $commitedStock = $invoiceItems->filter(function ($value, $key) use ($index) {
-                    return $value->product_id == $index;
-                })->sum('quantity');
+                foreach ($stockAdjustment as $index => $quantityCount) {
+                    $commitedStock = $invoiceItems->filter(function ($value, $key) use ($index) {
+                        return $value->product_id == $index;
+                    })->sum('quantity');
 
-                $quantity = PurchaseStockAdjustment::where('product_id', $index)->sum('net_quantity');
+                    $quantity = PurchaseStockAdjustment::where('product_id', $index)->sum('net_quantity');
 
-                if (($quantity - $commitedStock) < $quantityCount) {
-                    $check[] = $index;
-                }
-            }
-
-            if (!empty($check)) {
-                return Reply::dataOnly(['status' => 'error', 'data' => $check, 'showValue' => true, 'title' => $this->pageTitle]);
-            }
-        }
-
-        $redirectUrl = urldecode($request->redirect_url);
-
-        if ($redirectUrl == '') {
-            $redirectUrl = route('invoices.index');
-        }
-
-        $items = $request->item_name;
-        $cost_per_item = $request->cost_per_item;
-        $quantity = $request->quantity;
-        $amount = $request->amount;
-
-        if (empty($items)) {
-            return Reply::error(__('messages.addItem'));
-        }
-
-        foreach ($items as $itm) {
-            if (is_null($itm)) {
-                return Reply::error(__('messages.itemBlank'));
-            }
-        }
-
-        foreach ($quantity as $qty) {
-            if (!is_numeric($qty) && (intval($qty) < 1)) {
-                return Reply::error(__('messages.quantityNumber'));
-            }
-        }
-
-        foreach ($cost_per_item as $rate) {
-            if (!is_numeric($rate)) {
-                return Reply::error(__('messages.unitPriceNumber'));
-            }
-        }
-
-        foreach ($amount as $amt) {
-            if (!is_numeric($amt)) {
-                return Reply::error(__('messages.amountNumber'));
-            }
-        }
-
-        $invoice = new Invoice();
-        $invoice->project_id = $request->project_id ?? null;
-        $invoice->client_id = ($request->client_id) ?: null;
-        $invoice->issue_date = companyToYmd($request->issue_date);
-        $invoice->due_date = companyToYmd($request->due_date);
-        $invoice->sub_total = round($request->sub_total, 2);
-        $invoice->discount = round($request->discount_value, 2);
-        $invoice->discount_type = $request->discount_type;
-        $invoice->total = round($request->total, 2);
-        $invoice->due_amount = round($request->total, 2);
-        $invoice->currency_id = $request->currency_id;
-        $invoice->default_currency_id = company()->currency_id;
-        $invoice->exchange_rate = $request->exchange_rate;
-        $invoice->recurring = 'no';
-        $invoice->is_timelog_invoice = $request->invoice_type ? '1' : '0';
-        $invoice->billing_frequency = $request->recurring_payment == 'yes' ? $request->billing_frequency : null;
-        $invoice->billing_interval = $request->recurring_payment == 'yes' ? $request->billing_interval : null;
-        $invoice->billing_cycle = $request->recurring_payment == 'yes' ? $request->billing_cycle : null;
-        $invoice->note = trim_editor($request->note);
-        $invoice->show_shipping_address = $request->show_shipping_address;
-        $invoice->invoice_number = $request->invoice_number;
-        $invoice->company_address_id = $request->company_address_id;
-        $invoice->estimate_id = $request->estimate_id ? $request->estimate_id : null;
-        $invoice->bank_account_id = $request->bank_account_id;
-        $invoice->payment_status = $request->payment_status == null ? '0' : $request->payment_status;
-        $invoice->invoice_payment_id = $request->invoice_payment_id;
-        $invoice->save();
-
-        // To add custom fields data
-
-        if ($request->custom_fields_data) {
-            $invoice->updateCustomFieldData($request->custom_fields_data);
-        }
-
-        if ($request->estimate_id) {
-            $estimate = Estimate::findOrFail($request->estimate_id);
-            $estimate->status = 'accepted';
-            $estimate->save();
-        }
-
-        if ($request->proposal_id) {
-            $proposal = Proposal::findOrFail($request->proposal_id);
-            $proposalData = [
-                'invoice_convert' => 1,
-            ];
-
-            if ($proposal->signature) {
-                $proposalData['status'] = 'accepted';
-            }
-
-            Proposal::where('id', $request->proposal_id)->update($proposalData);
-        }
-
-        if ($request->has('shipping_address') || $request->has('billing_address')) {
-            if ($invoice->project_id != null && $invoice->project_id != '') {
-                $client = $invoice->project->clientdetails;
-            } elseif ($invoice->client_id != null && $invoice->client_id != '') {
-                $client = $invoice->clientdetails;
-            }
-
-            if (isset($client)) {
-                if (isset($request->shipping_address)) {
-                    $client->shipping_address = $request->shipping_address;
-                }
-                if (isset($request->billing_address)) {
-                    $client->address = $request->billing_address;
-                }
-                $client->save();
-            }
-        }
-
-        // Set milestone paid if converted milestone to invoice
-        if ($request->milestone_id != '') {
-            $milestone = ProjectMilestone::findOrFail($request->milestone_id);
-            $milestone->invoice_created = 1;
-            $milestone->invoice_id = $invoice->id;
-            $milestone->save();
-        }
-
-        // Set invoice id in timelog
-        if ($request->has('timelog_from') && $request->timelog_from != '' && $request->has('timelog_to') && $request->timelog_to != '') {
-            $timelogFrom = companyToYmd($request->timelog_from);
-            $timelogTo = companyToYmd($request->timelog_to);
-            $this->timelogs = ProjectTimeLog::where('project_time_logs.project_id', $request->project_id)
-                ->leftJoin('tasks', 'tasks.id', '=', 'project_time_logs.task_id')
-                ->where('project_time_logs.earnings', '>', 0)
-                ->where('project_time_logs.approved', 1)
-                ->where(
-                    function ($query) {
-                        $query->where('tasks.billable', 1)
-                            ->orWhereNull('tasks.billable');
+                    if (($quantity - $commitedStock) < $quantityCount) {
+                        $check[] = $index;
                     }
-                )
-                ->whereDate('project_time_logs.start_time', '>=', $timelogFrom)
-                ->whereDate('project_time_logs.end_time', '<=', $timelogTo)
-                ->update(['invoice_id' => $invoice->id]);
-        }
+                }
 
-        // Log search
-        $this->logSearchEntry($invoice->id, $invoice->invoice_number, 'invoices.show', 'invoice');
+                if (!empty($check)) {
+                    DB::commit();
+                    return Reply::dataOnly(['status' => 'error', 'data' => $check, 'showValue' => true, 'title' => $this->pageTitle]);
+                }
+            }
 
-        if (user()) {
-            self::createEmployeeActivity($userId, 'invoice-created', $invoice->id, 'invoice');
-        }
-        if ($request->type != 'save') {
-            $this->sendInvoice($invoice->id);
-        }
-        if ($invoice->send_status == 1) {
-            return Reply::successWithData(__('messages.invoiceSentSuccessfully'), ['redirectUrl' => $redirectUrl, 'invoiceID' => $invoice->id]);
-        }
+            $redirectUrl = urldecode($request->redirect_url);
 
+            if ($redirectUrl == '') {
+                $redirectUrl = route('invoices.index');
+            }
 
-        return Reply::successWithData(__('messages.recordSaved'), ['redirectUrl' => $redirectUrl, 'invoiceID' => $invoice->id]);
+            $items = $request->item_name;
+            $cost_per_item = $request->cost_per_item;
+            $quantity = $request->quantity;
+            $amount = $request->amount;
+
+            if (empty($items)) {
+                return Reply::error(__('messages.addItem'));
+            }
+
+            foreach ($items as $itm) {
+                if (is_null($itm)) {
+                    return Reply::error(__('messages.itemBlank'));
+                }
+            }
+
+            foreach ($quantity as $qty) {
+                if (!is_numeric($qty) && (intval($qty) < 1)) {
+                    return Reply::error(__('messages.quantityNumber'));
+                }
+            }
+
+            foreach ($cost_per_item as $rate) {
+                if (!is_numeric($rate)) {
+                    return Reply::error(__('messages.unitPriceNumber'));
+                }
+            }
+
+            foreach ($amount as $amt) {
+                if (!is_numeric($amt)) {
+                    return Reply::error(__('messages.amountNumber'));
+                }
+            }
+
+            $invoice = new Invoice();
+            $invoice->project_id = $request->project_id ?? null;
+            $invoice->client_id = ($request->client_id) ?: null;
+            $invoice->issue_date = companyToYmd($request->issue_date);
+            $invoice->due_date = companyToYmd($request->due_date);
+            $invoice->sub_total = round($request->sub_total, 2);
+            $invoice->discount = round($request->discount_value, 2);
+            $invoice->discount_type = $request->discount_type;
+            $invoice->total = round($request->total, 2);
+            $invoice->due_amount = round($request->total, 2);
+            $invoice->currency_id = $request->currency_id;
+            $invoice->default_currency_id = company()->currency_id;
+            $invoice->exchange_rate = $request->exchange_rate;
+            $invoice->recurring = 'no';
+            $invoice->is_timelog_invoice = $request->invoice_type ? '1' : '0';
+            $invoice->billing_frequency = $request->recurring_payment == 'yes' ? $request->billing_frequency : null;
+            $invoice->billing_interval = $request->recurring_payment == 'yes' ? $request->billing_interval : null;
+            $invoice->billing_cycle = $request->recurring_payment == 'yes' ? $request->billing_cycle : null;
+            $invoice->note = trim_editor($request->note);
+            $invoice->show_shipping_address = $request->show_shipping_address;
+            $invoice->invoice_number = $request->invoice_number;
+            $invoice->company_address_id = $request->company_address_id;
+            $invoice->estimate_id = $request->estimate_id ? $request->estimate_id : null;
+            $invoice->bank_account_id = $request->bank_account_id;
+            $invoice->payment_status = $request->payment_status == null ? '0' : $request->payment_status;
+            $invoice->invoice_payment_id = $request->invoice_payment_id;
+            $invoice->save();
+// dd($invoice);
+            // To add custom fields data
+
+            if ($request->custom_fields_data) {
+                $invoice->updateCustomFieldData($request->custom_fields_data);
+            }
+
+            if ($request->estimate_id) {
+                $estimate = Estimate::findOrFail($request->estimate_id);
+                $estimate->status = 'accepted';
+                $estimate->save();
+            }
+
+            if ($request->proposal_id) {
+                $proposal = Proposal::findOrFail($request->proposal_id);
+                $proposalData = [
+                    'invoice_convert' => 1,
+                ];
+
+                if ($proposal->signature) {
+                    $proposalData['status'] = 'accepted';
+                }
+
+                Proposal::where('id', $request->proposal_id)->update($proposalData);
+            }
+
+            if ($request->has('shipping_address') || $request->has('billing_address')) {
+                if ($invoice->project_id != null && $invoice->project_id != '') {
+                    $client = $invoice->project->clientdetails;
+                } elseif ($invoice->client_id != null && $invoice->client_id != '') {
+                    $client = $invoice->clientdetails;
+                }
+
+                if (isset($client)) {
+                    if (isset($request->shipping_address)) {
+                        $client->shipping_address = $request->shipping_address;
+                    }
+                    if (isset($request->billing_address)) {
+                        $client->address = $request->billing_address;
+                    }
+                    $client->save();
+                }
+            }
+
+            // Set milestone paid if converted milestone to invoice
+            if ($request->milestone_id != '') {
+                $milestone = ProjectMilestone::findOrFail($request->milestone_id);
+                $milestone->invoice_created = 1;
+                $milestone->invoice_id = $invoice->id;
+                $milestone->save();
+            }
+
+            // Set invoice id in timelog
+            if ($request->has('timelog_from') && $request->timelog_from != '' && $request->has('timelog_to') && $request->timelog_to != '') {
+                $timelogFrom = companyToYmd($request->timelog_from);
+                $timelogTo = companyToYmd($request->timelog_to);
+                $this->timelogs = ProjectTimeLog::where('project_time_logs.project_id', $request->project_id)
+                    ->leftJoin('tasks', 'tasks.id', '=', 'project_time_logs.task_id')
+                    ->where('project_time_logs.earnings', '>', 0)
+                    ->where('project_time_logs.approved', 1)
+                    ->where(
+                        function ($query) {
+                            $query->where('tasks.billable', 1)
+                                ->orWhereNull('tasks.billable');
+                        }
+                    )
+                    ->whereDate('project_time_logs.start_time', '>=', $timelogFrom)
+                    ->whereDate('project_time_logs.end_time', '<=', $timelogTo)
+                    ->update(['invoice_id' => $invoice->id]);
+            }
+
+            // Log search
+            $this->logSearchEntry($invoice->id, $invoice->invoice_number, 'invoices.show', 'invoice');
+
+            if (user()) {
+                self::createEmployeeActivity($userId, 'invoice-created', $invoice->id, 'invoice');
+            }
+            if ($request->type != 'save' && $request->type != 'draft') {
+                $this->sendInvoice($invoice->id);
+            }
+            if ($invoice->journal_id == null && $request->payment_status == '1') {
+                $journalId = Utility::createInvoiceJV($invoice);
+                $invoice->journal_id = $journalId;
+                $invoice->save();
+            }
+            $invoice->save();
+            
+            if ($invoice->send_status == 1) {
+                DB::commit();
+                return Reply::successWithData(__('messages.invoiceSentSuccessfully'), ['redirectUrl' => $redirectUrl, 'invoiceID' => $invoice->id]);
+            }
+
+            DB::commit();
+            return Reply::successWithData(__('messages.recordSaved'), ['redirectUrl' => $redirectUrl, 'invoiceID' => $invoice->id]);
+        } catch (\Throwable $e) {
+            dd($e->getMessage());
+            DB::rollBack();
+            Log::error('Invoice Store Error: ' . $e->getMessage(), [
+                'trace' => $e->getTraceAsString()
+            ]);
+
+            return Reply::error(__('messages.somethingWentWrong'));
+        }
     }
 
     public function committedModal(Request $request)
@@ -1077,7 +1097,6 @@ class InvoiceController extends AccountBaseController
 
     public function sendInvoice($invoiceID)
     {
-        // dd('');
         $invoice = Invoice::with(['project', 'project.client'])->findOrFail($invoiceID);
 
         if ($invoice->project_id != null && $invoice->project_id != '') {

@@ -227,7 +227,7 @@
                 @if ($linkInvoicePermission == 'all')
                     <div class="col-md-4">
                         <div class="form-group c-inv-select mb-4">
-                            <x-forms.label fieldId="bank_account_id" :fieldLabel="__('app.bankaccount')">
+                            <x-forms.label fieldId="bank_account_id" :fieldLabel="__('app.bankaccount')" fieldRequired="true">
                             </x-forms.label>
                             <div class="select-others height-35 rounded">
                                 <select class="form-control select-picker" data-live-search="true" data-size="8"

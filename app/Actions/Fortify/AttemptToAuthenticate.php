@@ -9,7 +9,7 @@ use App\Models\EmployeeShiftSchedule;
 use App\Models\GlobalSetting;
 use App\Models\Holiday;
 use App\Models\Leave;
-use App\Models\CompanyAddress;
+use App\Models\CompanyAddress;  
 use App\Models\Company;
 use App\Models\User;
 use App\Scopes\ActiveScope;
