@@ -30,10 +30,16 @@ class Utility
                 ->value('receivable_account_id');
 
             foreach ($invoiceItems as $item) {
-                dd($receivableAccount,$item,$item->product);
-                $product = $item->product;
-                $incomeAccount = $product->income_account;
-
+                // dd($invoiceItems);
+                if(isset($item->product)){
+                    $product = $item->product;
+                    $incomeAccount = $product->income_account;
+                }else if($item->chart_of_account != null){
+                    $incomeAccount = $item->chart_of_account;
+                }else{
+                   return redirect()->back()->with('error', 'Income account not found');
+                }
+                // dd($incomeAccount);
                 $itemTotal = $item->amount * $item->quantity;
                 if ($item->discount > 0) {
                     $itemTotal -= $item->discount;

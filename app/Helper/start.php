@@ -563,7 +563,7 @@ if (!function_exists('check_migrate_status')) {
             $status = Artisan::call('migrate:check');
 
             if ($status && !request()->ajax()) {
-                Artisan::call('migrate', ['--force' => true, '--schema-path' => 'do not run schema path']); // Migrate database
+                // Artisan::call('migrate', ['--force' => true, '--schema-path' => 'do not run schema path']); // Migrate database
                 Artisan::call('optimize:clear');
             }
 

@@ -122,6 +122,9 @@ $addProductSubCategoryPermission = user()->permission('manage_product_sub_catego
                                     @endif
                                 </x-forms.input-group>
                             </div>
+                            @php
+                                $accounts = \App\Models\ChartOfAccount::where('company_id', company()->id)->get();
+                            @endphp
                             <div class="col-lg-6 col-md-6">
                                 <x-forms.label class="my-3" fieldId="income_account_id" :fieldLabel="__('modules.accounts.incomeAccount')">
                                 </x-forms.label>
@@ -130,7 +133,7 @@ $addProductSubCategoryPermission = user()->permission('manage_product_sub_catego
                                         id="income_account_id" data-live-search="true">
                                         <option value="">--</option>
                                         @foreach ($accounts as $account)
-                                                <option value="{{ $account->id }}" @if ($account->id == $product->) selected @endif >{{ $account->name }}</option>
+                                                <option value="{{ $account->id }}" @if ($account->id == $product->income_account) selected @endif >{{ $account->name }}</option>
                                         @endforeach
                                     </select>
                                 </x-forms.input-group>
