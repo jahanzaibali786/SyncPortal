@@ -57,6 +57,8 @@ use App\Http\Controllers\TaxSettingController;
 use App\Http\Controllers\UnitTypeController;
 use App\Http\Controllers\UpdateAppController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PipelineLabelController;
+
 
 Route::get('account/settings/google-auth', [GoogleAuthController::class, 'index'])->name('googleAuth');
 
@@ -210,6 +212,28 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account/settings'], function 
     Route::post('lead-agent-settings/update-category/{id}', [LeadAgentSettingController::class, 'updateCategory'])->name('lead_agents.update_category');
     Route::post('lead-agent-settings/update-status/{id}', [LeadAgentSettingController::class, 'updateStatus'])->name('lead_agents.update_status');
     Route::get('agent-category', [LeadAgentSettingController::class, 'agentCategories'])->name('lead_agent.categories');
+
+
+    // Route::prefix('pipeline-labels')->group(function () {
+    //     Route::get('create', [PipelineLabelController::class, 'create'])->name('pipeline-labels.create');
+    //     Route::post('store', [PipelineLabelController::class, 'store'])->name('pipeline-labels.store');
+    //     Route::get('edit/{pipelineLabel}', [PipelineLabelController::class, 'edit'])->name('pipeline-labels.edit');
+    //     Route::post('update/{pipelineLabel}', [PipelineLabelController::class, 'update'])->name('pipeline-labels.update');
+    //     Route::delete('destroy/{pipelineLabel}', [PipelineLabelController::class, 'destroy'])->name('pipeline-labels.destroy');
+    // });
+
+    Route::resource('pipeline-labels', PipelineLabelController::class)->except(['show', 'index']);
+
+    Route::get('pipeline-labels/get-lead-labels', [PipelineLabelController::class, 'getLeadLabels'])
+        ->name('pipeline-labels.get-lead-labels');
+
+    Route::post('pipeline-labels/update-lead-labels', [PipelineLabelController::class, 'updateLeadLabels'])
+        ->name('pipeline-labels.update-lead-labels');
+
+    Route::get('pipeline-labels/get-deal-labels', [PipelineLabelController::class, 'getDealLabels'])->name('pipeline-labels.get-deal-labels');
+    Route::post('pipeline-labels/update-deal-labels', [PipelineLabelController::class, 'updateDealLabels'])->name('pipeline-labels.update-deal-labels');
+
+
 
     /* Contract Setting */
     Route::resource('contract-settings', ContractSettingController::class);

@@ -1,12 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-
-@php
-$addLeadAgentPermission = user()->permission('add_lead_agent');
-$addLeadSourcesPermission = user()->permission('add_lead_sources');
-$addLeadCategoryPermission = user()->permission('add_lead_category');
-@endphp
+    @php
+        $addLeadAgentPermission = user()->permission('add_lead_agent');
+        $addLeadSourcesPermission = user()->permission('add_lead_sources');
+        $addLeadCategoryPermission = user()->permission('add_lead_category');
+    @endphp
 
     <!-- SETTINGS START -->
     <div class="w-100 d-flex">
@@ -19,20 +18,25 @@ $addLeadCategoryPermission = user()->permission('add_lead_category');
                             <a class="nav-item nav-link f-15 active source" href="{{ route('lead-settings.index') }}"
                                 role="tab" aria-controls="nav-leadSource" aria-selected="true">@lang('app.menu.leadSource')
                             </a>
-                            <a class="nav-item nav-link f-15 pipeline" href="{{ route('lead-settings.index') }}?tab=pipeline"
-                                role="tab" aria-controls="nav-pipeline" aria-selected="true">@lang('modules.deal.pipeline')
+                            <a class="nav-item nav-link f-15 pipeline"
+                                href="{{ route('lead-settings.index') }}?tab=pipeline" role="tab"
+                                aria-controls="nav-pipeline" aria-selected="true">@lang('modules.deal.pipeline')
                             </a>
+
+                            <a class="nav-item nav-link f-15 labels" href="{{ route('lead-settings.index') }}?tab=labels"
+                                role="tab" aria-controls="nav-labels" aria-selected="true">
+                                @lang('modules.deal.labels')
+                            </a>
+
                             <a class="nav-item nav-link f-15 agent" href="{{ route('lead-settings.index') }}?tab=agent"
-                                role="tab" aria-controls="nav-leadAgent"
-                                aria-selected="true">@lang('modules.deal.dealAgent')
+                                role="tab" aria-controls="nav-leadAgent" aria-selected="true">@lang('modules.deal.dealAgent')
                             </a>
                             <a class="nav-item nav-link f-15 category"
                                 href="{{ route('lead-settings.index') }}?tab=category" role="tab"
                                 aria-controls="nav-leadAgent" aria-selected="true">@lang('modules.deal.dealCategory')
                             </a>
-                            <a class="nav-item nav-link f-15 method"
-                                href="{{ route('lead-settings.index') }}?tab=method" role="tab"
-                                aria-controls="nav-leadAgent" aria-selected="true">@lang('modules.deal.dealMethod')
+                            <a class="nav-item nav-link f-15 method" href="{{ route('lead-settings.index') }}?tab=method"
+                                role="tab" aria-controls="nav-leadAgent" aria-selected="true">@lang('modules.deal.dealMethod')
                             </a>
                         </div>
                     </nav>
@@ -54,6 +58,10 @@ $addLeadCategoryPermission = user()->permission('add_lead_category');
                             </x-forms.button-primary>
                         @endif
 
+                        <x-forms.button-primary icon="plus" id="addLabel" class="labels-btn mb-2 d-none actionBtn">
+                            @lang('modules.deal.addlabel')
+                        </x-forms.button-primary>
+
                         <x-forms.button-primary icon="plus" id="addPipeline" class="pipeline-btn mb-2  actionBtn">
                             @lang('app.addNew') @lang('modules.deal.pipeline')
                         </x-forms.button-primary>
@@ -62,7 +70,8 @@ $addLeadCategoryPermission = user()->permission('add_lead_category');
                             @lang('app.addNew') @lang('modules.deal.leadStage')
                         </x-forms.button-primary>
                         @if ($addLeadCategoryPermission != 'none')
-                            <x-forms.button-primary icon="plus" id="addCategory" class="category-btn mb-2 d-none actionBtn">
+                            <x-forms.button-primary icon="plus" id="addCategory"
+                                class="category-btn mb-2 d-none actionBtn">
                                 @lang('app.addNewDealCategory')
                             </x-forms.button-primary>
                         @endif
@@ -76,7 +85,6 @@ $addLeadCategoryPermission = user()->permission('add_lead_category');
         </x-setting-card>
     </div>
     <!-- SETTINGS END -->
-
 @endsection
 
 @push('scripts')
@@ -87,7 +95,7 @@ $addLeadCategoryPermission = user()->permission('add_lead_category');
         const activeTab = "{{ $activeTab }}";
         $('.' + activeTab).addClass('active');
 
-       $("body").on("click", "#editSettings .nav a", function(event) {
+        $("body").on("click", "#editSettings .nav a", function(event) {
             event.preventDefault();
 
             $('.nav-item').removeClass('active');
@@ -119,7 +127,7 @@ $addLeadCategoryPermission = user()->permission('add_lead_category');
         /* MENU SCRIPTS */
 
         $(document).on('show.bs.dropdown', '.table-responsive', function() {
-            $('.table-responsive').css( "overflow", "inherit" );
+            $('.table-responsive').css("overflow", "inherit");
         });
 
         /* LEAD AGENT SCRIPTS */
@@ -167,7 +175,7 @@ $addLeadCategoryPermission = user()->permission('add_lead_category');
                         },
                         success: function(response) {
                             if (response.status == "success") {
-                                $('.row'+id).fadeOut();
+                                $('.row' + id).fadeOut();
                             }
                         }
                     });
@@ -232,7 +240,7 @@ $addLeadCategoryPermission = user()->permission('add_lead_category');
                         },
                         success: function(response) {
                             if (response.status == "success") {
-                                $('.row'+id).fadeOut();
+                                $('.row' + id).fadeOut();
                             }
                         }
                     });
@@ -245,9 +253,9 @@ $addLeadCategoryPermission = user()->permission('add_lead_category');
 
 
 
-           /* LEAD PIPELINE SCRIPTS */
+        /* LEAD PIPELINE SCRIPTS */
 
-           $('body').on('click', '.set_default_stage', function() {
+        $('body').on('click', '.set_default_stage', function() {
             var id = $(this).data('status-id');
 
             var url = "{{ route('lead-stage-setting.stageUpdate', ':id') }}";
@@ -268,7 +276,7 @@ $addLeadCategoryPermission = user()->permission('add_lead_category');
         });
 
 
-           $('body').on('click', '.set_default_pipeline', function() {
+        $('body').on('click', '.set_default_pipeline', function() {
             var id = $(this).data('pipeline-id');
 
             var url = "{{ route('lead-pipeline-update.stageUpdate', ':id') }}";
@@ -343,7 +351,7 @@ $addLeadCategoryPermission = user()->permission('add_lead_category');
                         },
                         success: function(response) {
                             if (response.status == "success") {
-                                $('.row'+id).fadeOut();
+                                $('.row' + id).fadeOut();
                             }
                         }
                     });
@@ -405,7 +413,7 @@ $addLeadCategoryPermission = user()->permission('add_lead_category');
                         },
                         success: function(response) {
                             if (response.status == "success") {
-                                $('.row'+id).fadeOut();
+                                $('.row' + id).fadeOut();
                             }
                         }
                     });
@@ -472,7 +480,7 @@ $addLeadCategoryPermission = user()->permission('add_lead_category');
                         },
                         success: function(response) {
                             if (response.status == "success") {
-                                $('.row'+id).fadeOut();
+                                $('.row' + id).fadeOut();
                             }
                         }
                     });
@@ -489,7 +497,7 @@ $addLeadCategoryPermission = user()->permission('add_lead_category');
             }
         });
 
-        $('body').on('change', '.change-agent-category',function(e) {
+        $('body').on('change', '.change-agent-category', function(e) {
             e.preventDefault();
             var agentId = $(this).data('agent-id');
             var categoryId = $(this).val();
@@ -508,7 +516,7 @@ $addLeadCategoryPermission = user()->permission('add_lead_category');
             });
             return false;
         });
-        $('body').on('change', '.change-agent-status',function() {
+        $('body').on('change', '.change-agent-status', function() {
             var agentId = $(this).data('agent-id');
             var status = $(this).val();
             var token = '{{ csrf_token() }}';
@@ -571,5 +579,51 @@ $addLeadCategoryPermission = user()->permission('add_lead_category');
             });
         });
 
+        // Add Label
+        $('body').on('click', '#addLabel', function() {
+            var url = "{{ route('pipeline-labels.create') }}";
+            $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+            $.ajaxModal(MODAL_LG, url);
+        });
+
+        // Edit Label
+        $('body').on('click', '.edit-label', function() {
+            var id = $(this).data('label-id');
+            var url = "{{ route('pipeline-labels.edit', ':id') }}".replace(':id', id);
+            $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+            $.ajaxModal(MODAL_LG, url);
+        });
+
+        // Delete Label
+        $('body').on('click', '.delete-label', function() {
+            var id = $(this).data('label-id');
+            Swal.fire({
+                title: "@lang('messages.sweetAlertTitle')",
+                text: "@lang('messages.deleteWarning')",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "@lang('app.delete')",
+                cancelButtonText: "@lang('app.cancel')",
+            }).then(function(result) {
+                if (result.isConfirmed) {
+                    var url = "{{ route('pipeline-labels.destroy', ':id') }}".replace(':id', id);
+                    var token = "{{ csrf_token() }}";
+                    $.easyAjax({
+                        type: 'POST',
+                        url: url,
+                        data: {
+                            '_token': token,
+                            '_method': 'DELETE'
+                        },
+                        success: function(response) {
+                            if (response.status == "success") {
+                                $('.row' + id).fadeOut();
+                            }
+                        }
+                    });
+                }
+            });
+        });
     </script>
 @endpush

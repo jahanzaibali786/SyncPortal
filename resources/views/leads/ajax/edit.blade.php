@@ -1,12 +1,12 @@
 @php
-$viewLeadAgentPermission = user()->permission('view_lead_agents');
-$viewLeadCategoryPermission = user()->permission('view_lead_category');
-$viewLeadSourcesPermission = user()->permission('view_lead_sources');
-$addLeadAgentPermission = user()->permission('add_lead_agent');
-$addLeadSourcesPermission = user()->permission('add_lead_sources');
-$addLeadCategoryPermission = user()->permission('add_lead_category');
-$addProductPermission = user()->permission('add_product');
-$changeDealStagesPermission = user()->permission('change_deal_stages');
+    $viewLeadAgentPermission = user()->permission('view_lead_agents');
+    $viewLeadCategoryPermission = user()->permission('view_lead_category');
+    $viewLeadSourcesPermission = user()->permission('view_lead_sources');
+    $addLeadAgentPermission = user()->permission('add_lead_agent');
+    $addLeadSourcesPermission = user()->permission('add_lead_sources');
+    $addLeadCategoryPermission = user()->permission('add_lead_category');
+    $addProductPermission = user()->permission('add_product');
+    $changeDealStagesPermission = user()->permission('change_deal_stages');
 
 @endphp
 
@@ -24,7 +24,7 @@ $changeDealStagesPermission = user()->permission('change_deal_stages');
                         <x-forms.select fieldId="lead_contact" :fieldLabel="__('modules.leadContact.leadContacts')" fieldName="lead_contact" fieldRequired="true">
                             <option value="">--</option>
                             @foreach ($leadContacts as $leadContact)
-                                <option @if($leadContact->id == $deal->lead_id) selected @endif value="{{ $leadContact->id }}">
+                                <option @if ($leadContact->id == $deal->lead_id) selected @endif value="{{ $leadContact->id }}">
                                     {{ $leadContact->client_name_salutation }}</option>
                             @endforeach
                         </x-forms.select>
@@ -32,13 +32,13 @@ $changeDealStagesPermission = user()->permission('change_deal_stages');
 
 
                     <div class="col-lg-4 col-md-6">
-                        <x-forms.text :fieldLabel="__('app.name')" fieldName="name"
-                            fieldId="name" fieldPlaceholder="" fieldRequired="true"
-                            :fieldValue="$deal->name" />
+                        <x-forms.text :fieldLabel="__('app.name')" fieldName="name" fieldId="name" fieldPlaceholder=""
+                            fieldRequired="true" :fieldValue="$deal->name" />
                     </div>
 
                     <div class="col-lg-4">
-                        <x-forms.select fieldId="editPipeline" :fieldLabel="__('modules.deal.pipeline')" fieldName="pipeline" fieldRequired="true">
+                        <x-forms.select fieldId="editPipeline" :fieldLabel="__('modules.deal.pipeline')" fieldName="pipeline"
+                            fieldRequired="true">
                             @foreach ($leadPipelines as $pipeline)
                                 <option @selected($pipeline->id == $deal->lead_pipeline_id) value="{{ $pipeline->id }}">
                                     {{ $pipeline->name }}</option>
@@ -46,9 +46,10 @@ $changeDealStagesPermission = user()->permission('change_deal_stages');
                         </x-forms.select>
                     </div>
                     <div class="col-lg-4">
-                        <x-forms.select fieldId="stages" :fieldLabel="__('modules.deal.stages')" fieldName="stage_id" fieldRequired="true" changeDealStage="{{$changeDealStagesPermission}}">
+                        <x-forms.select fieldId="stages" :fieldLabel="__('modules.deal.stages')" fieldName="stage_id" fieldRequired="true"
+                            changeDealStage="{{ $changeDealStagesPermission }}">
                             @foreach ($stages as $stage)
-                                <option @selected($stage->id == $deal->pipeline_stage_id) value="{{ $stage->id }}"   >
+                                <option @selected($stage->id == $deal->pipeline_stage_id) value="{{ $stage->id }}">
                                     {{ $stage->name }}</option>
                             @endforeach
                         </x-forms.select>
@@ -63,7 +64,9 @@ $changeDealStagesPermission = user()->permission('change_deal_stages');
                                     data-live-search="true">
                                     <option value="">--</option>
                                     @forelse($categories as $category)
-                                        <option value="{{ $category->id }}" @if ($deal->category_id == $category->id) selected @endif>{{ $category->category_name }}</option>
+                                        <option value="{{ $category->id }}"
+                                            @if ($deal->category_id == $category->id) selected @endif>
+                                            {{ $category->category_name }}</option>
                                     @empty
                                         <option value="">@lang('messages.noCategoryAdded')</option>
                                     @endforelse
@@ -73,7 +76,8 @@ $changeDealStagesPermission = user()->permission('change_deal_stages');
                                     <x-slot name="append">
                                         <button type="button"
                                             class="btn btn-outline-secondary border-grey add-lead-category"
-                                            data-toggle="tooltip" data-original-title="{{ __('app.add').' '.__('modules.lead.leadCategory') }}">@lang('app.add')</button>
+                                            data-toggle="tooltip"
+                                            data-original-title="{{ __('app.add') . ' ' . __('modules.lead.leadCategory') }}">@lang('app.add')</button>
                                     </x-slot>
                                 @endif
                             </x-forms.input-group>
@@ -94,12 +98,48 @@ $changeDealStagesPermission = user()->permission('change_deal_stages');
                                     <x-slot name="append">
                                         <button type="button"
                                             class="btn btn-outline-secondary border-grey add-lead-agent"
-                                            data-toggle="tooltip" data-original-title="{{ __('app.add').'  '.__('app.new').' '.__('modules.tickets.agents') }}">@lang('app.add')</button>
+                                            data-toggle="tooltip"
+                                            data-original-title="{{ __('app.add') . '  ' . __('app.new') . ' ' . __('modules.tickets.agents') }}">@lang('app.add')</button>
                                     </x-slot>
                                 @endif
                             </x-forms.input-group>
                         </div>
                     @endif
+
+                    @if ($viewLeadAgentPermission != 'none')
+                        <div class="col-lg-4 col-md-6">
+                            <x-forms.label class="mt-3" fieldId="deal_sub_agents" :fieldLabel="__('modules.deal.subAgents')">
+                            </x-forms.label>
+
+                            <x-forms.input-group>
+                                <select class="form-control select-picker" name="sub_agents[]" id="deal_sub_agents"
+                                    data-live-search="true" data-actions-box="true" multiple data-size="8">
+                                    <option value="">--</option>
+                                    {{-- options will be filled by JS --}}
+                                </select>
+
+                                @if ($addLeadAgentPermission == 'all' || $addLeadAgentPermission == 'added')
+                                    <x-slot name="append">
+                                        <button type="button"
+                                            class="btn btn-outline-secondary border-grey add-lead-agent"
+                                            data-toggle="tooltip"
+                                            data-original-title="{{ __('app.add') . '  ' . __('app.new') . ' ' . __('modules.tickets.agents') }}">
+                                            @lang('app.add')
+                                        </button>
+                                    </x-slot>
+                                @endif
+                            </x-forms.input-group>
+
+                            <small class="form-text text-muted">
+                                @lang('modules.deal.selectSubAgents')
+                            </small>
+                        </div>
+                    @endif
+
+                    {{-- Pass any existing sub-agent IDs to JS so we can pre-select on edit --}}
+                    <script>
+                        window.selectedSubAgents = @json(isset($deal) ? $deal->sub_agents_array ?? [] : []);
+                    </script>
 
                     <div class="col-lg-4 col-md-6 mt-4">
                         <x-forms.label fieldId="value" :fieldLabel="__('modules.deal.dealValue')">
@@ -107,26 +147,32 @@ $changeDealStagesPermission = user()->permission('change_deal_stages');
                         <x-forms.input-group>
                             <x-slot name="prepend">
                                 <span
-                                    class="input-group-text f-14">{{!is_null($deal->currency_id) ? $deal->currency->currency_code : company()->currency->currency_code}} ( {{ !is_null($deal->currency_id) ? $deal->currency->currency_symbol : company()->currency->currency_symbol }} )</span>
+                                    class="input-group-text f-14">{{ !is_null($deal->currency_id) ? $deal->currency->currency_code : company()->currency->currency_code }}
+                                    (
+                                    {{ !is_null($deal->currency_id) ? $deal->currency->currency_symbol : company()->currency->currency_symbol }}
+                                    )</span>
                             </x-slot>
-                            <input type="number" name="value" id="value" class="form-control height-35 f-14" value="{{$deal->value}}"/>
+                            <input type="number" name="value" id="value" class="form-control height-35 f-14"
+                                value="{{ $deal->value }}" />
                         </x-forms.input-group>
                     </div>
                     <div class="col-md-5 col-lg-4 dueDateBox mt-1">
-                        <x-forms.datepicker fieldId="close_date" class="custom-date-picker" fieldRequired="true" :fieldLabel="__('modules.deal.closeDate')"
-                                fieldName="close_date" :fieldPlaceholder="__('placeholders.date')"
-                                :fieldValue="(($deal->close_date) ? $deal->close_date->format(company()->date_format) : '')"/>
+                        <x-forms.datepicker fieldId="close_date" class="custom-date-picker" fieldRequired="true"
+                            :fieldLabel="__('modules.deal.closeDate')" fieldName="close_date" :fieldPlaceholder="__('placeholders.date')" :fieldValue="$deal->close_date ? $deal->close_date->format(company()->date_format) : ''" />
                     </div>
 
-                    @if(in_array('products', user_modules()) || in_array('purchase', user_modules()))
+                    @if (in_array('products', user_modules()) || in_array('purchase', user_modules()))
                         <div class="col-lg-4 mt-3">
                             <div class="form-group">
-                                <x-forms.label fieldId="selectProduct" :fieldLabel="__('app.menu.products')" >
+                                <x-forms.label fieldId="selectProduct" :fieldLabel="__('app.menu.products')">
                                 </x-forms.label>
                                 <x-forms.input-group>
-                                    <select class="form-control select-picker" data-live-search="true" data-size="8"  name="product_id[]" multiple  id="add-products" title="{{ __('app.menu.selectProduct') }}">
+                                    <select class="form-control select-picker" data-live-search="true" data-size="8"
+                                        name="product_id[]" multiple id="add-products"
+                                        title="{{ __('app.menu.selectProduct') }}">
                                         @foreach ($products as $item)
-                                            <option @selected(in_array($item->id, $productIds)) data-content="{{ $item->name }}" value="{{ $item->id }}">
+                                            <option @selected(in_array($item->id, $productIds)) data-content="{{ $item->name }}"
+                                                value="{{ $item->id }}">
                                                 {{ $item->name }}</option>
                                         @endforeach
                                     </select>
@@ -143,11 +189,10 @@ $changeDealStagesPermission = user()->permission('change_deal_stages');
                     @endif
 
                     <div class="col-lg-4 col-md-6">
-                        <x-forms.select fieldId="deal_watcher" :fieldLabel="__('app.dealWatcher')"
-                                        fieldName="deal_watcher">
+                        <x-forms.select fieldId="deal_watcher" :fieldLabel="__('app.dealWatcher')" fieldName="deal_watcher">
                             <option value="">--</option>
                             @foreach ($employees as $item)
-                                <x-user-option :user="$item" :selected="($deal->deal_watcher == $item->id)"/>
+                                <x-user-option :user="$item" :selected="$deal->deal_watcher == $item->id" />
                             @endforeach
                         </x-forms.select>
                     </div>
@@ -183,7 +228,8 @@ $changeDealStagesPermission = user()->permission('change_deal_stages');
         $('#save-lead-form').click(function() {
 
             const tab = "{{ $tab }}";
-            const url = tab != null ? "{{ route('deals.update', [$deal->id]) }}?tab=" + tab : "{{ route('deals.update', [$deal->id]) }}";
+            const url = tab != null ? "{{ route('deals.update', [$deal->id]) }}?tab=" + tab :
+                "{{ route('deals.update', [$deal->id]) }}";
 
             $.easyAjax({
                 url: url,
@@ -202,7 +248,7 @@ $changeDealStagesPermission = user()->permission('change_deal_stages');
 
         $('body').on('click', '.add-lead-agent', function() {
             var categoryId = $('#category_id').val();
-            var url = "{{ route('lead-agent-settings.create').'?categoryId='}}"+categoryId;
+            var url = "{{ route('lead-agent-settings.create') . '?categoryId=' }}" + categoryId;
             $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
             $.ajaxModal(MODAL_LG, url);
         });
@@ -275,14 +321,14 @@ $changeDealStagesPermission = user()->permission('change_deal_stages');
             });
         });
 
-        $('#editPipeline').on("change", function (e) {
+        $('#editPipeline').on("change", function(e) {
             let pipelineId = $(this).val();
             getStages(pipelineId)
         });
 
         getStages($('#editPipeline').val());
         var selectedStageId = {{ $deal->pipeline_stage_id }};
-         // GET STAGES
+        // GET STAGES
         function getStages(pipelineId) {
             var url = "{{ route('deals.get-stage', ':id') }}";
             url = url.replace(':id', pipelineId);
@@ -290,15 +336,16 @@ $changeDealStagesPermission = user()->permission('change_deal_stages');
             $.easyAjax({
                 url: url,
                 type: "GET",
-                success: function (response) {
+                success: function(response) {
                     if (response.status == 'success') {
                         var options = [];
                         var rData = [];
                         rData = response.data;
-                        $.each(rData, function (index, value) {
+                        $.each(rData, function(index, value) {
                             var selectData = '';
                             var selected = value.id == selectedStageId ? 'selected' : '';
-                            selectData = `<option data-content="<i class='fa fa-circle' style='color: ${value.label_color}'></i> ${value.name} " value="${value.id}" ${selected}> ${value.name}</option>`;
+                            selectData =
+                                `<option data-content="<i class='fa fa-circle' style='color: ${value.label_color}'></i> ${value.name} " value="${value.id}" ${selected}> ${value.name}</option>`;
                             options.push(selectData);
                         });
 
@@ -328,36 +375,31 @@ $changeDealStagesPermission = user()->permission('change_deal_stages');
             });
         });
         var categoryId = $('#category_id').val();
-        if(categoryId != '')
-        {
+        if (categoryId != '') {
             getAgents(categoryId);
         }
 
-        function getAgents(categoryId){
-            var url = "{{ route('deals.get_agents', ':id')}}";
+        function getAgents(categoryId) {
+            var url = "{{ route('deals.get_agents', ':id') }}";
             url = url.replace(':id', categoryId);
-            var dealId = "{{$deal->id}}";
+            var dealId = "{{ $deal->id }}";
             $.easyAjax({
                 url: url,
                 type: "GET",
                 data: {
-                    dealId : dealId,
+                    dealId: dealId,
                 },
-                success: function(response)
-                {
+                success: function(response) {
                     var options = [];
                     var rData = [];
-                    if($.isArray(response.data))
-                    {
+                    if ($.isArray(response.data)) {
                         rData = response.data;
                         $.each(rData, function(index, value) {
                             var selectData = '';
                             options.push(value);
                         });
                         $('#deal_agent_id').html('<option value="">--</option>' + options);
-                    }
-                    else
-                    {
+                    } else {
                         $('#deal_agent_id').html(response.data);
                     }
                     $('#deal_agent_id').selectpicker('refresh');
@@ -365,17 +407,16 @@ $changeDealStagesPermission = user()->permission('change_deal_stages');
             });
         }
 
-        $('#category_id').change(function(){
+        $('#category_id').change(function() {
             var id = $(this).val();
-            if(id != '')
-            {
+            if (id != '') {
                 getAgents(id);
             }
         });
 
-        <x-forms.custom-field-filejs/>
+        <
+        x - forms.custom - field - filejs / >
 
-        init(RIGHT_MODAL);
+            init(RIGHT_MODAL);
     });
-
 </script>
