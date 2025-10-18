@@ -19,55 +19,48 @@
                     @lang('modules.deal.dealDetails')</h4>
                 <div class="row p-20">
                     <div class="col-lg-4 ">
-                        <x-forms.select fieldId="lead_contact" :fieldLabel="__('modules.leadContact.leadContacts')"
-                                        fieldName="lead_contact" fieldRequired="true" search="true">
+                        <x-forms.select fieldId="lead_contact" :fieldLabel="__('modules.leadContact.leadContacts')" fieldName="lead_contact"
+                            fieldRequired="true" search="true">
                             <option value="">--</option>
                             @foreach ($leadContacts as $leadContact)
-                                <option
-                                    @selected(!is_null($contactID) && $contactID == $leadContact->id)  value="{{ $leadContact->id }}">
+                                <option @selected(!is_null($contactID) && $contactID == $leadContact->id) value="{{ $leadContact->id }}">
                                     {{ $leadContact->client_name_salutation }}</option>
                             @endforeach
                         </x-forms.select>
                     </div>
                     <div class="col-lg-4 col-md-6">
-                        <x-forms.text :fieldLabel="__('modules.deal.dealName')" fieldName="name"
-                                      fieldId="name" :fieldPlaceholder="__('placeholders.name')" fieldRequired="true"
-                                      :popover="__('modules.deal.dealnameInfo')"/>
+                        <x-forms.text :fieldLabel="__('modules.deal.dealName')" fieldName="name" fieldId="name" :fieldPlaceholder="__('placeholders.name')"
+                            fieldRequired="true" :popover="__('modules.deal.dealnameInfo')" />
                     </div>
                     <div class="col-lg-4">
-                        <x-forms.select fieldId="pipelineData" :fieldLabel="__('modules.deal.pipeline')"
-                                        fieldName="pipeline" fieldRequired="true"
-                                        :popover="__('modules.lead.pipelineInfo')">
+                        <x-forms.select fieldId="pipelineData" :fieldLabel="__('modules.deal.pipeline')" fieldName="pipeline"
+                            fieldRequired="true" :popover="__('modules.lead.pipelineInfo')">
                             @foreach ($leadPipelines as $pipeline)
-                                <option
-                                    @selected(!is_null($stage) && $stage->lead_pipeline_id == $pipeline->id)  value="{{ $pipeline->id }}">
+                                <option @selected(!is_null($stage) && $stage->lead_pipeline_id == $pipeline->id) value="{{ $pipeline->id }}">
                                     {{ $pipeline->name }}</option>
                             @endforeach
                         </x-forms.select>
                     </div>
                     <div class="col-lg-4 mt-2">
-                        <x-forms.select fieldId="stages" :fieldLabel="__('modules.deal.stages')" fieldName="stage_id"
-                                        fieldRequired="true">
+                        <x-forms.select fieldId="stages" :fieldLabel="__('modules.deal.stages')" fieldName="stage_id" fieldRequired="true">
 
                         </x-forms.select>
                     </div>
                     <div class="col-lg-4 col-md-6">
-                        <x-forms.label class="my-3" fieldId="value" :fieldLabel="__('modules.deal.dealValue')"
-                                       fieldRequired="true">
+                        <x-forms.label class="my-3" fieldId="value" :fieldLabel="__('modules.deal.dealValue')" fieldRequired="true">
                         </x-forms.label>
                         <x-forms.input-group>
                             <x-slot name="prepend">
-                                <span
-                                    class="input-group-text f-14">{{ company()->currency->currency_code }} ({{ company()->currency->currency_symbol }})</span>
+                                <span class="input-group-text f-14">{{ company()->currency->currency_code }}
+                                    ({{ company()->currency->currency_symbol }})</span>
                             </x-slot>
-                            <input type="number" name="value" id="value" class="form-control height-35 f-14" value="0"/>
+                            <input type="number" name="value" id="value" class="form-control height-35 f-14"
+                                value="0" />
                         </x-forms.input-group>
                     </div>
                     <div class="col-md-5 col-lg-4 dueDateBox mt-1">
-                        <x-forms.datepicker fieldId="close_date" fieldRequired="true"
-                                            :fieldLabel="__('modules.deal.closeDate')"
-                                            fieldName="close_date" :fieldPlaceholder="__('placeholders.date')"
-                                            :fieldValue="( now(company()->timezone)->addDays(30)->translatedFormat(company()->date_format))"/>
+                        <x-forms.datepicker fieldId="close_date" fieldRequired="true" :fieldLabel="__('modules.deal.closeDate')"
+                            fieldName="close_date" :fieldPlaceholder="__('placeholders.date')" :fieldValue="now(company()->timezone)->addDays(30)->translatedFormat(company()->date_format)" />
                     </div>
                     @if ($viewLeadCategoryPermission != 'none')
                         <div class="col-lg-4 col-md-6">
@@ -86,29 +79,31 @@
                                     <x-slot name="append">
                                         <button type="button"
                                             class="btn btn-outline-secondary border-grey add-lead-category"
-                                            data-toggle="tooltip" data-original-title="{{ __('app.add').' '.__('modules.lead.leadCategory') }}">
+                                            data-toggle="tooltip"
+                                            data-original-title="{{ __('app.add') . ' ' . __('modules.lead.leadCategory') }}">
                                             @lang('app.add')</button>
                                     </x-slot>
                                 @endif
                             </x-forms.input-group>
                         </div>
                     @endif
+
                     @if ($viewLeadAgentPermission != 'none')
                         <div class="col-lg-4 col-md-6">
                             <x-forms.label class="mt-3" fieldId="deal_agent_id" :fieldLabel="__('modules.deal.dealAgent')">
                             </x-forms.label>
                             <x-forms.input-group>
                                 <select class="form-control select-picker" name="agent_id" id="deal_agent_id"
-                                        data-live-search="true">
+                                    data-live-search="true">
                                     <option value="">--</option>
                                 </select>
 
                                 @if ($addLeadAgentPermission == 'all' || $addLeadAgentPermission == 'added')
                                     <x-slot name="append">
                                         <button type="button"
-                                                class="btn btn-outline-secondary border-grey add-lead-agent"
-                                                data-toggle="tooltip"
-                                                data-original-title="{{ __('app.add').'  '.__('app.new').' '.__('modules.tickets.agents') }}">@lang('app.add')</button>
+                                            class="btn btn-outline-secondary border-grey add-lead-agent"
+                                            data-toggle="tooltip"
+                                            data-original-title="{{ __('app.add') . '  ' . __('app.new') . ' ' . __('modules.tickets.agents') }}">@lang('app.add')</button>
                                     </x-slot>
                                 @endif
                             </x-forms.input-group>
@@ -117,15 +112,52 @@
                         <input type="hidden" value="{{ $myAgentId }}" name="agent_id">
                     @endif
 
-                    @if(in_array('products', user_modules()) || in_array('purchase', user_modules()))
+                    @if ($viewLeadAgentPermission != 'none')
+                        <div class="col-lg-4 col-md-6">
+                            <x-forms.label class="mt-3" fieldId="deal_sub_agents" :fieldLabel="__('modules.deal.subAgents')">
+                            </x-forms.label>
+
+                            <x-forms.input-group>
+                                <select class="form-control select-picker" name="sub_agents[]" id="deal_sub_agents"
+                                    data-live-search="true" data-actions-box="true" multiple data-size="8">
+                                    <option value="">--</option>
+                                    {{-- options will be filled by JS --}}
+                                </select>
+
+                                @if ($addLeadAgentPermission == 'all' || $addLeadAgentPermission == 'added')
+                                    <x-slot name="append">
+                                        <button type="button"
+                                            class="btn btn-outline-secondary border-grey add-lead-agent"
+                                            data-toggle="tooltip"
+                                            data-original-title="{{ __('app.add') . '  ' . __('app.new') . ' ' . __('modules.tickets.agents') }}">
+                                            @lang('app.add')
+                                        </button>
+                                    </x-slot>
+                                @endif
+                            </x-forms.input-group>
+
+                            <small class="form-text text-muted">
+                                @lang('modules.deal.selectSubAgents')
+                            </small>
+                        </div>
+                    @endif
+
+                    {{-- Pass any existing sub-agent IDs to JS so we can pre-select on edit --}}
+                    <script>
+                        window.selectedSubAgents = @json(isset($deal) ? $deal->sub_agents_array ?? [] : []);
+                    </script>
+
+
+
+                    @if (in_array('products', user_modules()) || in_array('purchase', user_modules()))
                         <div class="col-lg-4 mt-3">
                             <div class="form-group">
                                 <x-forms.label fieldId="selectProduct" :fieldLabel="__('app.menu.products')">
                                 </x-forms.label>
                                 <x-forms.input-group>
                                     <select class="form-control select-picker" data-live-search="true" data-size="8"
-                                            name="product_id[]" multiple id="add-products"
-                                            title="{{ __('app.menu.selectProduct') }}">
+                                        name="product_id[]" multiple id="add-products"
+                                        title="{{ __('app.menu.selectProduct') }}">
                                         @foreach ($products as $item)
                                             <option data-content="{{ $item->name }}" value="{{ $item->id }}">
                                                 {{ $item->name }}</option>
@@ -145,11 +177,10 @@
                     @endif
 
                     <div class="col-lg-4 col-md-6">
-                        <x-forms.select fieldId="deal_watcher" :fieldLabel="__('app.dealWatcher')"
-                                        fieldName="deal_watcher">
+                        <x-forms.select fieldId="deal_watcher" :fieldLabel="__('app.dealWatcher')" fieldName="deal_watcher">
                             <option value="">--</option>
                             @foreach ($employees as $item)
-                                <x-user-option :user="$item" :selected="(user()->id == $item->id)"/>
+                                <x-user-option :user="$item" :selected="user()->id == $item->id" />
                             @endforeach
                         </x-forms.select>
                     </div>
@@ -160,7 +191,7 @@
                     <x-forms.button-primary id="save-lead-form" class="mr-3" icon="check">@lang('app.save')
                     </x-forms.button-primary>
                     <x-forms.button-secondary class="mr-3" id="save-more-lead-form"
-                                              icon="check-double">@lang('app.saveAddMore')
+                        icon="check-double">@lang('app.saveAddMore')
                     </x-forms.button-secondary>
                     <x-forms.button-cancel :link="route('lead-contact.index')" class="border-0">@lang('app.cancel')
                     </x-forms.button-cancel>
@@ -173,46 +204,107 @@
 </div>
 
 <script>
-
-    $(document).ready(function () {
+    $(document).ready(function() {
         var id = $('#category_id').val();
-        if(id != '')
-        {
+        if (id != '') {
             getAgents($('#category_id').val());
         }
 
-        function getAgents(categoryId){
-            var url = "{{ route('deals.get_agents', ':id')}}";
+        // function getAgents(categoryId) {
+        //     var url = "{{ route('deals.get_agents', ':id') }}";
+        //     url = url.replace(':id', categoryId);
+        //     $.easyAjax({
+        //         url: url,
+        //         type: "GET",
+        //         success: function(response) {
+        //             var options = [];
+        //             var rData = [];
+        //             if ($.isArray(response.data)) {
+        //                 rData = response.data;
+        //                 $.each(rData, function(index, value) {
+        //                     var selectData = '';
+        //                     options.push(value);
+        //                 });
+
+        //                 $('#deal_agent_id').html('<option value="">--</option>' + options);
+
+        //             } else {
+        //                 $('#deal_agent_id').html(response.data);
+        //             }
+
+        //             $('#deal_agent_id').selectpicker('refresh');
+        //         }
+        //     });
+        // }
+
+        function getAgents(categoryId) {
+            var url = "{{ route('deals.get_agents', ':id') }}";
             url = url.replace(':id', categoryId);
+
             $.easyAjax({
                 url: url,
                 type: "GET",
-                success: function(response)
-                {
-                    var options = [];
-                    var rData = [];
-                    if($.isArray(response.data))
-                    {
-                        rData = response.data;
-                        $.each(rData, function(index, value) {
-                            var selectData = '';
-                            options.push(value);
+                success: function(response) {
+                    // response.data can be either HTML string or array; handle both
+                    if ($.isArray(response.data)) {
+                        var optionsHtml = '<option value="">--</option>';
+                        var optionsForSub = ''; // will be same options but we may mark selected
+
+                        // response.data expected to be array of agent objects or html fragments
+                        $.each(response.data, function(index, value) {
+                            // value might be HTML string or object; adapt:
+                            if (typeof value === 'string') {
+                                // if server returned HTML strings (option tags), just append
+                                optionsHtml += value;
+                                optionsForSub += value;
+                            } else {
+                                // expecting object { id: ..., name: '...', ... }
+                                optionsHtml +=
+                                    `<option value="${value.id}">${value.name}</option>`;
+                                optionsForSub +=
+                                    `<option value="${value.id}">${value.name}</option>`;
+                            }
                         });
 
-                        $('#deal_agent_id').html('<option value="">--</option>' + options);
+                        // Populate single-select agent
+                        $('#deal_agent_id').html(optionsHtml);
+                        $('#deal_agent_id').selectpicker('refresh');
 
-                    }
-                    else
-                    {
+                        // Populate multi-select sub-agents
+                        $('#deal_sub_agents').html(optionsForSub);
+
+                        // Pre-select sub agents on edit if any
+                        if (Array.isArray(window.selectedSubAgents) && window.selectedSubAgents
+                            .length) {
+                            // ensure values are strings (selectpicker expects string comparison)
+                            var selected = window.selectedSubAgents.map(String);
+                            $('#deal_sub_agents').val(selected);
+                        }
+
+                        $('#deal_sub_agents').selectpicker('refresh');
+
+                    } else {
+                        // If server returned HTML for a single select (string),
+                        // assume response.data contains option tags. Use same for both.
                         $('#deal_agent_id').html(response.data);
-                    }
+                        $('#deal_agent_id').selectpicker('refresh');
 
-                    $('#deal_agent_id').selectpicker('refresh');
+                        $('#deal_sub_agents').html(response.data);
+
+                        if (Array.isArray(window.selectedSubAgents) && window.selectedSubAgents
+                            .length) {
+                            var selected = window.selectedSubAgents.map(String);
+                            $('#deal_sub_agents').val(selected);
+                        }
+
+                        $('#deal_sub_agents').selectpicker('refresh');
+                    }
                 }
             });
         }
 
-        $('#close_date').each(function (ind, el) {
+
+        $('#close_date').each(function(ind, el) {
             datepicker(el, {
                 position: 'bl',
                 ...datepickerConfig
@@ -221,10 +313,9 @@
 
         getStages($('#pipelineData').val());
 
-        $('#category_id').change(function(){
+        $('#category_id').change(function() {
             var id = $(this).val();
-            if(id != '')
-            {
+            if (id != '') {
                 getAgents(id);
             }
         });
@@ -235,23 +326,24 @@
             $.easyAjax({
                 url: url,
                 type: "GET",
-                success: function (response) {
+                success: function(response) {
                     if (response.status == 'success') {
                         var options = [];
                         var rData = [];
                         rData = response.data;
-                        $.each(rData, function (index, value) {
+                        $.each(rData, function(index, value) {
                             var seleted = '';
                             var stageID = 0;
-                            @if(!is_null($stage))
+                            @if (!is_null($stage))
                                 stageID = {{ $stage->id }};
 
-                            if (stageID == value.id) {
-                                seleted = 'selected';
-                            }
+                                if (stageID == value.id) {
+                                    seleted = 'selected';
+                                }
                             @endif
                             var selectData = '';
-                            selectData = `<option data-content="<i class='fa fa-circle' style='color: ${value.label_color}'></i> ${value.name} " value="${value.id}"> ${value.name}</option>`;
+                            selectData =
+                                `<option data-content="<i class='fa fa-circle' style='color: ${value.label_color}'></i> ${value.name} " value="${value.id}"> ${value.name}</option>`;
                             options.push(selectData);
                         });
                         $('#stages').html(options);
@@ -262,12 +354,12 @@
         }
 
         // GET STAGES
-        $('#pipelineData').on("change", function (e) {
+        $('#pipelineData').on("change", function(e) {
             let pipelineId = $(this).val();
             getStages(pipelineId)
         });
 
-        $('#save-more-lead-form').click(function () {
+        $('#save-more-lead-form').click(function() {
             $('#add_more').val(true);
             const url = "{{ route('deals.store') }}?add_more=true";
             var data = $('#save-lead-data-form').serialize() + '&add_more=true';
@@ -275,7 +367,7 @@
 
         });
 
-        $('#save-lead-form').click(function () {
+        $('#save-lead-form').click(function() {
             const url = "{{ route('deals.store') }}";
             var data = $('#save-lead-data-form').serialize();
             saveLead(data, url, "#save-lead-form");
@@ -292,7 +384,7 @@
                 blockUI: true,
                 buttonSelector: buttonSelector,
                 data: data,
-                success: function (response) {
+                success: function(response) {
                     if (response.add_more == true) {
 
                         var right_modal_content = $.trim($(RIGHT_MODAL_CONTENT).html());
@@ -319,33 +411,76 @@
 
         }
 
-        $('body').on('click', '.add-lead-agent', function () {
+        $('body').on('click', '.add-lead-agent', function() {
             var categoryId = $('#category_id').val();
-            var url = "{{ route('lead-agent-settings.create').'?categoryId='}}"+categoryId;
+            var url = "{{ route('lead-agent-settings.create') . '?categoryId=' }}" + categoryId;
             $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
             $.ajaxModal(MODAL_LG, url);
         });
 
-        $('body').on('click', '.add-lead-source', function () {
+        $('body').on('click', '.add-lead-source', function() {
             var url = '{{ route('lead-source-settings.create') }}';
             $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
             $.ajaxModal(MODAL_LG, url);
         });
 
-        $('body').on('click', '.add-lead-category', function () {
+        $('body').on('click', '.add-lead-category', function() {
             var url = '{{ route('leadCategory.create') }}';
             $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
             $.ajaxModal(MODAL_LG, url);
         });
 
-        $('.toggle-other-details').click(function () {
+        $('.toggle-other-details').click(function() {
             $(this).find('svg').toggleClass('fa-chevron-down fa-chevron-up');
             $('#other-details').toggleClass('d-none');
         });
 
         init(RIGHT_MODAL);
     });
-
-
-
 </script>
+
+<script>
+$(document).ready(function () {
+    const $agentSelect = $('#deal_agent_id');
+    const $subAgentsSelect = $('#deal_sub_agents');
+
+    // When the main agent changes
+    $agentSelect.on('changed.bs.select', function () {
+        const selectedAgentId = $(this).val();
+
+        // Enable all options in sub-agents first
+        $subAgentsSelect.find('option').prop('disabled', false);
+
+        if (selectedAgentId) {
+            // Disable the agent from sub-agent list
+            $subAgentsSelect.find(`option[value="${selectedAgentId}"]`).prop('disabled', true);
+
+            // If that agent was already selected as sub-agent, remove it
+            let currentSubs = $subAgentsSelect.val() || [];
+            currentSubs = currentSubs.filter(id => id !== selectedAgentId);
+            $subAgentsSelect.val(currentSubs);
+        }
+
+        // Refresh Bootstrap select
+        $subAgentsSelect.selectpicker('refresh');
+    });
+
+    // Also handle the reverse logic (optional but smart UX)
+    // If a sub-agent is chosen as agent, disable from main agent dropdown
+    // $subAgentsSelect.on('changed.bs.select', function () {
+    //     const selectedSubs = $(this).val() || [];
+
+    //     // Enable all options first
+    //     $agentSelect.find('option').prop('disabled', false);
+
+    //     // Disable sub-agent IDs from the main agent dropdown
+    //     selectedSubs.forEach(id => {
+    //         $agentSelect.find(`option[value="${id}"]`).prop('disabled', true);
+    //     });
+
+    //     // Refresh Bootstrap select
+    //     $agentSelect.selectpicker('refresh');
+    // });
+});
+</script>
+

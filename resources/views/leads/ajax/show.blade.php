@@ -77,6 +77,45 @@ $viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
                 </div>
 
                 <div class="col-12 px-0 pb-3 d-flex">
+    <p class="mb-0 text-lightest f-14 w-30 d-inline-block ">
+        @lang('modules.deal.dealAgent')
+    </p>
+    <p class="mb-0 text-dark-grey f-14">
+        @if (!is_null($deal->leadAgent))
+            <x-employee :user="$deal->leadAgent->user"/>
+        @else
+            --
+        @endif
+    </p>
+</div>
+
+{{-- Sub Agents --}}
+<div class="col-12 px-0 pb-3 d-flex align-items-start">
+    <p class="mb-0 text-lightest f-14 w-30 d-inline-block">
+        @lang('modules.deal.subAgents')
+    </p>
+    <div class="mb-0 text-dark-grey f-14 d-flex flex-wrap">
+        @php
+            // Convert comma-separated IDs to an array
+            $subAgentIds = $deal->sub_agents ? explode(',', $deal->sub_agents) : [];
+            $subAgents = \App\Models\User::whereIn('id', $subAgentIds)->get();
+        @endphp
+
+        @if ($subAgents->count() > 0)
+            @foreach ($subAgents as $subAgent)
+                <div class="mr-2 mb-1">
+                    <x-employee :user="$subAgent"/>
+                </div>
+            @endforeach
+        @else
+            --
+        @endif
+    </div>
+</div>
+
+
+
+                <div class="col-12 px-0 pb-3 d-flex">
                     <p class="mb-0 text-lightest f-14 w-30 d-inline-block ">{{ __('app.dealWatcher') }}</p>
                     <p class="mb-0 text-dark-grey f-14">
                         @if (!is_null($deal->dealWatcher))

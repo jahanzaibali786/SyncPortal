@@ -135,14 +135,14 @@ use App\Http\Controllers\TrialBalanceController;
 
 
 Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified'], 'prefix' => 'account'], function () {
-    Route::get('/vouchers/fetch_number',[Company::class, 'fetchNumber'])->name('vouchers.fetch_number');
+    Route::get('/vouchers/fetch_number', [Company::class, 'fetchNumber'])->name('vouchers.fetch_number');
     Route::resource('vouchers', VoucherController::class);
     Route::post('vouchers/apply-quick-action', [VoucherController::class, 'applyQuickAction'])
         ->name('vouchers.apply_quick_action');
     // Ledger report
     Route::post('/chart-of-accounts/{id}', [chartOfAccounts::class, 'update'])
-    ->name('chart-of-accounts.update');
-    Route::get('/chart-of-accounts',[chartOfAccounts::class,'index'])->name('coa.index');
+        ->name('chart-of-accounts.update');
+    Route::get('/chart-of-accounts', [chartOfAccounts::class, 'index'])->name('coa.index');
     Route::get('/ledger', [VoucherController::class, 'ledger'])->name('ledger.index');
     Route::get('trial-balance', [TrialBalanceController::class, 'index'])->name('trial-balance.index');
     Route::get('/profit-loss', [VoucherController::class, 'profitLoss'])->name('reports.profit_loss');
@@ -559,6 +559,10 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     Route::post('leadboards/updateIndex', [LeadBoardController::class, 'updateIndex'])->name('leadboards.update_index');
     Route::get('leadboards/loadMore', [LeadBoardController::class, 'loadMore'])->name('leadboards.load_more');
     Route::resource('leadboards', LeadBoardController::class);
+
+    Route::post('/deals/bulk-move-stage', [DealController::class, 'bulkMoveStage'])->name('deals.bulk-move-stage');
+    Route::post('/deals/bulk-move-pipeline', [DealController::class, 'bulkMovePipeline'])->name('deals.bulk-move-pipeline');
+
 
     Route::post('lead-form/sortFields', [LeadCustomFormController::class, 'sortFields'])->name('lead-form.sortFields');
     Route::resource('lead-form', LeadCustomFormController::class);
