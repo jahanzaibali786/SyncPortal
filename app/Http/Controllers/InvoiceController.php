@@ -207,7 +207,7 @@ class InvoiceController extends AccountBaseController
 
     public function store(StoreInvoice $request)
     {
-
+        // dd($request->all());
         try {
             DB::beginTransaction();
             $quantity = $request->quantity;
@@ -322,7 +322,7 @@ class InvoiceController extends AccountBaseController
             $invoice->payment_status = $request->payment_status == null ? '0' : $request->payment_status;
             $invoice->invoice_payment_id = $request->invoice_payment_id;
             $invoice->save();
-// dd($invoice);
+            // dd($invoice);
             // To add custom fields data
 
             if ($request->custom_fields_data) {
@@ -408,7 +408,7 @@ class InvoiceController extends AccountBaseController
                 $invoice->save();
             }
             $invoice->save();
-            
+
             if ($invoice->send_status == 1) {
                 DB::commit();
                 return Reply::successWithData(__('messages.invoiceSentSuccessfully'), ['redirectUrl' => $redirectUrl, 'invoiceID' => $invoice->id]);
@@ -804,9 +804,10 @@ class InvoiceController extends AccountBaseController
             $companyName = Project::where('id', $this->invoice->project_id)->with('clientdetails')->first();
             $this->companyName = isset($companyName) ? ($companyName->clientdetails ? $companyName->clientdetails->company_name : '') : '';
         }
-
+        //accounts
+        $accounts = ChartOfAccount::where('company_id', company()->id)->get();
+        $this->accounts = $accounts;
         $this->companyAddresses = CompanyAddress::all();
-
         if (request()->ajax()) {
             $html = view('invoices.ajax.edit', $this->data)->render();
 
@@ -820,6 +821,7 @@ class InvoiceController extends AccountBaseController
 
     public function update(UpdateInvoice $request, $id)
     {
+        dd($request->all());
         $items = $request->item_name;
         $cost_per_item = $request->cost_per_item;
         $quantity = $request->quantity;
