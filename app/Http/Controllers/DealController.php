@@ -194,7 +194,6 @@ class DealController extends AccountBaseController
                 if (user()->permission('view_lead_follow_up') == 'added') {
                     $this->dealFollowUps = $this->dealFollowUps->where('added_by', user()->id);
                 }
-
                 $this->tab = 'leads.ajax.follow-up';
                 break;
             case 'proposals':
@@ -373,6 +372,10 @@ class DealController extends AccountBaseController
         $deal->close_date = companyToYmd($request->close_date);
         $deal->value = ($request->value) ?: 0;
         $deal->currency_id = $this->company->currency_id;
+        /** 🆕 Store Sub Agents (multiple employee IDs as comma-separated string) */
+        if ($request->has('sub_agents') && is_array($request->sub_agents)) {
+            $deal->sub_agents = implode(',', $request->sub_agents);
+        }
         $deal->save();
 
         if (!is_null($request->product_id)) {
@@ -404,7 +407,7 @@ class DealController extends AccountBaseController
         }
 
         if ($redirectUrl == '') {
-            $redirectUrl = route('deals.index');
+            $redirectUrl = route('leadboards.index');
         }
 
         return Reply::successWithData(__('messages.recordSaved'), ['redirectUrl' => $redirectUrl]);
@@ -1069,5 +1072,53 @@ class DealController extends AccountBaseController
 
         return Reply::success(__('messages.updateSuccess'));
     }
+
+    public function bulkMoveStage(Request $request)
+    {
+        $request->validate([
+            'deal_ids' => 'required|array',
+            'stage_id' => 'required|integer|exists:pipeline_stages,id',
+        ]);
+
+        // Get the stage and its parent pipeline
+        $stage = PipelineStage::findOrFail($request->stage_id);
+
+        // Update all selected deals
+        Deal::whereIn('id', $request->deal_ids)->update([
+            'pipeline_stage_id' => $stage->id,
+            'lead_pipeline_id' => $stage->lead_pipeline_id, // keep pipeline consistent
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Deals moved to the new stage successfully.',
+        ]);
+    }
+
+
+    public function bulkMovePipeline(Request $request)
+    {
+        $request->validate([
+            'deal_ids' => 'required|array',
+            'pipeline_id' => 'required|integer|exists:lead_pipelines,id',
+        ]);
+
+        // Get the default stage of the selected pipeline
+        $firstStage = PipelineStage::where('lead_pipeline_id', $request->pipeline_id)
+            ->orderBy('priority', 'asc')
+            ->first();
+
+        // Update pipeline and assign to the first stage (if any)
+        Deal::whereIn('id', $request->deal_ids)->update([
+            'lead_pipeline_id' => $request->pipeline_id,
+            'pipeline_stage_id' => $firstStage ? $firstStage->id : null,
+        ]);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Deals moved to the selected pipeline successfully.',
+        ]);
+    }
+
 
 }

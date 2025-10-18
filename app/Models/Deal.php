@@ -136,6 +136,7 @@ class Deal extends BaseModel
         'next_follow_up_date' => 'datetime',
     ];
 
+
     public function getImageUrlAttribute()
     {
         $gravatarHash = md5(strtolower(trim($this->name)));
@@ -254,6 +255,22 @@ class Deal extends BaseModel
     public function addedBy()
     {
         return $this->belongsTo(User::class, 'added_by')->withoutGlobalScope(ActiveScope::class);
+    }
+
+    public function lead()
+    {
+        return $this->belongsTo(\App\Models\Lead::class, 'lead_id');
+    }
+
+    public function labels()
+    {
+        return $this->belongsToMany(PipelineLabel::class, 'deal_label', 'deal_id', 'label_id')
+            ->withTimestamps();
+    }
+
+    public function getSubAgentsArrayAttribute()
+    {
+        return $this->sub_agents ? explode(',', $this->sub_agents) : [];
     }
 
 }

@@ -10,6 +10,7 @@ use App\Models\PipelineStage;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\LeadSetting;
+use App\Models\PipelineLabel;
 
 class LeadSettingController extends AccountBaseController
 {
@@ -37,7 +38,12 @@ class LeadSettingController extends AccountBaseController
         $this->leadStages = PipelineStage::all();
         $this->leadAgents = User::whereHas('leadAgent')->with('leadAgent', 'employeeDetail.designation:id,name')->get();
         $this->leadCategories = LeadCategory::all();
+
+        // ADD THIS LINE - Load labels with pipeline relationship
+        $this->labels = PipelineLabel::with('pipeline')->get();
+
         $this->leadSettings = LeadSetting::select('status')->first();
+
 
         $this->employees = User::doesntHave('leadAgent')
             ->join('role_user', 'role_user.user_id', '=', 'users.id')
@@ -53,6 +59,7 @@ class LeadSettingController extends AccountBaseController
             'agent' => 'lead-settings.ajax.agent',
             'category' => 'lead-settings.ajax.category',
             'method' => 'lead-settings.ajax.method',
+            'labels' => 'lead-settings.ajax.labels',
             default => 'lead-settings.ajax.source',
         };
 
