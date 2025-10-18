@@ -35,7 +35,7 @@ class DepartmentDataTable extends BaseDataTable
             ->addColumn('action', function ($row) {
 
                 $action = '<div class="task_view">
-<a href="' . route('departments.show', [$row->id]) . '" class="taskView text-darkest-grey f-w-500 openRightModal">' . __('app.view') . '</a>
+                <a href="' . route('departments.show', [$row->id]) . '" class="taskView text-darkest-grey f-w-500 openRightModal">' . __('app.view') . '</a>
                     <div class="dropdown">
                         <a class="task_view_more d-flex align-items-center justify-content-center dropdown-toggle" type="link"
                             id="dropdownMenuLink-' . $row->id . '" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

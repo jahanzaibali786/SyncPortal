@@ -19,9 +19,13 @@ use Illuminate\Notifications\Notifiable;
  * @property int|null $client_id
  * @property int|null $source_id
  * @property int|null $status_id
+ * @property int|null $deal_watcher
  * @property int $column_priority
  * @property int|null $agent_id
  * @property string|null $company_name
+ * @property string|null $subject
+ * @property string|null $labels
+ * @property string|null $product
  * @property string|null $website
  * @property string|null $address
  * @property string|null $salutation

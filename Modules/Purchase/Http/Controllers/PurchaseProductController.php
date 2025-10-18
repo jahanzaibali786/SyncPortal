@@ -19,6 +19,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Response;
 use Modules\Purchase\Entities\PurchaseProduct;
 use App\Http\Controllers\AccountBaseController;
+use App\Models\ChartOfAccount;
 use App\Models\Product;
 use Modules\Purchase\Entities\PurchaseInventory;
 use Modules\Purchase\Entities\PurchaseSetting;
@@ -91,6 +92,7 @@ class PurchaseProductController extends AccountBaseController
         if ($product->getCustomFieldGroupsWithFields()) {
             $this->fields = $product->getCustomFieldGroupsWithFields()->fields;
         }
+        $this->accounts = ChartOfAccount::where('company_id', company()->id)->get();
 
         $this->unit_types = UnitType::all();
 
@@ -120,6 +122,8 @@ class PurchaseProductController extends AccountBaseController
         $product->taxes = $request->tax ? json_encode($request->tax) : null;
         $product->hsn_sac_code = $request->hsn_sac_code;
         $product->unit_id = $request->unit_type;
+        $product->income_account = $request->income_account_id;
+        $product->expense_account = $request->expense_account_id;
         $product->description = trim_editor($request->description);
         $product->allow_purchase = $request->purchase_allow == 'no';
         $product->downloadable = $request->downloadable == 'true';
@@ -197,10 +201,8 @@ class PurchaseProductController extends AccountBaseController
 
         if ($request->add_more == 'true') {
             $html = $this->create();
-
             return Reply::successWithData(__('messages.recordSaved'), ['html' => $html, 'add_more' => true, 'productID' => $product->id, 'defaultImage' => $request->default_image ?? 0]);
         }
-
         return Reply::successWithData(__('messages.recordSaved'), ['redirectUrl' => $redirectUrl, 'productID' => $product->id, 'defaultImage' => $request->default_image ?? 0]);
     }
 
@@ -374,6 +376,8 @@ class PurchaseProductController extends AccountBaseController
         $product->taxes = $request->tax ? json_encode($request->tax) : null;
         $product->hsn_sac_code = $request->hsn_sac_code;
         $product->unit_id = $request->unit_type;
+        $product->income_account = $request->income_account_id;
+        $product->expense_account = $request->expense_account_id;
         $product->description = trim_editor($request->description);
         $product->allow_purchase = ($request->purchase_allow == 'no') ? true : false;
         $product->downloadable = ($request->downloadable == 'true') ? true : false;

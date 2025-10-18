@@ -284,6 +284,7 @@ return array(
         'invoicePaymentDetails' => 'Invoice Payment Details',
         'projectCalendar' => 'Project Calendar',
         'customLink' => 'Custom Link',
+        'globalImport' => 'Global Import',
         'pusher' => array(
             'appId' => 'App Id',
             'appKey' => 'App Key',
@@ -470,8 +471,8 @@ return array(
         'weeklyTimesheets' => 'Weekly Timesheets',
         'affiliates' => 'Affiliates',
         'vouchers' => 'Vouchers',
-
         'coa' => 'Chart of Accounts',
+        'chartOfAccounts' => 'Chart of Accounts',
         'financeReports' => 'Finance Reports',
         'ledgerReport' => 'Ledger Report',
         'trialBalanceReport' => 'Trial Balance Report',

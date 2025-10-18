@@ -9,6 +9,8 @@ return array(
     'moduleDisabled' => 'Module is disabled.',
     'taskTimerRunning' => 'Task timer is Active',
     'timerOkay' => 'Okay',
+    'chartOfAccountRequired' => 'Chart of account is required.',
+    'selectChartOfAccount' => 'Please select chart of account.',
     'enterAtLeastOneHour' => 'Please enter at least one hour/min.',
     'stopTheTimer' => 'Tasks with active timer cannot be removed.',
     'confirm' => 'Confirm',

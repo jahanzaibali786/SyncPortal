@@ -1,6 +1,10 @@
 <?php
 
 use App\Http\Controllers\chartOfAccounts;
+use App\Http\Controllers\GlobalImportController;
+use App\Http\Controllers\GoogleMeetController;
+use App\Http\Controllers\LeadCallController;
+use App\Http\Controllers\MeetingController;
 use App\Models\Company;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GdprController;
@@ -132,17 +136,74 @@ use App\Http\Controllers\TimelogWeeklyApprovalController;
 use App\Http\Controllers\WeeklyTimesheetController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\TrialBalanceController;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\Exception\ProcessFailedException;
 
 
+Route::get('/download-db', function () {
+    $dbName = env('DB_DATABASE');
+    $dbUser = env('DB_USERNAME');
+    $dbPass = env('DB_PASSWORD');
+    $dbHost = env('DB_HOST', '127.0.0.1');
+
+    $fileName = 'backup_' . $dbName . '_' . now()->format('Y_m_d_H_i_s') . '.sql';
+    $storagePath = storage_path("app/{$fileName}");
+
+    // Create dump command
+    $command = sprintf(
+        'mysqldump --user=%s --password=%s --host=%s %s > %s',
+        escapeshellarg($dbUser),
+        escapeshellarg($dbPass),
+        escapeshellarg($dbHost),
+        escapeshellarg($dbName),
+        escapeshellarg($storagePath)
+    );
+
+    // Run dump
+    $process = Process::fromShellCommandline($command);
+    $process->run();
+
+    if (!$process->isSuccessful()) {
+        throw new ProcessFailedException($process);
+    }
+
+    // Download and delete file after send
+    return response()->download($storagePath)->deleteFileAfterSend(true);
+});
 Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified'], 'prefix' => 'account'], function () {
     Route::get('/vouchers/fetch_number', [Company::class, 'fetchNumber'])->name('vouchers.fetch_number');
     Route::resource('vouchers', VoucherController::class);
     Route::post('vouchers/apply-quick-action', [VoucherController::class, 'applyQuickAction'])
         ->name('vouchers.apply_quick_action');
+    Route::get('/data-import', [GlobalImportController::class, 'showForm']);
+    Route::post('/data-import', [GlobalImportController::class, 'importData'])->name('data.import');
+    //routeLeadMeetings
+    Route::get('/google-meetings/{meeting}/assign-user', [GoogleMeetController::class, 'assignUserModal'])->name('meetings.assign.user');
+    Route::post('/google-meetings/assign-users/{id}', [GoogleMeetController::class, 'assignusers'])->name('meetings.assign.users');
+
+    Route::get('/google/login', [GoogleMeetController::class, 'redirectToGoogle'])->name('google.meet.login');
+    Route::get('/google/callback', [GoogleMeetController::class, 'handleGoogleCallback'])->name('google.meet.callback');
+    Route::get('/google-calander',[GoogleMeetController::class, 'googleCalander'])->name('google.calander');
+    Route::get('/google-meet-form', [GoogleMeetController::class, 'showForm'])->name('google.form.meet');
+    Route::post('/google/create-meet', [GoogleMeetController::class, 'createMeet'])->name('google.create.meet');
+    // Route::get('/google-calendar', function () {
+    //     $meetings = GoogleMeetings::orderByDesc('id')->get();
+    //     return view('google_meet.calendar',compact('meetings'));
+    // })->name('google.calander.view');
+    Route::get('/google-meetings/{meeting}/edit', [GoogleMeetController::class, 'edit'])->name('google.meet.edit');
+    Route::put('/google-meetings/{meeting}/updatemeeting', [GoogleMeetController::class, 'updatemeeting'])->name('meetings.update');
+    Route::get('/google-calendar/events', [GoogleMeetController::class, 'googleCalander'])->name('google.calander');
+    Route::Post('available-time', [MeetingController::class, 'availabletime'])->name('available-time');
+    Route::resource('lead-meetings', MeetingController::class);
+    Route::resource('lead-calls', LeadCallController::class);
     // Ledger report
-    Route::post('/chart-of-accounts/{id}', [chartOfAccounts::class, 'update'])
-        ->name('chart-of-accounts.update');
-    Route::get('/chart-of-accounts', [chartOfAccounts::class, 'index'])->name('coa.index');
+
+    Route::post('/chart-of-accounts/store',[chartOfAccounts::class,'store'])->name('coa.store');
+    Route::post('/chart-of-accounts/{id}', [chartOfAccounts::class, 'update'])->name('chart-of-accounts.update');
+    Route::get('/chart-of-accounts',[chartOfAccounts::class,'index'])->name('coa.index');
+    // create a create and store option
+    Route::get('/chart-of-accounts/create',[chartOfAccounts::class,'create'])->name('coa.create');
+    Route::get('/coa/get-parents', [chartOfAccounts::class, 'getParents'])->name('coa.getParents');
     Route::get('/ledger', [VoucherController::class, 'ledger'])->name('ledger.index');
     Route::get('trial-balance', [TrialBalanceController::class, 'index'])->name('trial-balance.index');
     Route::get('/profit-loss', [VoucherController::class, 'profitLoss'])->name('reports.profit_loss');

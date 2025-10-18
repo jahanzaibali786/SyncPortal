@@ -9,6 +9,9 @@ use App\DataTables\DealsDataTable;
 use App\DataTables\ProposalDataTable;
 use App\Enums\Salutation;
 use App\Events\AutoFollowUpReminderEvent;
+use App\Models\GoogleMeetings;
+use App\Models\LeadCall;
+use App\Models\Meeting;
 use ReflectionClass;
 use Illuminate\Support\Facades\DB;
 use App\Helper\Reply;
@@ -191,7 +194,6 @@ class DealController extends AccountBaseController
                 if (user()->permission('view_lead_follow_up') == 'added') {
                     $this->dealFollowUps = $this->dealFollowUps->where('added_by', user()->id);
                 }
-
                 $this->tab = 'leads.ajax.follow-up';
                 break;
             case 'proposals':
@@ -233,6 +235,30 @@ class DealController extends AccountBaseController
             case 'history':
                 $this->histories = DealHistory::where('deal_id', $id)->orderBy('created_at', 'desc')->get();
                 $this->tab = 'leads.ajax.history';
+                break;
+            case 'meeting':
+                // --- MEETING TAB ---
+                $this->dealMeetings = Meeting::where('lead_id', $id)->get();
+
+                // if (user()->permission('view_lead_meeting') == 'added') {
+                //     $this->dealMeetings = $this->dealMeetings->where('added_by', user()->id);
+                // }
+
+                $this->tab = 'leads.ajax.meeting';
+                break;
+
+            case 'call':
+                // --- CALLS TAB ---
+                $this->dealCalls = LeadCall::where('lead_id', $id)
+                    ->with('user')
+                    ->orderByDesc( 'created_at')
+                    ->get();
+
+                if (user()->permission('view_lead_call') == 'added') {
+                    $this->dealCalls = $this->dealCalls->where('user_id', user()->id);
+                }
+
+                $this->tab = 'leads.ajax.call_tab'; // this is your blade file for calls
                 break;
             default:
                 $this->tab = 'leads.ajax.files';
