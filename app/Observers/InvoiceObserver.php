@@ -107,6 +107,7 @@ class InvoiceObserver
                 $product = request()->product_id;
                 $amount = request()->amount;
                 $tax = request()->taxes;
+                $coa = request()->chart_of_account_id;
                 $invoice_item_image = request()->invoice_item_image;
                 $invoice_item_image_delete = request()->invoice_item_image_delete;
                 $invoice_item_image_url = request()->invoice_item_image_url;
@@ -114,7 +115,7 @@ class InvoiceObserver
 
                 foreach (request()->item_name as $key => $item) :
                     if (!is_null($item)) {
-                        // dd($itemsSummary);
+                        // dd($item,$itemsSummary,$coa,request()->all());
                         $invoiceItem = InvoiceItems::create(
                             [
                                 'invoice_id' => $invoice->id,
@@ -128,7 +129,8 @@ class InvoiceObserver
                                 'unit_price' => round($cost_per_item[$key], 2),
                                 'amount' => round($amount[$key], 2),
                                 'taxes' => ($tax ? (array_key_exists($key, $tax) ? json_encode($tax[$key]) : null) : null),
-                                'field_order' => $key + 1
+                                'field_order' => $key + 1,
+                                'chart_of_account' => (isset($coa[$key])) ? $coa[$key] : null,
                             ]
                         );
                     }

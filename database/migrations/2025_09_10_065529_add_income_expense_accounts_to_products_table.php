@@ -19,6 +19,12 @@ return new class extends Migration
             $table->foreign('income_account')->references('id')->on('chart_of_accounts');
             $table->foreign('expense_account')->references('id')->on('chart_of_accounts');
         });
+        //INVOICE PRODUCT
+        Schema::table('invoice_products', function (Blueprint $table) {
+            //chart of account
+            $table->unsignedBigInteger('chart_of_account')->after('product_id');
+            $table->foreign('chart_of_account')->references('id')->on('chart_of_accounts');
+        });
     }
 
     /**
@@ -30,6 +36,10 @@ return new class extends Migration
             $table->dropForeign(['income_account']);
             $table->dropForeign(['expense_account']);
             $table->dropColumn(['income_account', 'expense_account']);
+        });
+        Schema::table('invoice_products', function (Blueprint $table) {
+            $table->dropForeign(['chart_of_account']);
+            $table->dropColumn(['chart_of_account']);
         });
     }
 };
