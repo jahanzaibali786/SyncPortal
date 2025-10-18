@@ -197,7 +197,7 @@ class Lead extends BaseModel
         if ($viewLeadPermission == 'both') {
             $leadsQuery = $leadsQuery->where(function ($query) {
                 $query->where('lead_owner', user()->id)
-                      ->orWhere('added_by', user()->id);
+                    ->orWhere('added_by', user()->id);
             });
         }
 
@@ -208,6 +208,12 @@ class Lead extends BaseModel
 
         // Retrieve leads
         return $leadsQuery->get();
+    }
+
+    public function labels()
+    {
+        return $this->belongsToMany(\App\Models\PipelineLabel::class, 'lead_label', 'lead_id', 'label_id')
+            ->withTimestamps();
     }
 
 }

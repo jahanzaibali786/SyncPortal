@@ -26,6 +26,7 @@ class UpdateInvoice extends CoreRequest
      */
     public function rules()
     {
+        // dd($this->request);
         $this->has('show_shipping_address') ? $this->request->add(['show_shipping_address' => 'yes']) : $this->request->add(['show_shipping_address' => 'no']);
 
         $setting = company();

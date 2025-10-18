@@ -197,6 +197,7 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     Route::resource('lead-meetings', MeetingController::class);
     Route::resource('lead-calls', LeadCallController::class);
     // Ledger report
+
     Route::post('/chart-of-accounts/store',[chartOfAccounts::class,'store'])->name('coa.store');
     Route::post('/chart-of-accounts/{id}', [chartOfAccounts::class, 'update'])->name('chart-of-accounts.update');
     Route::get('/chart-of-accounts',[chartOfAccounts::class,'index'])->name('coa.index');
@@ -619,6 +620,10 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     Route::post('leadboards/updateIndex', [LeadBoardController::class, 'updateIndex'])->name('leadboards.update_index');
     Route::get('leadboards/loadMore', [LeadBoardController::class, 'loadMore'])->name('leadboards.load_more');
     Route::resource('leadboards', LeadBoardController::class);
+
+    Route::post('/deals/bulk-move-stage', [DealController::class, 'bulkMoveStage'])->name('deals.bulk-move-stage');
+    Route::post('/deals/bulk-move-pipeline', [DealController::class, 'bulkMovePipeline'])->name('deals.bulk-move-pipeline');
+
 
     Route::post('lead-form/sortFields', [LeadCustomFormController::class, 'sortFields'])->name('lead-form.sortFields');
     Route::resource('lead-form', LeadCustomFormController::class);
