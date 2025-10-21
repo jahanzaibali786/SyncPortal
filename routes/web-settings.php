@@ -58,6 +58,8 @@ use App\Http\Controllers\UnitTypeController;
 use App\Http\Controllers\UpdateAppController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PipelineLabelController;
+use App\DataTables\LeadCallsDataTable;
+
 
 
 Route::get('account/settings/google-auth', [GoogleAuthController::class, 'index'])->name('googleAuth');
@@ -233,7 +235,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account/settings'], function 
     Route::get('pipeline-labels/get-deal-labels', [PipelineLabelController::class, 'getDealLabels'])->name('pipeline-labels.get-deal-labels');
     Route::post('pipeline-labels/update-deal-labels', [PipelineLabelController::class, 'updateDealLabels'])->name('pipeline-labels.update-deal-labels');
 
-    
 
 
 
