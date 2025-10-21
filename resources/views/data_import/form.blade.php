@@ -16,6 +16,7 @@
                     class="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500">
                     <option value="" selected disabled>{{ __('Select Data Type') }}</option>
                     <option value="leads">{{ __('Leads') }}</option>
+                    <option value="leads_discussion">{{ __('Leads Discussion') }}</option>
                 </select>
             </div>
             <div class="mb-6 w-full">

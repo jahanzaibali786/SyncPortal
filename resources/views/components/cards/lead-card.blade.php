@@ -37,15 +37,18 @@
 
         {{-- @dd($lead->lead->labels) --}}
 
-        <div class="mt-2">
-            @if ($lead->labels->count() > 0)
-                @foreach ($lead->labels as $label)
-                    <span class="badge badge-{{ $label->label_color }} mr-1">
-                        {{ $label->name }}
-                    </span>
-                @endforeach
-            @endif
-        </div>
+        @php
+            $leadLabels = is_iterable($lead->labels) ? $lead->labels : [];
+        @endphp
+
+        @if (count($leadLabels) > 0)
+            @foreach ($leadLabels as $label)
+                <span class="badge badge-{{ $label->label_color }} mr-1">
+                    {{ $label->name }}
+                </span>
+            @endforeach
+        @endif
+
 
         {{-- @dd($allLabels) --}}
 
@@ -77,38 +80,36 @@
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex flex-wrap align-items-center">
 
-    {{-- Main Agent --}}
-    @if (!is_null($lead->agent_id) && $lead->leadAgent && $lead->leadAgent->user)
-        <div class="avatar-img mr-1 rounded-circle">
-            <a href="{{ route('employees.show', $lead->leadAgent->user_id) }}"
-                alt="{{ $lead->leadAgent->user->name }}"
-                data-toggle="tooltip"
-                data-original-title="{{ __('app.leadAgent') . ' : ' . $lead->leadAgent->user->name }}"
-                data-placement="right">
-                <img src="{{ $lead->leadAgent->user->image_url }}">
-            </a>
-        </div>
-    @endif
+                {{-- Main Agent --}}
+                @if (!is_null($lead->agent_id) && $lead->leadAgent && $lead->leadAgent->user)
+                    <div class="avatar-img mr-1 rounded-circle">
+                        <a href="{{ route('employees.show', $lead->leadAgent->user_id) }}"
+                            alt="{{ $lead->leadAgent->user->name }}" data-toggle="tooltip"
+                            data-original-title="{{ __('app.leadAgent') . ' : ' . $lead->leadAgent->user->name }}"
+                            data-placement="right">
+                            <img src="{{ $lead->leadAgent->user->image_url }}">
+                        </a>
+                    </div>
+                @endif
 
-    {{-- Sub Agents --}}
-    @php
-        $subAgentIds = $lead->sub_agents ? explode(',', $lead->sub_agents) : [];
-        $subAgents = \App\Models\User::whereIn('id', $subAgentIds)->get();
-    @endphp
+                {{-- Sub Agents --}}
+                @php
+                    $subAgentIds = $lead->sub_agents ? explode(',', $lead->sub_agents) : [];
+                    $subAgents = \App\Models\User::whereIn('id', $subAgentIds)->get();
+                @endphp
 
-    @foreach ($subAgents as $subAgent)
-        <div class="avatar-img mr-1 rounded-circle">
-            <a href="{{ route('employees.show', $subAgent->id) }}"
-                alt="{{ $subAgent->name }}"
-                data-toggle="tooltip"
-                data-original-title="{{ __('modules.deal.subAgent') . ' : ' . $subAgent->name }}"
-                data-placement="right">
-                <img src="{{ $subAgent->image_url }}">
-            </a>
-        </div>
-    @endforeach
+                @foreach ($subAgents as $subAgent)
+                    <div class="avatar-img mr-1 rounded-circle">
+                        <a href="{{ route('employees.show', $subAgent->id) }}" alt="{{ $subAgent->name }}"
+                            data-toggle="tooltip"
+                            data-original-title="{{ __('modules.deal.subAgent') . ' : ' . $subAgent->name }}"
+                            data-placement="right">
+                            <img src="{{ $subAgent->image_url }}">
+                        </a>
+                    </div>
+                @endforeach
 
-</div>
+            </div>
 
             @if ($lead->next_follow_up_date != null && $lead->next_follow_up_date != '')
                 <div class="d-flex text-lightest">
