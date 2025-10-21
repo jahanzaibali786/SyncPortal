@@ -1075,6 +1075,7 @@ return array(
     'signInToDifferentDomain' => 'Sign in to Different Domain',
     'addProject' => 'Add Project',
     'addTask' => 'Add Task',
+    'enterTaskTitle' => 'Enter Task Title',
     'addClient' => 'Add Client',
     'addLead' => 'Add Lead',
     'addPassport' => 'Add Passport',

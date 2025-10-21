@@ -1,0 +1,322 @@
+id,name,email,phone,numbers,subject,contact_person,designation,user_id,pipeline_id,stage_id,sources,products,test,detail,country,labels,order,status,created_by,is_active,is_converted,date,created_at,updated_at,notes
+2,Mindstir Co-Working,info@mindstir.space,3316611193,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,64,1,2,1,0,12/18/2023,12/18/2023 18:59,11/25/2024 18:51,NULL
+3,Work Zone,hello@workzone.com,3243437926,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,88,1,2,1,0,12/18/2023,12/18/2023 19:02,11/25/2024 18:51,NULL
+4,The Hive,info@thehive.pk,517080129,NULL,Co-Working Software,NULL,NULL,7,1,3,,,,NULL,NULL,NULL,5,1,2,1,0,12/18/2023,12/18/2023 19:05,8/10/2024 13:03,NULL
+5,Mentor's Pakistan,Not Available,Not Available,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,89,1,2,1,0,12/18/2023,12/18/2023 19:15,11/25/2024 18:51,NULL
+6,Kaam Khana,info@kaamkhana.com,3352265226,NULL,Co-Working Software,NULL,NULL,7,1,1,,,,NULL,NULL,NULL,17,1,2,1,0,12/18/2023,12/18/2023 19:33,11/25/2024 15:17,NULL
+7,Kawaa Co-Working,Ahmed@creativeitpark.org,3146620880,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,87,1,2,1,0,12/18/2023,12/18/2023 19:44,11/25/2024 18:51,NULL
+11,KUBIKATE Co-Working,abx@gmail.com,3256969693,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,86,1,2,1,0,12/18/2023,12/18/2023 20:23,11/25/2024 18:51,NULL
+13,twinhub,twinhub@pk,3348946482,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,81,1,2,1,0,12/18/2023,12/18/2023 20:43,11/25/2024 18:52,NULL
+14,PAXICO,aby@gmail.com,3030888761,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,80,1,2,1,0,12/18/2023,12/18/2023 20:53,11/25/2024 18:52,"<p>Not interested, they are currently using one</p>"
+15,TheWing,info@thewing.pk,3331119200,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,79,1,2,1,0,12/18/2023,12/18/2023 21:01,11/25/2024 18:52,NULL
+17,Workshack,info@workshack.co,512722214,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,85,1,2,1,0,12/18/2023,12/18/2023 22:03,11/25/2024 18:51,NULL
+21,HackerSpace,ab_c@gmail.com,3465080506,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,78,1,2,1,0,12/19/2023,12/19/2023 20:59,11/25/2024 18:52,NULL
+22,IVY-Co-Working,ab.c@gmail.com,3008899984,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,84,1,2,1,0,12/21/2023,12/21/2023 20:19,11/25/2024 18:51,NULL
+23,WeCreate,abq@gmail.com,518737115,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,83,1,2,1,0,12/21/2023,12/21/2023 20:26,11/25/2024 18:51,NULL
+25,Coco Space,info@cocospace.pk,33550777,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,82,1,2,1,0,12/21/2023,12/21/2023 20:44,11/25/2024 18:51,NULL
+26,THE Co-Working Space,ab.d@gmail.com,3335169043,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,81,1,2,1,0,12/21/2023,12/21/2023 20:50,11/25/2024 18:51,NULL
+27,WorkZone,sales@workzonespaces.com,3243437926,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,80,1,2,1,0,12/21/2023,12/21/2023 20:57,11/25/2024 18:51,NULL
+28,Launchpad7,launchpad7@gmail.com,3095303785,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,77,1,2,1,0,12/21/2023,12/21/2023 21:02,11/25/2024 18:52,<p>Not Interested</p>
+29,Daftarkhwan |North,hello@daftarkhwan.com,3041113387,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,79,1,2,1,0,12/21/2023,12/21/2023 21:09,11/25/2024 18:51,NULL
+30,CoWork24,info@Cowork24.pk,3165134161,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,78,1,2,1,0,12/21/2023,12/21/2023 21:18,11/25/2024 18:51,NULL
+31,Startup CoWorks,info@startupcoworks.com,3095550753,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,77,1,2,1,0,12/21/2023,12/21/2023 21:27,11/25/2024 18:51,NULL
+33,Daftarkhwan |Alpha,daftarkhwan.com,3041113387,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,76,1,2,1,0,12/21/2023,12/21/2023 21:43,11/25/2024 18:51,NULL
+34,Daftarkhwan |Vantage,hello@daftar.com,3018421699,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,75,1,2,1,0,12/21/2023,12/21/2023 21:44,11/25/2024 18:51,NULL
+36,Joyco Rawalpindi,info.rwp@joyco.pk,0321 8755250,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,74,1,2,1,0,12/21/2023,12/21/2023 21:52,11/25/2024 18:51,NULL
+38,Hamara Office,help@hamaraoffice.com,0304 4440764,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,76,1,2,1,0,12/21/2023,12/21/2023 22:01,11/25/2024 18:52,NULL
+41,"Regus - Islamabad, Emirates Tower",regus@gmail.com,(051) 2099102,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,75,1,2,1,0,12/21/2023,12/21/2023 22:37,11/25/2024 18:52,NULL
+42,TecLounge,TecLounge Email is not available,0345 5573314,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,73,1,2,1,0,12/21/2023,12/21/2023 22:40,11/25/2024 18:51,NULL
+43,Genie,Genie email is not available,0300 5681867,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,72,1,2,1,0,12/21/2023,12/21/2023 22:42,11/25/2024 18:51,NULL
+44,Lead co working space,ab_x@gmail.com,0308 3585577,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,71,1,2,1,0,12/21/2023,12/21/2023 22:46,11/25/2024 18:51,NULL
+46,The Indyspaces,a_bc@gmail.com,0300 5957597,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,70,1,2,1,0,12/21/2023,12/21/2023 22:50,11/25/2024 18:51,NULL
+47,The OEC Tower,info@fnd.com.pk,Not Available,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,69,1,2,1,0,12/21/2023,12/21/2023 22:52,11/25/2024 18:51,NULL
+48,Coworkist,email of this website not available,0311 5709075,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,68,1,2,1,0,12/21/2023,12/21/2023 22:55,11/25/2024 18:51,NULL
+49,TechsaSpace,support@techsaspace.com,0337 8288848,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,67,1,2,1,0,12/21/2023,12/21/2023 22:57,11/25/2024 18:51,NULL
+50,Enrollwork by Enrollers,info@enrollers.org,0313 7774377,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,66,1,2,1,0,12/21/2023,12/21/2023 23:00,11/25/2024 18:51,NULL
+51,Hive Haven,Hivehaven.pk@gmail.com,0318 0979698,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,74,1,2,1,0,12/21/2023,12/21/2023 23:02,11/25/2024 18:52,NULL
+52,Spaces Pakistan,abc2@gmail.com,0323 8418949,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,73,1,2,1,0,12/21/2023,12/21/2023 23:05,11/25/2024 18:52,"<p>They already have a software, they do not need it.</p>"
+53,Daftarkhwan | Vanguard,Already Available,Not Available,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,65,1,2,1,0,12/21/2023,12/21/2023 23:07,11/25/2024 18:51,NULL
+54,Broad Peak Realty,info@daaproptech.com,0314 3267767,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,66,1,2,1,0,12/21/2023,12/21/2023 23:12,11/25/2024 18:52,NULL
+55,Ivy Coworking Islamabad,not@found,(051) 8858888,NULL,Co-Working Software,Awais Rahat,Proprietor,7,1,1,"5,2",20,,NULL,NULL,NULL,5,1,2,1,0,1/2/2024,1/2/2024 22:25,1/22/2025 18:08,NULL
+56,Cooffice,dev@cooffice.pk,Not Available,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,63,1,2,1,0,1/2/2024,1/2/2024 22:27,11/25/2024 18:51,NULL
+61,Launchbox Coworking,Launchbox@gmail.com,0307 0555515,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,72,1,2,1,0,1/2/2024,1/2/2024 22:58,11/25/2024 18:52,<p>Not Interested.............</p><p><br></p><p><br></p>
+62,Flock Coworking,flock@gmail.com,0306 4441059,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,71,1,2,1,0,1/2/2024,1/2/2024 23:03,11/25/2024 18:52,<p>Not Interested</p>
+63,Comence | Coworking Space,INFO@COMMENCE.IO,0304 8461000,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,70,1,2,1,0,1/2/2024,1/2/2024 23:12,11/25/2024 18:52,<p>Not Interested</p>
+64,GITMIT CO-WORKING SPACE,info@gitmit.com,0300 7792020,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,69,1,2,1,0,1/3/2024,1/3/2024 17:37,11/25/2024 18:52,NULL
+65,Devlance Coworking space,Devlance@gmail.com,0324 4012414,NULL,Co-Working Software,NULL,NULL,7,1,5,2,,,NULL,NULL,NULL,68,1,2,1,0,1/3/2024,1/3/2024 17:41,11/25/2024 18:52,NULL
+66,Workship,hello@workship.pk,Not Available,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,62,1,2,1,0,1/3/2024,1/3/2024 17:44,11/25/2024 18:51,NULL
+67,Workify Coworking Space,workify@gmail.com,0300 4111431,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,67,1,2,1,0,1/3/2024,1/3/2024 17:47,11/25/2024 18:52,NULL
+70,Value Co Working Space,info@valuecoworking.com,0334 9981940,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,65,1,2,1,0,1/3/2024,1/3/2024 17:53,11/25/2024 18:52,NULL
+71,Next Space,Nextspace@gmail.com,0326 4169850,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,61,1,2,1,0,1/3/2024,1/3/2024 17:56,11/25/2024 18:51,NULL
+72,Coloc work,Coloc@gmail.com,0311 1126562,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,60,1,2,1,0,1/3/2024,1/3/2024 18:00,11/25/2024 18:51,NULL
+74,Desk & Wifi Coworking,Desk@gmail.com,0307 6442833,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,59,1,2,1,0,1/3/2024,1/3/2024 18:05,11/25/2024 18:51,NULL
+75,WorkNation.space,Worknation@gmail.com,0321 4559000,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,58,1,2,1,0,1/3/2024,1/3/2024 18:08,11/25/2024 18:51,NULL
+76,eCoworking Space,info@ecoworking.pk,0310 0040606,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,57,1,2,1,0,1/3/2024,1/3/2024 18:10,11/25/2024 18:51,NULL
+77,COWO,hello@cowo.pk,0300 8844475,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,56,1,2,1,0,1/3/2024,1/3/2024 18:14,11/25/2024 18:51,NULL
+78,The Hive at Lahore,info@thehive,(021) 37131410,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,64,1,2,1,0,1/3/2024,1/3/2024 18:17,11/25/2024 18:52,<p>They are already using a software. May contact us in the future.</p><p><br></p>
+80,BENCH WORK,benchwork@gmail.com,0300 3693055,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,63,1,2,1,0,1/3/2024,1/3/2024 18:20,11/25/2024 18:52,<p>Not Interested</p>
+81,Campus Coworking,campusco-working@gmail.com,0300 4025115,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,55,1,2,1,0,1/3/2024,1/3/2024 18:25,11/25/2024 18:51,NULL
+82,Campus Coworking,Campus@gmail.com,0300 4025115,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,54,1,2,1,0,1/3/2024,1/3/2024 18:25,11/25/2024 18:51,NULL
+84,Daftarkhwan | One (DHA),daftarkhwan@gmail.com,0304 1113387,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,53,1,2,1,0,1/3/2024,1/3/2024 18:31,11/25/2024 18:51,NULL
+86,Venture Drive Model Town,inbox@venturedrive.pk,0332 2222474,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,60,1,2,1,0,1/3/2024,1/3/2024 18:37,11/25/2024 18:52,NULL
+87,Huddle Coworking Space,hi@huddle.pk,0307 9306006,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,62,1,2,1,0,1/3/2024,1/3/2024 18:39,11/25/2024 18:52,"<p><span style=""font-family: Arial;"">﻿</span><br></p>"
+88,Conetwork,Conet@gmail.com,0317 4279902,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,61,1,2,1,0,1/3/2024,1/3/2024 18:44,11/25/2024 18:52,NULL
+89,Work Republic,workrepublic@gmail.com,0312 1491491,NULL,Co-Working Software,NULL,NULL,7,1,5,2,,,NULL,NULL,NULL,59,1,2,1,0,1/3/2024,1/3/2024 18:47,11/25/2024 18:52,NULL
+90,Venture Drive Johar Town,Venturedrive@gmail.com,0332 2222474,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,58,1,2,1,0,1/3/2024,1/3/2024 18:50,11/25/2024 18:52,<p>Not interested</p>
+91,Daftarkhwan | Downtown,DaftarkhwanDowntown@gmail.com,0304 1113387,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,52,1,2,1,0,1/3/2024,1/3/2024 18:51,11/25/2024 18:51,NULL
+92,WORKVANU,workvanu@gmail.com,0327 0893845,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,56,1,2,1,0,1/3/2024,1/3/2024 18:53,11/25/2024 18:52,NULL
+93,Venture Hub Coworking,venturehub@gmail.com,0307 1281280,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,57,1,2,1,0,1/3/2024,1/3/2024 18:55,11/25/2024 18:52,NULL
+94,Forrun office,info@forrunoffice.com,(042) 35758777,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,51,1,2,1,0,1/3/2024,1/3/2024 19:00,11/25/2024 18:51,NULL
+95,IGNITION COWORKING SPACE,info@ignition.pk,0340 1111044,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,50,1,2,1,0,1/3/2024,1/3/2024 19:02,11/25/2024 18:51,NULL
+97,Co-Working Absolute Social Club,Co-working@gmail.com,0307 6222252,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,55,1,2,1,0,1/3/2024,1/3/2024 19:08,11/25/2024 18:52,NULL
+99,Business Bar and RF Events,Businessbar@gmail.com,0324 4567445,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,49,1,2,1,0,1/3/2024,1/3/2024 19:12,11/25/2024 18:51,NULL
+100,CoHive Workspace,Cohive@gmail.com,0326 8591913,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,54,1,2,1,0,1/3/2024,1/3/2024 19:16,11/25/2024 18:52,NULL
+101,Dreamers Coworking Studio,Dreamers@gmail.com,0300 7774647,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,48,1,2,1,0,1/3/2024,1/3/2024 19:18,11/25/2024 18:51,NULL
+102,Rapid Co-Working,booking@rapidcoworking.com,(042) 35970735,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,53,1,2,1,0,1/3/2024,1/3/2024 19:20,11/25/2024 18:52,NULL
+103,Workfuse Coworking,workfuse@gmail.com,0308 4251537,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,52,1,2,1,0,1/3/2024,1/3/2024 19:22,11/25/2024 18:52,NULL
+104,Work Hub co-working space,reception@theworkbox.com,0305 4155541,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,51,1,2,1,0,1/3/2024,1/3/2024 19:24,11/25/2024 18:52,NULL
+105,La Oficina,La Oficina @gmail.com,(042) 35974417,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,47,1,2,1,0,1/3/2024,1/3/2024 19:25,11/25/2024 18:51,NULL
+106,The Cowork,co-work@gmail.com,0300 4449874,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,50,1,2,1,0,1/3/2024,1/3/2024 19:27,11/25/2024 18:52,NULL
+107,Space Station co-working,spacestation@gmail.com,0310 4004001,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,46,1,2,1,0,1/3/2024,1/3/2024 19:31,11/25/2024 18:52,NULL
+108,Tulip CoWorking Space,tulip@gmail.com,0322 4050987,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,49,1,2,1,0,1/3/2024,1/3/2024 19:33,11/25/2024 18:52,NULL
+110,Co-Wired,business@co-wired.com,0300 4326150,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,48,1,2,1,0,1/3/2024,1/3/2024 19:41,11/25/2024 18:52,NULL
+111,Space Next,spacenext@gmail.com,0300 4623339,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,47,1,2,1,0,1/3/2024,1/3/2024 19:42,11/25/2024 18:52,NULL
+112,Viernode Co Working Space,Viernode@gmail.com,0329 9440000,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,46,1,2,1,0,1/3/2024,1/3/2024 19:45,11/25/2024 18:51,NULL
+113,MANGOSPACE,Mangospace@gmail.com,0331 8433334,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,45,1,2,1,0,1/3/2024,1/3/2024 19:48,11/25/2024 18:51,NULL
+114,COLABS DHA FAIRWAYS,sales@colabs.pk,0300 8496230,NULL,Co-Working Software,NULL,NULL,7,1,5,,1,,NULL,NULL,NULL,45,1,2,1,0,1/3/2024,1/3/2024 19:50,11/25/2024 18:52,<p>not interested</p>
+115,Kursi Maiz co work,kursimaiz@gmail.com,0336 7143408,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,44,1,2,1,0,1/3/2024,1/3/2024 19:52,11/25/2024 18:52,NULL
+116,Work Box Executive,hello@coworkingspaces.pk,0334 4422031,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,43,1,2,1,0,1/3/2024,1/3/2024 19:56,11/25/2024 18:52,<p>Not Interested</p>
+117,vSublet Spaces,reception@vsubletspaces.com,0333 6887880,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,44,1,2,1,0,1/3/2024,1/3/2024 19:59,11/25/2024 18:51,NULL
+118,Orange Space,Orangespace@gmail.com,0331 4767561,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,42,1,2,1,0,1/3/2024,1/3/2024 20:01,11/25/2024 18:52,<p>not interested</p>
+119,Great Pakistan,greatpakistan@gmail.com,(042) 35881323,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,43,1,2,1,0,1/3/2024,1/3/2024 20:57,11/25/2024 18:51,NULL
+120,Co-Working Space - Constuxus,Constuxus@gmail.com,0333 4306436,NULL,Co-Working Software,NULL,NULL,7,1,5,4,,,NULL,NULL,NULL,41,1,2,1,0,1/3/2024,1/3/2024 20:59,11/25/2024 18:52,NULL
+121,Pneurs Coworking Space,Pneurs@gmail.com,0325 2101101,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,42,1,2,1,0,1/3/2024,1/3/2024 21:01,11/25/2024 18:51,NULL
+122,Workvibes,workvibes@gmail.com,0322 1458430,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,41,1,2,1,0,1/3/2024,1/3/2024 21:02,11/25/2024 18:51,NULL
+123,Work Box Studio,info@workboxstudio.pk,0334 4422031,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,40,1,2,1,0,1/3/2024,1/3/2024 21:06,11/25/2024 18:52,<p>Not Interested</p>
+124,Headquarter,Headquarter@gmail.com,0335 8188188,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,39,1,2,1,0,1/3/2024,1/3/2024 21:07,11/25/2024 18:52,NULL
+125,beuro,beuro@gmail.com,0331 1116292,NULL,Co-Working Software,NULL,NULL,7,1,3,,,,NULL,NULL,NULL,4,1,2,1,0,1/3/2024,1/3/2024 21:10,8/10/2024 13:03,NULL
+126,Start-up,Startup@gmail.com,Not Available,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,39,1,2,1,0,1/3/2024,1/3/2024 21:14,11/25/2024 18:51,NULL
+127,Managed Offshore Office,inquiry@managedoffshoreoffice.com,(042) 32321052,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,40,1,2,1,0,1/3/2024,1/3/2024 21:15,11/25/2024 18:51,NULL
+128,Thecohut,cohut@gmail.com,0333 0606662,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,38,1,2,1,0,1/4/2024,1/4/2024 18:04,11/25/2024 18:51,NULL
+129,Space 101,space@gmail.com,0334 5510101,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,37,1,2,1,0,1/4/2024,1/4/2024 18:05,11/25/2024 18:51,NULL
+130,TekBuro,TekBuro@gmail.com,0300 1680866,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,36,1,2,1,0,1/4/2024,1/4/2024 18:06,11/25/2024 18:51,NULL
+131,13j,13j@gmail.com,0344 4565050,NULL,Co-Working Software,NULL,NULL,7,1,5,4,,,NULL,NULL,NULL,38,1,2,1,0,1/4/2024,1/4/2024 18:08,11/25/2024 18:52,NULL
+132,GTechSpace,@myGtechspace,0300 0441498,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,35,1,2,1,0,1/4/2024,1/4/2024 18:09,11/25/2024 18:51,NULL
+133,Z house,info@z-houses.com,0309 6660890,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,34,1,2,1,0,1/4/2024,1/4/2024 18:11,11/25/2024 18:51,NULL
+134,Smart Offices,Smartoffices@gmail.com,0301 0408244,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,33,1,2,1,0,1/4/2024,1/4/2024 18:14,11/25/2024 18:51,NULL
+135,Workstance,workstance@gmail.com,0300 5405313,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,32,1,2,1,0,1/4/2024,1/4/2024 18:16,11/25/2024 18:51,NULL
+136,Binary Coworking Space,Binary@gmail.com,0300 2284271,NULL,Co-Working Software,NULL,NULL,7,1,2,NULL,NULL,,NULL,NULL,NULL,6,1,2,1,0,1/4/2024,1/4/2024 18:19,2/7/2024 15:24,NULL
+137,Workspace by Craftooo,help@craftooo.org,0300 1113841,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,31,1,2,1,0,1/4/2024,1/4/2024 18:22,11/25/2024 18:51,NULL
+138,GreySpace,Greyspace@gmail.com,0347 7722373,NULL,Co-Working Software,NULL,NULL,7,1,1,,,,NULL,NULL,NULL,16,1,2,1,0,1/4/2024,1/4/2024 18:24,11/25/2024 15:17,NULL
+139,LetsWork,Letswork@gmail.com,Not Available,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,30,1,2,1,0,1/4/2024,1/4/2024 18:25,11/25/2024 18:51,NULL
+140,XEOSPACES,Xeospaces@gmail.com,0322 4141165,NULL,Co-Working Software,NULL,NULL,7,1,5,4,,,NULL,NULL,NULL,36,1,2,1,0,1/4/2024,1/4/2024 18:26,11/25/2024 18:52,NULL
+142,The Platform,platform@gmail.com,0332 6760556,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,29,1,2,1,0,1/4/2024,1/4/2024 18:30,11/25/2024 18:51,NULL
+143,Jinnah Spaces,jinnahspaces@gmail.com,0322 5560171,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,37,1,2,1,0,1/4/2024,1/4/2024 18:37,11/25/2024 18:52,<p>Not Needed.........</p>
+144,CoLab Point,coLab@gmail.com,0349 7684322,NULL,Co-Working Software,NULL,NULL,7,1,5,4,,,NULL,NULL,NULL,34,1,2,1,0,1/4/2024,1/4/2024 18:38,11/25/2024 18:52,NULL
+145,CoLab Point,colabpoint@gmail.com,0349 7684322,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,28,1,2,1,0,1/4/2024,1/4/2024 18:41,11/25/2024 18:51,NULL
+146,Work Hall PECHS,workhall@gmail.com,0347 2787663,NULL,Co-Working Software,NULL,NULL,7,1,5,4,,,NULL,NULL,NULL,35,1,2,1,0,1/4/2024,1/4/2024 18:45,11/25/2024 18:52,NULL
+147,My Work Place,workplace@gmail.com,0335 2103550,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,33,1,2,1,0,1/4/2024,1/4/2024 18:48,11/25/2024 18:52,<p>Not Interested</p>
+148,Daftar Coworking Space,Daftar@gmail.com,0322 2462824,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,32,1,2,1,0,1/4/2024,1/4/2024 18:50,11/25/2024 18:52,NULL
+149,CoSpace 2.0,CoSpace@gmaail.com,0330 2677223,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,27,1,2,1,0,1/4/2024,1/4/2024 18:53,11/25/2024 18:51,NULL
+150,Sowaan Workspaces,workspaces@sowaan.com,0301 1832653,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,31,1,2,1,0,1/4/2024,1/4/2024 19:03,11/25/2024 18:52,NULL
+152,SandBox,sandboxkhi@gmail.com,0321 8651457,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,30,1,2,1,0,1/4/2024,1/4/2024 19:06,11/25/2024 18:52,NULL
+153,CoSpace 1.0,cospace1.0@gmail.com,0330 2677223,NULL,Co-Working Software,NULL,NULL,7,1,3,NULL,NULL,,NULL,NULL,NULL,1,1,2,1,0,1/4/2024,1/4/2024 19:11,8/10/2024 13:03,NULL
+154,Station021,Station@gmail.com,0326 0729216,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,25,1,2,1,0,1/4/2024,1/4/2024 19:14,11/25/2024 18:51,NULL
+155,CoSpace 3.0,Cospace3.0@gmail.com,0330 2677223,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,26,1,2,1,0,1/4/2024,1/4/2024 19:15,11/25/2024 18:51,NULL
+156,Seeds Coworking,info@visitseeds.com,(021) 35373337,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,29,1,2,1,0,1/4/2024,1/4/2024 19:24,11/25/2024 18:52,NULL
+157,WorkSpace | Gulshan,worksapcegulshan@gmail.com,0336 6688331,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,28,1,2,1,0,1/4/2024,1/4/2024 19:25,11/25/2024 18:52,<p>Not Interested....</p>
+158,Orange Workspace,orange@gmail.com,0336 4672643,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,27,1,2,1,0,1/4/2024,1/4/2024 19:27,11/25/2024 18:52,<p>Not Interested.............</p>
+159,Ra'ad-co,info@raad.pk,0336 7223276,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,26,1,2,1,0,1/4/2024,1/4/2024 19:29,11/25/2024 18:52,NULL
+160,Agile Space,agilespacepk@gmail.com,0333 2052279,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,25,1,2,1,0,1/4/2024,1/4/2024 19:32,11/25/2024 18:52,NULL
+161,The Bullpen,info@thebullpen.pk,0336 1112855,NULL,Co-Working Software,NULL,NULL,7,1,2,,,,NULL,NULL,NULL,3,1,2,1,0,1/4/2024,1/4/2024 19:34,2/7/2024 15:24,NULL
+162,CoSpace 4.0,CoSpace4.0@gmail.com,0330 2677223,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,24,1,2,1,0,1/4/2024,1/4/2024 19:35,11/25/2024 18:51,NULL
+163,CoWorker.pk,Coworker.pk,0331 0109999,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,23,1,2,1,0,1/4/2024,1/4/2024 19:38,11/25/2024 18:51,NULL
+164,Ezspace Pakistan,Ezspace@gmail.com,0335 7771981,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,24,1,2,1,0,1/4/2024,1/4/2024 19:42,11/25/2024 18:52,NULL
+165,Daftar Coworking Space Branch II,Daftarco-working@gmail.com,Not Available,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,22,1,2,1,0,1/4/2024,1/4/2024 19:44,11/25/2024 18:51,NULL
+166,The Hive at Clifton,sales@thehive.pk,(021) 37131410,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,23,1,2,1,0,1/4/2024,1/4/2024 19:45,11/25/2024 18:52,NULL
+167,CoSpace 5.0,Cospace5.0@gmail.com,0330 2677223,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,21,1,2,1,0,1/4/2024,1/4/2024 20:20,11/25/2024 18:51,NULL
+168,X-ENT,X-ent@gmail.com,0312 2018087,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,20,1,2,1,0,1/4/2024,1/4/2024 20:21,11/25/2024 18:51,NULL
+169,DotZero,Dotzero@gmail.com,(021) 34556352,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,22,1,2,1,0,1/4/2024,1/4/2024 20:22,11/25/2024 18:52,NULL
+170,Wepronex Space,hello@coworkbooking.com,0331 6204942,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,21,1,2,1,0,1/4/2024,1/4/2024 20:23,11/25/2024 18:52,NULL
+171,Strathhub,Strathhub@gmail.com,0332 1028995,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,19,1,2,1,0,1/4/2024,1/4/2024 20:24,11/25/2024 18:51,NULL
+172,Promax Technology,Promax@gmail.com,0336 3057782,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,18,1,2,1,0,1/4/2024,1/4/2024 20:25,11/25/2024 18:51,NULL
+173,The Bunker,bunker@gmail.com,0321 2986360,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,20,1,2,1,0,1/4/2024,1/4/2024 20:27,11/25/2024 18:52,NULL
+174,Creative CoWorking,Creative@gmail.com,0303 9398028,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,19,1,2,1,0,1/4/2024,1/4/2024 20:28,11/25/2024 18:52,NULL
+175,Next Desk,Nextdesk@gmail.com,0336 1113375,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,16,1,2,1,0,1/4/2024,1/4/2024 20:29,11/25/2024 18:52,<p>Not Interested..........</p>
+176,Thriving Space 2.0,hello@thrivingspace.com,0331 6204942,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,17,1,2,1,0,1/4/2024,1/4/2024 20:31,11/25/2024 18:51,NULL
+177,Nucleus Co Working Space,sales@nucleus.com.pk,(021) 32640280,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,14,1,2,1,0,1/4/2024,1/4/2024 20:32,11/25/2024 18:51,NULL
+178,Z house,Zhouse@gmail.com,0301 8227804,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,16,1,2,1,0,1/4/2024,1/4/2024 20:34,11/25/2024 18:51,NULL
+179,SpaceShare Coworking Space,spaceshare@gmail.com,0300 2391612,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,15,1,2,1,0,1/4/2024,1/4/2024 20:35,11/25/2024 18:51,NULL
+180,iWork Karachi,iwork@gmail.com,0300 9287816,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,18,1,2,1,0,1/4/2024,1/4/2024 20:36,11/25/2024 18:52,NULL
+181,Creators Space,Creatorsspace@gmail.com,0313 2278303,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,13,1,2,1,0,1/4/2024,1/4/2024 20:39,11/25/2024 18:51,NULL
+182,Fusion4,info@fusion4.com.pk,(021) 35247218,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,17,1,2,1,0,1/4/2024,1/4/2024 20:41,11/25/2024 18:52,NULL
+184,1Comm,1comm@gmail.com,0343 9151187,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,12,1,2,1,0,1/4/2024,1/4/2024 20:43,11/25/2024 18:51,NULL
+185,ZapSpace,ZapSpace@gmail.com,0332 2558557,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,11,1,2,1,0,1/4/2024,1/4/2024 20:46,11/25/2024 18:51,NULL
+186,Notion360,bookspace@notion360.pk,0321 2300315,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,10,1,2,1,0,1/4/2024,1/4/2024 20:48,11/25/2024 18:51,NULL
+187,Workyard,workyard@gmail.com,0331 2330996,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,9,1,2,1,0,1/4/2024,1/4/2024 20:49,11/25/2024 18:51,NULL
+188,COLABS Karachi,omar@colabs.pk,0300 8496079,NULL,Co-Working Software,Omar Shah,NULL,7,1,6,4,21,,NULL,NULL,NULL,8,1,2,1,0,1/4/2024,1/4/2024 20:52,12/16/2024 15:40,NULL
+189,Adamjee Coworking,adamjee@gmail.com,0301 2702164,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,6,1,2,1,0,1/4/2024,1/4/2024 20:54,11/25/2024 18:51,NULL
+191,Co-Web Spaces,co-web@gmail.com,0332 9990106,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,14,1,2,1,0,1/4/2024,1/4/2024 20:56,11/25/2024 18:52,NULL
+192,COVURC,vurc@covurc.com,0333 5444678,NULL,Co-Working Software,NULL,NULL,7,1,4,,,,NULL,NULL,NULL,0,1,2,1,0,1/4/2024,1/4/2024 21:00,11/25/2024 18:52,NULL
+193,MindfulStudioKarachi,Mindful@gmail.com,Not Available,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,5,1,2,1,0,1/4/2024,1/4/2024 21:02,11/25/2024 18:51,NULL
+194,The Team,Team@gmail.com,(021) 35883508,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,10,1,2,1,0,1/4/2024,1/4/2024 21:04,11/25/2024 18:52,NULL
+195,First Office,firstoffice@gmail.com,0315 6466446,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,4,1,2,1,0,1/4/2024,1/4/2024 21:05,11/25/2024 18:51,NULL
+196,codesk.pk,codes@gmail.com,0300 0723172,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,3,1,2,1,0,1/4/2024,1/4/2024 21:06,11/25/2024 18:51,NULL
+197,Nexus Sharedspace,Nexus@gmail.com,9.23E+11,NULL,Co-Working Software,Waqar Malik,CEO,7,1,7,"2,3,5,4",20,,NULL,NULL,NULL,0,1,2,1,0,1/4/2024,1/4/2024 21:08,1/30/2025 17:58,NULL
+198,JS Business Lounge,JS@gmail.com,0314 3599771,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,1,1,2,1,0,1/4/2024,1/4/2024 21:09,11/25/2024 18:51,NULL
+199,Mastoorah,Mastoorah@gmail.com,0315 2560777,NULL,Co-Working Software,NULL,NULL,7,1,7,NULL,NULL,,NULL,NULL,NULL,3,1,2,1,10,1/4/2024,1/4/2024 21:11,11/25/2024 18:51,NULL
+200,Base and Hive,sales@thehive.pk,(021) 37294583,NULL,Co-Working Software,Nazim Khan,GM Operations and Finance,7,1,7,2,20,,NULL,NULL,NULL,4,1,2,1,0,1/4/2024,1/4/2024 21:13,1/22/2025 17:18,NULL
+201,Multiverse Co Space,info@multiversecospace.com,not Available,NULL,Co-Working Software,Rayyan Ashfaque,CEO,7,1,6,"2,3,5",20,,NULL,NULL,4,0,1,2,1,0,1/4/2024,1/4/2024 21:14,1/22/2025 18:14,NULL
+202,Workspace201,workspace@gmail.com,0304 8294323,NULL,Co-Working Software,NULL,NULL,7,1,2,NULL,NULL,,NULL,NULL,NULL,4,1,2,1,0,1/22/2024,1/22/2024 17:56,2/7/2024 15:24,NULL
+203,ZapSpace,contact@zapspace.co,0332 2558557,NULL,Co-Working Software,NULL,NULL,7,1,1,NULL,NULL,,NULL,NULL,NULL,15,1,2,1,0,1/22/2024,1/22/2024 18:00,11/25/2024 15:17,NULL
+205,CalmKaaj,hello@calmkaajorg,3190506784,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,15,1,2,1,0,1/22/2024,1/22/2024 18:26,11/25/2024 18:52,NULL
+206,The Desk,info@desk.pk,518442556,NULL,Co-Working Software,NULL,NULL,7,1,1,NULL,NULL,,NULL,NULL,NULL,14,1,2,1,0,1/22/2024,1/22/2024 18:36,11/25/2024 15:17,NULL
+207,Workpad-Coworking,info@workpadcoworking.com,3116660011,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,6,1,2,1,0,1/22/2024,1/22/2024 18:47,11/25/2024 18:52,NULL
+208,Krixsen Co-Work,hello@krixsen.com,3327877747,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,8,1,2,1,0,1/22/2024,1/22/2024 18:59,11/25/2024 18:52,NULL
+209,KNCT,ops.kncthub@gmail.com,3330008655,NULL,Co-Working Software,NULL,NULL,7,1,1,NULL,NULL,,NULL,NULL,NULL,11,1,2,1,0,1/22/2024,1/22/2024 19:11,11/25/2024 15:17,NULL
+210,Elevate-Coworking Space,info@elevatecoworkingspace.com,3361181009,NULL,Co-Working Software,NULL,NULL,7,1,5,,7,,NULL,NULL,NULL,9,1,2,1,0,1/22/2024,1/22/2024 19:16,11/25/2024 18:52,<p>Do not need it.</p>
+211,Junction Co-Working,jcoworkingspace@gmail.com,516124424,NULL,Co-Working Software,NULL,NULL,7,1,6,,,,NULL,NULL,NULL,2,1,2,1,0,1/22/2024,1/22/2024 19:25,11/25/2024 18:51,NULL
+212,loomnest,info@loomnest.pk,512745795,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,11,1,2,1,0,1/22/2024,1/22/2024 19:34,11/25/2024 18:52,"<p>Not in need, but will contact in future if needed.</p>"
+213,Prestige,azq@gmail.com,3068999959,NULL,Co-Working Software,NULL,NULL,7,1,1,NULL,NULL,,NULL,NULL,NULL,12,1,2,1,0,1/22/2024,1/22/2024 19:41,11/25/2024 15:17,NULL
+214,CLUSTER - Co-working,register@cluster.pk,3468560160,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,12,1,2,1,0,1/22/2024,1/22/2024 19:56,11/25/2024 18:52,NULL
+215,HLB Co-working Space,Info@hlbcoworking.pk,0314 5362123,NULL,Co-Working Software,NULL,NULL,7,1,1,NULL,NULL,,NULL,NULL,NULL,13,1,2,1,0,1/22/2024,1/22/2024 19:58,11/25/2024 15:17,NULL
+216,Togetherpk.Com Affordable Co-Working Space,Together@gmail.com,0321 2897022,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,13,1,2,1,0,1/22/2024,1/22/2024 20:07,11/25/2024 18:52,<p>They do not need it at the moment.</p>
+217,COLLISION,info@co-llision.com,3000861000,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,1,1,2,1,0,1/22/2024,1/22/2024 20:36,11/25/2024 18:52,NULL
+218,The Cube,hello@thecube.pk,3111222080,NULL,Co-Working Software,NULL,NULL,7,1,2,,,,NULL,NULL,NULL,5,1,2,1,0,1/22/2024,1/22/2024 20:44,2/7/2024 15:24,NULL
+219,Kickstart Coworking Space,ali.asghar@kickstart.pk,0333 0596162,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,2,1,2,1,0,1/22/2024,1/22/2024 21:14,11/25/2024 18:52,NULL
+220,TecHub Pakistan,sales@techub.com.pk,3098880684,NULL,Co-Working Software,Fahad Ali,CEO,7,1,1,"5,3",20,,NULL,NULL,NULL,6,1,2,1,0,1/22/2024,1/22/2024 21:16,1/30/2025 18:13,NULL
+221,Workbench,info@workbench.pk,3041045057,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,7,1,2,1,0,1/23/2024,1/23/2024 17:47,11/25/2024 18:52,NULL
+223,Growth Coworking Space,info@growthspace.pk,3252002002,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,3,1,2,1,0,1/23/2024,1/23/2024 18:20,11/25/2024 18:52,NULL
+224,Focused,info@focused.com.pk,3171110522,NULL,Co-Working Software,NULL,NULL,7,1,5,2,8,,NULL,NULL,NULL,4,1,2,1,0,1/23/2024,1/23/2024 18:32,11/25/2024 18:52,NULL
+225,Ventures.pk,findventurespk@gmail.com,3334301007,NULL,Co-Working Software,NULL,NULL,7,1,3,,,,NULL,NULL,NULL,2,1,2,1,0,1/23/2024,1/23/2024 21:54,8/10/2024 13:03,NULL
+226,Bridge,Hello@bridgepk.com,3361312345,NULL,Co-Working Software,NULL,NULL,7,1,3,NULL,NULL,,NULL,NULL,NULL,3,1,2,1,0,1/24/2024,1/24/2024 18:11,8/10/2024 13:03,NULL
+227,Co Working Space Dha Karachi- Alpha Den,info@alphaden.pk,0301 0090051,NULL,Co-Working Software,NULL,NULL,7,1,5,,,,NULL,NULL,NULL,5,1,2,1,0,1/24/2024,1/24/2024 19:49,11/25/2024 18:52,NULL
+232,Spaces One Oxford,Oxford@gmail.com,1 888-327-3615,NULL,America,NULL,NULL,7,1,1,NULL,NULL,,NULL,NULL,NULL,7,1,2,1,0,1/27/2024,1/27/2024 20:57,11/25/2024 15:17,NULL
+235,Regus - Columbia Town Center II,RegusColumbia@gmail.com,+1 410-740-8700,NULL,America,NULL,NULL,7,1,1,NULL,NULL,,NULL,NULL,NULL,8,1,2,1,0,1/27/2024,1/27/2024 21:10,11/25/2024 15:17,NULL
+237,Outright Coworking,outrightcoworking@gmail.com,0335 9202266,NULL,Coworking Software,NULL,NULL,7,1,1,NULL,NULL,,NULL,NULL,NULL,9,1,2,1,0,1/27/2024,1/27/2024 21:16,11/25/2024 15:17,NULL
+245,Regus - Albuquerque - Two Park Square Center,RegusAlbuquerque@gmail.com,+1 505-563-5500,NULL,America,NULL,NULL,7,1,1,NULL,NULL,,NULL,NULL,NULL,10,1,2,1,0,1/30/2024,1/30/2024 20:43,11/25/2024 15:17,NULL
+260,Regus - Beaverton - AmberGlen,RegusBeaverton@gmail.com,+1 971-327-4000,NULL,America,NULL,NULL,7,1,1,NULL,NULL,,NULL,NULL,NULL,2,1,2,1,0,1/31/2024,1/31/2024 17:19,11/25/2024 15:17,NULL
+277,Spaces - Chevy Chase - Chase Tower,SpacesChase@gmail.com,+1 240-760-2700,NULL,America,NULL,NULL,7,1,1,NULL,NULL,,NULL,NULL,NULL,3,1,2,1,0,1/31/2024,1/31/2024 20:39,11/25/2024 15:17,NULL
+285,Spaces - Seattle - 2 and U,SpacesSeattle@gmail.com,+1 888-866-9799,NULL,America,NULL,NULL,7,1,1,NULL,NULL,,NULL,NULL,NULL,4,1,2,1,0,1/31/2024,1/31/2024 21:45,11/25/2024 15:17,NULL
+903,Uzair,Uafta,75373,NULL,Tets,NULL,NULL,7,1,1,NULL,NULL,,NULL,NULL,"4,38",1,1,2,1,0,11/9/2024,11/9/2024 20:28,11/25/2024 15:26,NULL
+915,Arslan Alvi,iamarslanalvi@gmail.com,101,NULL,Required Coworking management system,NULL,NULL,6,1,2,,,,NULL,NULL,"2,4",0,1,2,1,0,11/15/2024,11/15/2024 10:40,9/23/2025 10:01,NULL
+1113,Saywhat,will@saywhat.ai,NULL,NULL,cworkit sample,Will McTighe,Co-Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1114,King Street Ventures,nick@kingstreetventures.com,NULL,NULL,cworkit sample,Nick Fuller,Chief Executive Officer,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1115,Tiatros Inc.,kcerrone@tiatros.com,'+1 415-378-2838,NULL,cworkit sample,Kimberlie Cerrone,Founder and CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1116,ImpacterAI,manny@impacter.ai,NULL,NULL,cworkit sample,Manny Fernandez,Co-Founder / CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1117,TalentLNX,joey.johnson@talentlnx.com,'+1 949-414-5331,NULL,cworkit sample,Joey Johnson,"Co-Founder, Managing Partner",66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1118,Zangoh,shrey@zangoh.com,'+91 60855 67675,NULL,cworkit sample,Shrey Sharma,Founder & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1119,Leen,akash@leen.ai,NULL,NULL,cworkit sample,Akash Bhat,Co-Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1120,Dynamiq,vitalii@getdynamiq.ai,NULL,NULL,cworkit sample,Vitalii Duk,Founder & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1121,BioPharma Connections,tjohnk@biopharmaconnections.com,'+1 415-246-6018,NULL,cworkit sample,Teresa Johnk,Chief Executive Officer,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1122,Keep Financial,rob@keepfinancial.com,'+1 801-871-5337,NULL,cworkit sample,Rob Frohwein,co-founder & chief keeper,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1123,Summer Tiger Fund,eric.gu@summertiger.com,NULL,NULL,cworkit sample,Eric Gu,Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1124,Otom.ai,harry@otom.ai,NULL,NULL,cworkit sample,Harry Lee,CEO & Co-founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1125,Page One Ventures,mo@pageone.vc,'+1 650-799-4384,NULL,cworkit sample,Mo El-Bibany,Founder & General Partner,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1126,AdSemble,matthew@adsemble.com,'+1 855-972-7336,NULL,cworkit sample,Matthew Olivieri,CEO at AdSemble 🚀 Launch Your Own Self-Service Billboard Ads,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1127,Narrator,ahmed@narrator.ai,'+1 347-913-3121,NULL,cworkit sample,Ahmed Elsamadisi,Founder/CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1128,ZippiAi Inc,upinder@zippiai.com,NULL,NULL,cworkit sample,Upinder Singh,Co-founder & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1129,Psilocybin San Francisco,milica@bizdelics.com,NULL,NULL,cworkit sample,Milica Mandic,Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1130,SynthLabs,francis@synthlabs.ai,NULL,NULL,cworkit sample,Francis Desouza,Co-Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1131,OpenVC,steph@openvc.app,NULL,NULL,cworkit sample,Stephane Nasser,Co-Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1132,UCR,wei@ucr.bot,NULL,NULL,cworkit sample,Wei Ding,Co-Founder & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1133,Instead,andrew@instead.com,'+1 303-258-7696,NULL,cworkit sample,Andrew Argue,Founder and CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1134,Cenergim,mehran.dabbagh@cenergim.com,'+1 650-309-4000,NULL,cworkit sample,Mehran Dabbagh,Founder & CEO | Innovation | Marketing | Co-innovation Platform,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1135,Recruiting Accelerator,jon@recruitingaccelerator.com,'+1 415-602-1710,NULL,cworkit sample,Jon Chintanaroad,Founder and CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1136,NanoVMs,ian@nanovms.com,'+1 833-626-6867,NULL,cworkit sample,Ian Eyberg,CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1137,CodeParrot (YC W23),vedant@codeparrot.ai,NULL,NULL,cworkit sample,Vedant Agarwala,"Co-Founder, CTO",66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1138,Impact Home Loans Inc.,robert@easylowrate.com,'+1 888-564-2887,NULL,cworkit sample,Robert Sinohue,Co-Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1139,Aragon.ai,wesley@aragon.ai,'+1 413-636-6304,NULL,cworkit sample,Wesley Tian,Co-Founder & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1140,Colorfull,garrett@colorfull.ai,NULL,NULL,cworkit sample,Garrett Serviss,Founder & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1141,HoloPert HoloGraphics,ethans@trcrobotics.com,NULL,NULL,cworkit sample,Ethan Schur,Chief Executive Officer,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1142,Variate Health,mike@variatehealth.com,NULL,NULL,cworkit sample,Mike Mack,Co-CEO & Co-Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1143,Growth Marketing Pro,hailey@growthmarketingpro.com,NULL,NULL,cworkit sample,Hailey Friedman,Co-Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1144,Arrow AI,rolan@getarrow.ai,'+1 202-555-0144,NULL,cworkit sample,Rolan Reichel,CEO & Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1145,FraxCorp 🚀,a.hewitt@fraxcorp.com,NULL,NULL,cworkit sample,Ashley Hewitt,CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1146,Autonomai Recruitment,mark@autonomai.io,NULL,NULL,cworkit sample,Mark Burton,Co-Founder & Director,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1147,Third Sphere,stonly@thirdsphere.com,'+1 917-512-5571,NULL,cworkit sample,Stonly Blue,Managing Partner & Co-founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1148,Industry Rockstar Films,kane@industryrockstar.com,NULL,NULL,cworkit sample,Kane Minkus,Co-Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1149,Experiense.AI,mr.sheel@experiense.ai,'+1 954-336-2091,NULL,cworkit sample,Vinay Sheel,Chief Executive Officer,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1150,UpLevel Ops,stephanie.corey@uplevelops.com,NULL,NULL,cworkit sample,Stephanie Corey,CEO & Co-Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1151,June.so,enzo@getjune.io,'+33 6 20 01 08 66,NULL,cworkit sample,Enzo Avigo,CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1152,"BayCreative, Inc.",scott@baycreative.com,'+1 415-434-4344,NULL,cworkit sample,Scott Danish,Chief Executive Officer,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1153,Congruent Ventures,josh@congruentvc.com,'+1 650-843-5000,NULL,cworkit sample,Joshua Posamentier,Co-Founder and Managing Partner,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1154,Hyperbound,sriharsha@hyperbound.ai,NULL,NULL,cworkit sample,Sriharsha Guduguntla,Co-Founder & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1155,Humanloop,raza@humanloop.com,'+44 75 3192 7003,NULL,cworkit sample,Raza Habib,CEO and Cofounder Humanloop (YC S20) | Host,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1156,Symbolic.ai,devin@symbolic.ai,NULL,NULL,cworkit sample,Devin Wenig,Co-Founder and CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1157,2am VC,brendan@2amvc.com,NULL,NULL,cworkit sample,Brendan Rogers,Co-Founder @Wag! (NASDAQ): PET | I invest in early stage startups in India,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1158,Analytude Analytics,tito@analytude.com,'+1 650-288-3922,NULL,cworkit sample,Tito Mathew,Co-Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1159,Mochary Method,matt@mocharymethod.com,'+1 973-744-4470,NULL,cworkit sample,Matt Mochary,CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1160,"Grower's Secret, Inc.",chazb@growerssecret.com,'+1 888-217-9426,NULL,cworkit sample,Chaz Berman,Chief Executive Officer and Board Member,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1161,Clear Match Talent,sam@clearmatchtalent.com,NULL,NULL,cworkit sample,Sam Kwong,Co-Founder & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1162,ReviveMed,lpirhaji@revivemed.io,'+1 617-955-6425,NULL,cworkit sample,Leila Pirhaji,Chief Executive Officer,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1163,WellzyPerks,jared@wellzyperks.com,NULL,NULL,cworkit sample,Jared Koch,CEO and Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1164,Portkey,rohit@portkey.ai,NULL,NULL,cworkit sample,Rohit Agarwal,Co-founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1165,SalesBrain,patrick@salesbrain.com,'+1 415-869-8774,NULL,cworkit sample,Patrick Renvoise,Chief NeuroMarketing Officer & Co-Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1166,SVZ,scott@svz.io,'+1 952-215-2980,NULL,cworkit sample,Scott Zandt,Founder & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1167,CogniSwitch Inc.,vivekk@cogniswitch.ai,NULL,NULL,cworkit sample,Vivek Khandelwal,Co-Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1168,Burkhardt Group LLC,christoph@burkhardtgroup.com,NULL,NULL,cworkit sample,Christoph Burkhardt,Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1169,Earkick,karin@earkick.com,'+1 415-335-3030,NULL,cworkit sample,Karin Stephan,Co-Founder & COO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1170,Taro (YC S22),alex@jointaro.com,NULL,NULL,cworkit sample,Alex Chiou,Co-Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1171,LaStartupStation,mehdi@lastartupfactory.co,'+212 674-781258,NULL,cworkit sample,Mehdi Alaoui,Founder & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1172,AR 51,erez@ar-51.com,NULL,NULL,cworkit sample,Erez Tal,Co-founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1173,Health Aim LLC,purnima@healthaiminc.com,'+1 281-290-7900,NULL,cworkit sample,Purnima Etc,Founder & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1174,The Vibrant Talent Group,larissa@vibranttalentgroup.com,'+1 908-451-3239,NULL,cworkit sample,Larissa Gerlach,Owner / Founder | Executive Recruiter,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1175,"Eduard Alberts & Partners, Executive Search",ealberts@sanfordrose.com,'+1 650-740-1837,NULL,cworkit sample,Eduard Alberts,President and Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1176,Ferocity Capital,kris.vulgan@ferocitycap.com,NULL,NULL,cworkit sample,Kris Vulgan,Co-Founder and Managing Partner,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1177,SuperRep.ai,puneet@superrep.ai,NULL,NULL,cworkit sample,Puneet Kataria,Founder and CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1178,OpenBabylon,yurii@tryopenbabylon.com,NULL,NULL,cworkit sample,Yurii E/Acc,Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1179,Chamaeleon,nuno@chamaeleon.vc,NULL,NULL,cworkit sample,Nuno Pedro,"Managing Partner, Founder",66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1180,Catapulse Partners,sangeeta@catapulsepartners.com,'+1 408-757-4473,NULL,cworkit sample,Sangeeta Narayan,"Founder, Chief Executive Officer",66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1181,Sunset Ventures,antonio@sunsetventures.xyz,'+1 306-750-1114,NULL,cworkit sample,Antonio Key,Co-Founder and General Partner,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1182,Lucene Creative,damla@lucenecreative.com,NULL,NULL,cworkit sample,Ayse Pekgoez,Co-Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1183,Climate Edge,hendrik@climatedge.io,NULL,NULL,cworkit sample,Hendrik Tiesinga,Founder & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1184,Kiyo,marc@kiyofit.com,NULL,NULL,cworkit sample,Marc Apicella,Cofounder and CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1185,Smart Green Card,sshetty@smartgreencard.com,'+1 408-430-2007,NULL,cworkit sample,Saiman Shetty,"Founder, CEO",66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1186,Inferless,aishwarya@inferless.com,NULL,NULL,cworkit sample,Aishwarya Goel,Co-Founder & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1187,Netswitch Technology Management,stanley@netswitch.net,'+1 415-566-6228,NULL,cworkit sample,Stanley Li,CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1188,Entvin (YC S22),sanskar@entvin.com,NULL,NULL,cworkit sample,Sanskar Jain,Co-founder & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1189,BaeGlow Inc.,bushra@baeglow.com,NULL,NULL,cworkit sample,Bushra S.,Founder & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1190,Adaptive Research Inc,d.behera@adaptiveresearch.com,'+1 888-543-2127,NULL,cworkit sample,Deepak Behera,President & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1191,"Walter Bacon, Inc.",walter@walterbacon.com,'+1 415-341-2884,NULL,cworkit sample,Walter Bacon,Helping CEOs and Founders of DevTool Startups Achieve Their Market Penetration Goals,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1192,Xu Talent,jackie@xutalent.com,NULL,NULL,cworkit sample,Jackie Xu,Founder & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1193,Varlinx,dave.osh@varlinx.com,'+1 925-436-9481,NULL,cworkit sample,Dave Osh,CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1194,Pro Sales Growth,sizenpudasaini@prosalesgrowth.com,'+1 415-843-5924,NULL,cworkit sample,Sizen Pudasaini,Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1195,Boutique Venture Partners,thad@boutiquevc.com,'+1 650-798-5496,NULL,cworkit sample,Thad Connelly,General Partner & Co-founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1196,"Hastest Solutions, Inc.",sajjad.mir@hastest.com,'+1 408-945-7861,NULL,cworkit sample,Sajjad Mir,President/CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1197,DataExpert.io,zach@zachwilson.tech,NULL,NULL,cworkit sample,Zach Wilson,Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1198,The Harris Consulting Group,richard@theharrisconsultinggroup.com,NULL,NULL,cworkit sample,Richard Harris,Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1199,NeoCai,sg@neocai.io,NULL,NULL,cworkit sample,Spyridon Georgiadis,Founder & Principal,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1200,SV Pricing Recruiting,chris@svpricing.com,NULL,NULL,cworkit sample,Chris Herbert,Founder and CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1201,EdgeIn,redg.s@edgein.io,'+1 424-371-4040,NULL,cworkit sample,Redg Snodgrass,Co-Founder CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1202,Amity Ventures,pat@amity.vc,'+1 415-634-7618,NULL,cworkit sample,Patrick Yang,Co-Founder & General Partner,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1203,aiEDU.org,alex@aiedu.org,NULL,NULL,cworkit sample,Alex Kotran,Co-Founder & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1204,Silicon Zombies Podcast,nick@siliconzombies.com,NULL,NULL,cworkit sample,Nick Larson,Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1205,SaxeCap,amrit@saxecap.com,'+1 650-430-7263,NULL,cworkit sample,Amrit Saxena,"Founder, Chief Executive Officer",66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1206,Butternut AI,simar@butternut.ai,'+1 551-318-6259,NULL,cworkit sample,Simarpreet Singh,Co-Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1207,Metropolis,martin@metropolisglobal.com,NULL,NULL,cworkit sample,Martin Stroka,Co-Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1208,FirstQuadrant,anand@firstquadrant.ai,'+1 312-626-6799,NULL,cworkit sample,Anand Chowdhary,"Co-founder, CTO, CPO",66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1209,United States Hydrogen Alliance,roxana@ushydrogenalliance.org,NULL,NULL,cworkit sample,Roxana Bekemohammadi,Founder & Executive Director,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1210,Finnovant,bmaw@finnovant.com,'+1 844-724-8911,NULL,cworkit sample,Brian Maw,CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1211,Progressive Ventures,mala@progressive.vc,NULL,NULL,cworkit sample,Mala Ramakrishnan,Founder and Managing Partner,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1212,MinervaDB,shiv@minervadb.com,'+1 844-588-7287,NULL,cworkit sample,Shiv Iyer,Founder CEO #MySQL #PostgreSQL #MariaDB #ClickHouse #Linux #SRE #RocksDB,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1213,Got Produce Global Brands,dwalliser@gotproduce.world,'+1 510-629-5131,NULL,cworkit sample,Deborah Walliser,Chief Executive Officer,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1214,Segwise.ai,brijesh@segwise.ai,NULL,NULL,cworkit sample,Brijesh Bharadwaj,Co-Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1215,"The Hived, PBC",barry@thehived.com,NULL,NULL,cworkit sample,Barry Perkins,"Founder, Chairman & CEO",66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1216,Sobo Foods,adam@sobofoods.com,'+1 415-621-1000,NULL,cworkit sample,Adam Yee,Co-Founder - CTO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1217,Changing the Narrative,aubrey@bergauer.net,'+1 425-213-9787,NULL,cworkit sample,Aubrey Bergauer,Chief Executive Officer,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1218,Veterans Covert Protection Group,allan@vcpg.us,'+1 925-315-5410,NULL,cworkit sample,Allan P.,President/ Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1219,"Gregarious, Inc.",alex@greg.app,NULL,NULL,cworkit sample,Alex Ross,CEO & Co-Founder 🌱 ⚡️,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1220,Pachamama Ventures,karen@pachamamavc.com,NULL,NULL,cworkit sample,Karen Sheffield,Founder and Managing Partner,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1221,Canvas,ryan@canvasapp.com,NULL,NULL,cworkit sample,Ryan Buick,Co-Founder and Head of GTM,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1222,TeamSourced,michael@teamsourced.com,'+1 925-390-2424,NULL,cworkit sample,Michael Doran,Co-Founder/CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1223,Blueprint,jordan@blueprintgtm.com,'+1 415-610-7801,NULL,cworkit sample,Jordan Crawford,Founder,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1224,ProdSense,glenn@prodsense.net,NULL,NULL,cworkit sample,Glenn Block,Founder & CEO,66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1225,Clueso (YC W23),akash@clueso.io,NULL,NULL,cworkit sample,Akash Anand,"Cofounder, CEO",66,1,6,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 15:20,11/29/2024 15:20,NULL
+1452,lynx industrial solutions,arslanalvi102@gmail.com,102,3265888500,test,Abdul hakeem khan,NULL,13,1,7,,,,NULL,NULL,NULL,0,1,2,1,0,2/25/2025,2/25/2025 15:55,10/20/2025 19:06,<p><b>2123 ok&nbsp;</b></p><p><br></p>
+1462,Creative IT Park,test@gmail.com,3335104776,NULL,Wadood Test,Me,BD,6,1,1,4,22,,NULL,NULL,NULL,0,1,2,1,0,4/12/2025,4/12/2025 13:56,4/12/2025 13:59,NULL
+8130,lynx industrial solutionsjhkj,faiza@creativeitpark.org,3265888500,NULL,test,NULL,NULL,6,1,1,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,9/22/2025,9/22/2025 12:21,9/22/2025 12:21,NULL
+8131,E-Tech Solutions,roomi143rumi@gmail.com,102,NULL,Ecomerce Company,Aftab Ali,COO,6,1,7,,,,NULL,NULL,2,0,1,2,1,0,9/22/2025,9/22/2025 12:41,10/20/2025 13:39,NULL
+8132,Spyglass accounting,shadow101prince@gmail.com,3175133008,NULL,Accounting sService,Ammar,CFO,6,1,6,,,,NULL,NULL,2,0,1,2,1,0,9/22/2025,9/22/2025 12:44,10/14/2025 15:01,NULL
+8133,Sofnic Enterprizes,gadgetzbuy@gmail.com,3265888500,NULL,Sofnic Enterprizes,Zubair Ali,MArketing Manager,124,1,8,NULL,NULL,,NULL,NULL,2,0,1,2,1,0,9/22/2025,9/22/2025 12:48,10/14/2025 14:26,NULL
+8776,Test lead,zarmina@creativeitpark.org,3211766422,NULL,Test by Zarmina,Zarmina,COO,6,1,2,,,,NULL,NULL,4,0,1,2,1,0,10/14/2025,10/14/2025 12:54,10/14/2025 14:29,NULL

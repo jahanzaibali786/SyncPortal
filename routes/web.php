@@ -560,6 +560,9 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
         Route::resource('sub-task-files', SubTaskFileController::class);
 
         // Taskboard routes
+        // Add this route to your web.php or routes file
+
+        Route::post('/quick-store', [TaskBoardController::class, 'quickStore'])->name('tasks.quick_store');
         Route::post('taskboards/collapseColumn', [TaskBoardController::class, 'collapseColumn'])->name('taskboards.collapse_column');
         Route::post('taskboards/updateIndex', [TaskBoardController::class, 'updateIndex'])->name('taskboards.update_index');
         Route::get('taskboards/loadMore', [TaskBoardController::class, 'loadMore'])->name('taskboards.load_more');

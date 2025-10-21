@@ -5,6 +5,7 @@ namespace Modules\Recruit\Http\Controllers;
 use App\Models\Team;
 use App\Helper\Files;
 use App\Helper\Reply;
+use DB;
 use Illuminate\Http\Request;
 use App\Models\CompanyAddress;
 use Modules\Recruit\Entities\RecruitJob;
@@ -148,7 +149,8 @@ class JobApplicationController extends AccountBaseController
     {
         $addPermission = user()->permission('add_job_application');
         abort_403(!in_array($addPermission, ['all', 'added']));
-
+        try{
+            DB::beginTransaction();
         $jobApp = new RecruitJobApplication();
         $jobApp->recruit_job_id = $request->job_id;
         $jobApp->full_name = $request->full_name;
@@ -227,7 +229,7 @@ class JobApplicationController extends AccountBaseController
             $file->size = request()->resume->getSize();
             $file->save();
         }
-
+        DB::commit();
         if (request()->add_more == 'true') {
             $html = $this->create();
 
@@ -241,6 +243,11 @@ class JobApplicationController extends AccountBaseController
         }
 
         return Reply::dataOnly(['redirectUrl' => $redirectUrl, 'application_id' => $jobApp->id]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e->getMessage());
+            return Reply::error($e->getMessage());
+        }
     }
 
     /**

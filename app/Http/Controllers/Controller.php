@@ -60,7 +60,6 @@ class Controller extends BaseController
             $this->gdpr = gdpr_setting();
             $this->global = global_setting();
 
-            // WORKSUITESAAS
             $this->company = companyOrGlobalSetting();
 
 
@@ -81,13 +80,13 @@ class Controller extends BaseController
 
             setlocale(LC_TIME, $this->locale . '_' . mb_strtoupper($this->locale));
 
-            if (config('app.env') == 'codecanyon') {
-                config(['app.debug' => $this->global->app_debug]);
-            }
+            // if (config('app.env') == 'codecanyon') {
+            //     config(['app.debug' => $this->global->app_debug]);
+            // }
 
-            if (user()) {
-                config(['froiden_envato.allow_users_id' => true]);
-            }
+            // if (user()) {
+            //     config(['froiden_envato.allow_users_id' => true]);
+            // }
 
             return $next($request);
         });

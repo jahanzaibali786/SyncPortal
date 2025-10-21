@@ -8,7 +8,7 @@ $viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
 
 <div id="task-detail-section">
 
-    <h3 class="heading-h1 mb-3">{{ $deal->name }}</h3>
+    {{-- <h3 class="heading-h1 mb-3">{{ $deal->name }}</h3> --}}
 
     <div class="row">
         <!--  USER CARDS START -->
@@ -222,11 +222,22 @@ $viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
                         <x-forms.link-secondary class="mr-3 pr-1" link='mailto:{{ $deal->contact->client_email }}'
                                                 icon="envelope">@lang('app.email')</x-forms.link-secondary>
                     @endif
-
-                    @if ($deal->contact->mobile )
-                        <x-forms.button-secondary class="btn-copy pr-1" data-clipboard-text="{{ $deal->contact->mobile }}"
+@if ($deal->contact->mobile)
+    <x-forms.button-secondary 
+        class="btn-copy call pr-1" 
+        data-clipboard-text="{{ $deal->contact->mobile }}"
+        data-deal="{{ $deal->id }}"
+        data-contact="{{ $deal->contact->id }}"
+        data-user="{{ user()->id }}"
+        data-number="{{ $deal->contact->mobile }}"
+        icon="phone">
+        @lang('app.mobile')
+    </x-forms.button-secondary>
+@endif
+                    {{-- @if ($deal->contact->mobile )
+                        <x-forms.button-secondary class="btn-copy call pr-1" data-clipboard-text="{{ $deal->contact->mobile }}"
                                                     icon="phone">@lang('app.mobile')</x-forms.button-secondary>
-                    @endif
+                    @endif --}}
                 </div>
 
             </x-cards.data>
@@ -236,26 +247,73 @@ $viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
     <script src="{{ asset('vendor/jquery/clipboard.min.js') }}"></script>
 
     <script>
-        var clipboard = new ClipboardJS('.btn-copy');
+        // var clipboard = new ClipboardJS('.btn-copy');
 
-        clipboard.on('success', function (e) {
-            Swal.fire({
-                icon: 'success',
-                text: '@lang("app.phoneCopied")',
-                toast: true,
-                position: 'top-end',
-                timer: 3000,
-                timerProgressBar: true,
-                showConfirmButton: false,
-                customClass: {
-                    confirmButton: 'btn btn-primary',
+        // clipboard.on('success', function (e) {
+        //     Swal.fire({
+        //         icon: 'success',
+        //         text: '@lang("app.phoneCopied")',
+        //         toast: true,
+        //         position: 'top-end',
+        //         timer: 3000,
+        //         timerProgressBar: true,
+        //         showConfirmButton: false,
+        //         customClass: {
+        //             confirmButton: 'btn btn-primary',
+        //         },
+        //         showClass: {
+        //             popup: 'swal2-noanimation',
+        //             backdrop: 'swal2-noanimation'
+        //         },
+        //     })
+        // });
+        document.querySelectorAll(".call").forEach(function(button) {
+    button.addEventListener("click", function() {
+        // Get deal and contact information instead of lead
+        let dealId = "{{ $deal->id }}";
+        let userId = "{{ user()->id }}";
+        let contactId = "{{ $deal->contact->id }}";
+        let number = "{{ $deal->contact->mobile }}";
+        
+        // Clean the number by removing spaces
+        number = number.replace(/\s+/g, '');
+        console.log('Calling number:', number,contactId,userId,dealId);
+        
+        fetch("http://localhost:5000/call", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json"
                 },
-                showClass: {
-                    popup: 'swal2-noanimation',
-                    backdrop: 'swal2-noanimation'
-                },
+                body: JSON.stringify({
+                    extension: number,
+                    deal_id: dealId,           // Changed from 'lead' to 'deal_id'
+                    contact_id: contactId,     // Added contact_id
+                    user_id: userId            // Changed from 'user' to 'user_id' for clarity
+                })
             })
-        });
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(err.error ||
+                            `HTTP error! Status: ${response.status}`);
+                    });
+                }
+                return response.json();
+            })
+            .catch(error => {
+                console.error("Fetch Error:", error.message);
+                Swal.fire({
+                    icon: 'error',
+                    text: 'Failed to initiate call: ' + error.message,
+                    toast: true,
+                    position: 'top-end',
+                    timer: 3000,
+                    showConfirmButton: false
+                });
+            });
+    });
+});
     </script>
 
     <script>

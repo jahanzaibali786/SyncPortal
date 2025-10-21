@@ -10,6 +10,7 @@ use App\Models\EmployeeDetails;
 use App\Models\Team;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Modules\Recruit\DataTables\InterviewScheduleDataTable;
 use Modules\Recruit\DataTables\JobApplicationsDataTable;
@@ -105,8 +106,7 @@ class JobController extends AccountBaseController
 
         if ($this->job->currency_id != null) {
             $this->currencySymbol = Currency::where('id', '=', $this->job->currency_id)->first();
-        }
-        else {
+        } else {
             $this->currencySymbol = null;
         }
 
@@ -123,17 +123,17 @@ class JobController extends AccountBaseController
         $this->activeTab = $tab ?: 'profile';
 
         switch ($tab) {
-        case 'interview':
-            return $this->interview($id);
-        case 'candidate':
-            return $this->candidate($id);
-        case 'offerletter':
-            return $this->jobOffer($id);
-        case 'history':
-            return $this->history($id);
-        default:
-            $this->view = 'recruit::jobs.ajax.profile';
-            break;
+            case 'interview':
+                return $this->interview($id);
+            case 'candidate':
+                return $this->candidate($id);
+            case 'offerletter':
+                return $this->jobOffer($id);
+            case 'history':
+                return $this->history($id);
+            default:
+                $this->view = 'recruit::jobs.ajax.profile';
+                break;
         }
 
         $this->openingsCount = $this->job->total_positions;
@@ -145,7 +145,8 @@ class JobController extends AccountBaseController
                         return $query
                             ->where('recruit_application_status_id', '!=', 4)
                             ->where('recruit_application_status_id', '!=', 5);
-                    });
+                    }
+                );
         })->count();
 
         $this->scheduledCount = RecruitJobApplication::where('recruit_job_id', $this->job->id)
@@ -245,83 +246,91 @@ class JobController extends AccountBaseController
 
     public function store(StoreJobRequest $request)
     {
-
+        // dd($request->all());
         $addPermission = user()->permission('add_job');
         abort_403(!in_array($addPermission, ['all', 'added']));
+        DB::beginTransaction(); 
+        try {
+            $endDate = !$request->has('without_end_date') ? Carbon::createFromFormat($this->company->date_format, $request->end_date)->format('Y-m-d') : null;
 
-        $endDate = !$request->has('without_end_date') ? Carbon::createFromFormat($this->company->date_format, $request->end_date)->format('Y-m-d') : null;
+            $job = new RecruitJob;
+            $job->title = $request->title;
+            $job->slug = Str::slug($request->title, '-');
+            $job->job_description = $request->job_description == '<p><br></p>' ? null : $request->job_description;
+            $job->total_positions = $request->total_positions;
+            $job->remaining_openings = $request->total_positions;
+            $job->department_id = $request->department_id;
+            $job->recruit_job_type_id = $request->job_type_id;
+            $job->start_date = Carbon::createFromFormat($this->company->date_format, $request->start_date)->format('Y-m-d');
+            $job->end_date = $endDate;
+            $job->status = $request->status;
+            $job->recruit_job_category_id = $request->category_id;
+            $job->recruit_job_sub_category_id = $request->sub_category_id;
+            $job->currency_id = $request->currency_id;
+            $job->meta_details = [
+                'title' => $request->meta_title ?: $request->title,
+                'description' => $request->meta_description ?: strip_tags(Str::substr(html_entity_decode($request->job_description), 0, 150)),
+            ];
 
-        $job = new RecruitJob;
-        $job->title = $request->title;
-        $job->slug = Str::slug($request->title, '-');
-        $job->job_description = $request->job_description == '<p><br></p>' ? null : $request->job_description;
-        $job->total_positions = $request->total_positions;
-        $job->remaining_openings = $request->total_positions;
-        $job->department_id = $request->department_id;
-        $job->recruit_job_type_id = $request->job_type_id;
-        $job->start_date = Carbon::createFromFormat($this->company->date_format, $request->start_date)->format('Y-m-d');
-        $job->end_date = $endDate;
-        $job->status = $request->status;
-        $job->recruit_job_category_id = $request->category_id;
-        $job->recruit_job_sub_category_id = $request->sub_category_id;
-        $job->currency_id = $request->currency_id;
-        $job->meta_details = [
-            'title' => $request->meta_title ?: $request->title,
-            'description' => $request->meta_description ?: strip_tags(Str::substr(html_entity_decode($request->job_description), 0, 150)),
-        ];
+            $job->recruiter_id = $request->recruiter;
+            $job->recruit_work_experience_id = $request->work_experience;
+            $job->pay_type = $request->paytype;
+            $job->start_amount = $request->start_amount;
+            $job->end_amount = $request->end_amount;
+            $job->pay_according = $request->pay_according;
+            $job->disclose_salary = $request->disclose_salary ?: 'no';
+            $job->remote_job = $request->remote_job ?: 'no';
+            $job->is_photo_require = $request->is_photo_require ?: '0';
+            $job->is_resume_require = $request->is_resume_require ?: '0';
+            $job->is_dob_require = $request->is_dob_require ?: '0';
+            $job->is_gender_require = $request->is_gender_require ?: '0';
+            $job->is_currentctc_require = $request->is_currentctc_require ?: '0';
+            $job->is_expectedctc_require = $request->is_expectedctc_require ?: '0';
+            $job->save();
 
-        $job->recruiter_id = $request->recruiter;
-        $job->recruit_work_experience_id = $request->work_experience;
-        $job->pay_type = $request->paytype;
-        $job->start_amount = $request->start_amount;
-        $job->end_amount = $request->end_amount;
-        $job->pay_according = $request->pay_according;
-        $job->disclose_salary = $request->disclose_salary ?: 'no';
-        $job->remote_job = $request->remote_job ?: 'no';
-        $job->is_photo_require = $request->is_photo_require ?: '0';
-        $job->is_resume_require = $request->is_resume_require ?: '0';
-        $job->is_dob_require = $request->is_dob_require ?: '0';
-        $job->is_gender_require = $request->is_gender_require ?: '0';
-        $job->is_currentctc_require = $request->is_currentctc_require ?: '0';
-        $job->is_expectedctc_require = $request->is_expectedctc_require ?: '0';
-        $job->save();
-
-        if (!empty($request->skill_id)) {
-            foreach ($request->skill_id as $tag) {
-                $jobSkill = new RecruitJobSkill;
-                $jobSkill->recruit_job_id = $job->id;
-                $jobSkill->recruit_skill_id = $tag;
-                $jobSkill->save();
+            if (!empty($request->skill_id)) {
+                foreach ($request->skill_id as $tag) {
+                    $jobSkill = new RecruitJobSkill;
+                    $jobSkill->recruit_job_id = $job->id;
+                    $jobSkill->recruit_skill_id = $tag;
+                    $jobSkill->save();
+                }
             }
-        }
 
-        if (!empty($request->stage_id)) {
-            foreach ($request->stage_id as $stageID) {
-                $interviewStage = new JobInterviewStage;
-                $interviewStage->recruit_job_id = $job->id;
-                $interviewStage->recruit_interview_stage_id = $stageID;
-                $interviewStage->save();
+            if (!empty($request->stage_id)) {
+                foreach ($request->stage_id as $stageID) {
+                    $interviewStage = new JobInterviewStage;
+                    $interviewStage->recruit_job_id = $job->id;
+                    $interviewStage->recruit_interview_stage_id = $stageID;
+                    $interviewStage->save();
+                }
             }
-        }
 
-        if (!empty($request->location_id)) {
-            foreach ($request->location_id as $locationID) {
-                $jobAddress = new RecruitJobAddress;
-                $jobAddress->recruit_job_id = $job->id;
-                $jobAddress->company_address_id = $locationID;
-                $jobAddress->save();
+            if (!empty($request->location_id)) {
+                foreach ($request->location_id as $locationID) {
+                    $jobAddress = new RecruitJobAddress;
+                    $jobAddress->recruit_job_id = $job->id;
+                    $jobAddress->company_address_id = $locationID;
+                    $jobAddress->save();
+                }
             }
+
+            $job->question()->sync($request->checkQuestionColumn);
+            DB::commit(); 
+            if (request()->add_more == 'true') {
+                $html = $this->create();
+
+                return Reply::successWithData(__('recruit::messages.jobAdded'), ['html' => $html, 'add_more' => true]);
+            }
+
+            return Reply::successWithData(__('recruit::messages.jobAdded'), ['redirectUrl' => route('jobs.index')]);
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            dd($e);
+            \Log::error('Job creation failed: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+
+            return Reply::error(__('messages.somethingWentWrong') . ' ' . $e->getMessage());
         }
-
-        $job->question()->sync($request->checkQuestionColumn);
-
-        if (request()->add_more == 'true') {
-            $html = $this->create();
-
-            return Reply::successWithData(__('recruit::messages.jobAdded'), ['html' => $html, 'add_more' => true]);
-        }
-
-        return Reply::successWithData(__('recruit::messages.jobAdded'), ['redirectUrl' => route('jobs.index')]);
     }
 
     public function edit($id)
@@ -466,16 +475,16 @@ class JobController extends AccountBaseController
     public function applyQuickAction(Request $request)
     {
         switch ($request->action_type) {
-        case 'delete':
-            $this->deleteRecords($request);
+            case 'delete':
+                $this->deleteRecords($request);
 
-            return Reply::success(__('messages.deleteSuccess'));
-        case 'change-status':
-            $this->changeStatus($request);
+                return Reply::success(__('messages.deleteSuccess'));
+            case 'change-status':
+                $this->changeStatus($request);
 
-            return Reply::success(__('messages.updateSuccess'));
-        default:
-            return Reply::error(__('messages.selectAction'));
+                return Reply::success(__('messages.updateSuccess'));
+            default:
+                return Reply::error(__('messages.selectAction'));
         }
     }
 

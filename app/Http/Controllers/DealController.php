@@ -249,7 +249,11 @@ class DealController extends AccountBaseController
 
             case 'call':
                 // --- CALLS TAB ---
-                $this->dealCalls = LeadCall::where('lead_id', $id)
+                 $deal = Deal::findOrFail($id);
+                 $lead = Lead::findOrFail($deal->lead_id);
+                
+                // dd($id,$lead);
+                $this->dealCalls = LeadCall::where('lead_id', $lead->lead_id)
                     ->with('user')
                     ->orderByDesc( 'created_at')
                     ->get();

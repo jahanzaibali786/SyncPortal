@@ -1,0 +1,322 @@
+id,name,email,phone,numbers,subject,contact_person,designation,user_id,pipeline_id,stage_id,sources,products,dumy,detail,country,labels,order,status,created_by,is_active,is_converted,date,created_at,updated_at,notes
+370,The City School E-11 Campus,CitySchool@gmail.com,(051) 222 897 073,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 0:01,5/10/2024 0:01,NULL
+371,Islamabad Grammar School G-9 campus,Islamabadgrammarschhol@gmail.com,0300 9501008,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 0:08,5/10/2024 0:08,NULL
+372,"Roots Millennium Schools, One World Campus, E11/4 Islamabad",RootsMillennium@gmail.com,0303 0501691,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 0:17,5/10/2024 0:17,NULL
+373,Imperial International School & College,Imperial International@gmail.com,(051) 2103724,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 0:18,5/10/2024 0:18,NULL
+374,Crescent International School & College,CrescentInternational@gmail.com,0331 8205364,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 0:21,5/10/2024 0:21,NULL
+375,"ASAS International School, Islamabad F-10 Branch",ASASinternational@gmail.com,(051) 2113315,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 0:39,5/10/2024 0:39,NULL
+376,"Future World School, Signature Campus F10/2, Islamabad",Futureworldschool@gmail.com,(051) 2102459,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 0:41,5/10/2024 0:41,NULL
+377,Islamabad ALMA School & Academy,Islamabadalma@gmail.com,(051) 2280684,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 0:42,5/10/2024 0:42,NULL
+378,Super Nova School,SuperNova@gmail.com,(051) 2255005,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 0:47,5/10/2024 0:47,NULL
+379,Elite International School,Elite@gmail.com,(051) 2292006,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 0:48,5/10/2024 0:48,NULL
+380,Princeton School Islamabad,Princeton@gmail.com,0340 1809150,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 0:52,5/10/2024 0:52,NULL
+381,Falcon Grammar School & Academy,Falcon@gmail.com,Not Available,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 1:00,5/10/2024 1:00,NULL
+382,Oxford High School,Oxford High School@gmail.com,(051) 2251644,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 1:01,5/10/2024 1:01,NULL
+383,The Mount Sinai School,MountSinai@gmail.com,0316 4084073,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 1:04,5/10/2024 1:04,NULL
+384,King's House School London- F-10 Islamabad campus,KingsHouse@gmail.com,0304 2229356,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 1:08,5/10/2024 1:08,NULL
+385,Schola Nova,ScholaNova@gmail.com,(051) 2855003,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 1:10,5/10/2024 1:10,NULL
+386,Steadfast International School,Steadfast@gmail.com,0300 2447734,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 1:15,5/10/2024 1:15,NULL
+387,Roots International Schools Bloomsbury Campus,Roots@gmail.com,0333 5333350,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 1:17,5/10/2024 1:17,NULL
+388,Hill House Boarding School,HillHouse@gmail.com,0300 9502582,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 1:18,5/10/2024 1:18,NULL
+389,Dar-e-Arqam School & Quaid e Azam academy,Dar-e-Arqam@gmail.com,(051) 2280734,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 1:27,5/10/2024 1:27,NULL
+390,Treehouse School,Treehouse@gmail.com,(051) 2266270,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 1:34,5/10/2024 1:34,NULL
+391,The Smart School G-9 Campus,TheSmartSchool@gmail.com,(051) 2256020,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 1:35,5/10/2024 1:35,NULL
+392,Oxbridge Islamic Grammar School,OxbridgeIslamic@gmail.com,(051) 2225155,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 1:51,5/10/2024 1:51,NULL
+393,Roots Millennium School,RootsMillenniumSchools@gmail.com,Not Available,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 1:55,5/10/2024 1:55,NULL
+394,MSI Preschool,MSI@gmail.com,(051) 2256172,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/9/2024,5/10/2024 1:56,5/10/2024 1:56,NULL
+395,The Educators,Educators@gmail.com,(051) 2274554,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/14/2024 23:55,5/14/2024 23:55,NULL
+396,Imperial International School & College,Imperial@gmail.com,(051) 2103724,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/14/2024 23:56,5/14/2024 23:56,NULL
+397,Lahore Grammar School,Lahoregrammarschool@gmail.com,(051) 2824402,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/14/2024 23:57,5/14/2024 23:57,NULL
+398,Sublime Schools,Sublime@gmail.com,0335 8073752,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/14/2024 23:58,5/14/2024 23:58,NULL
+399,Headstart International - Kuri Campus,Headstart@gmail.com,(051) 111 478 278,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:00,5/15/2024 0:00,NULL
+400,"A S A S International School, Islamabad",ASAS@gmail.com,(051) 2255212,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:04,5/15/2024 0:04,NULL
+401,Lahore School System Islamabad Campus,Lahoreschool@gmail.com,(051) 5170801,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:06,5/15/2024 0:06,NULL
+402,Preparatory School Islamabad,Preparatoryschool@gmail.com,(051) 2822348,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:10,5/15/2024 0:10,NULL
+403,Anglo Oriental School,Anglooriental@gmail.com,(051) 4444515,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:11,5/15/2024 0:11,NULL
+404,Aims Education System,Aimseducation@gmail.com,(051) 2722123,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:13,5/15/2024 0:13,NULL
+405,Nurture International School,Nurture@gmail.com,0333 2362223,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:15,5/15/2024 0:15,NULL
+406,Roots IVY WORLD Signature School,RootsIVY@gmail.com,(051) 2831240,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:17,5/15/2024 0:17,NULL
+407,Islamabad Grammer School,grammerschool@gmail.com,0300 6048796,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:18,5/15/2024 0:18,NULL
+408,Princeton School Islamabad,Princetonschool@gmail.com,0340 1809150,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:19,5/15/2024 0:19,NULL
+409,The Smart School,smartschool@gmail.com,(051) 4939173,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:20,5/15/2024 0:20,NULL
+410,Oasis institute of education,"Oasisinstitute@gmail.,com",(051) 2603488,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:22,5/15/2024 0:22,NULL
+411,AlHuda International School,Alhuda@gmail.com,(051) 4866124,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:24,5/15/2024 0:24,NULL
+412,The National School & College System,Nationalschool@gmail.com,(051) 4430522,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:27,5/15/2024 0:27,NULL
+413,Beaconhouse Kindergarten Branch I-8,Beaconhousekindergarten@gmail.com,(051) 4939124,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:32,5/15/2024 0:32,NULL
+414,Falcon Grammar School & Academy,falcongrammar@gmail.com,Not Available,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:34,5/15/2024 0:34,NULL
+415,AIR Foundation School G14-Capital Islamabad,Airfoundation@gmail.com,(051) 8736555,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:36,5/15/2024 0:36,NULL
+416,FG Boys Model School,FGboysmodelschool@gmail.com,(051) 9207405,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:51,5/15/2024 0:51,NULL
+417,SLS Montessori & School,SLSmontesssori@gmail.com,(051) 2301603,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 0:53,5/15/2024 0:53,NULL
+418,Pakistan Askari School and College Islamabad,Pakistanaskarischool@gmail.com,0345 5558718,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 1:05,5/15/2024 1:05,NULL
+419,The Nobel STEM Schools Islamabad,Nobelschool@gmail.com,(051) 2218174,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 1:07,5/15/2024 1:07,NULL
+420,Sheikh Zayed International Academy Islamabad,ShekihZayed@gmail.com,(051) 4939298,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 1:15,5/15/2024 1:15,NULL
+421,Wright Research School,Wright Research@gmail.com,0333 3111114,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/14/2024,5/15/2024 2:14,5/15/2024 2:14,NULL
+422,PIES Group of Schools & Colleges,PIES@gmail.com,(051) 8442226,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/15/2024,5/15/2024 23:45,5/15/2024 23:45,NULL
+423,CDA Model School,CDAmodelschool@gmail.com,(051) 4859132,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/15/2024,5/15/2024 23:46,5/15/2024 23:46,NULL
+424,P B F International College,PBFinternational@gmail.com,(051) 9258645,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/15/2024,5/15/2024 23:48,5/15/2024 23:48,NULL
+425,Innovative School,Innovative@gmail.com,0332 5000466,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/15/2024,5/15/2024 23:49,5/15/2024 23:49,NULL
+426,Islamabad Convent School,Islamabadconvent@gmail.com,(051) 4939291,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/15/2024,5/15/2024 23:52,5/15/2024 23:52,NULL
+427,"The Science School Islamabad, Pakistan",Scienceschoolislamabad@gmail.com,(051) 4865465,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/15/2024,5/15/2024 23:55,5/15/2024 23:55,NULL
+428,Liberal Arts High School,Liberalarts@gmail.com,(051) 2609666,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/15/2024,5/16/2024 0:02,5/16/2024 0:02,NULL
+429,Pak-Turk Maarif International Schools and Colleges,Pakturk@gmail.com,(051) 4442713,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/15/2024,5/16/2024 0:04,5/16/2024 0:04,NULL
+430,The Leads School,Leads@gmail.com,(051) 2354112,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/15/2024,5/16/2024 0:05,5/16/2024 0:05,NULL
+431,Islamabad Model School for Girls,Islamabadmodelschool@gmail.com,(051) 9208343,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 21:08,5/16/2024 21:08,NULL
+432,The Smart School Banigala campus,Smartschoolbanigala@gmail.com,0324 5722229,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 21:10,5/16/2024 21:10,NULL
+433,F.G. Azaan Khan Shaheed Model School For Boys Islamabad,FGazaanmodelschool@gmail.com,(051) 9261678,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 21:30,5/16/2024 21:30,NULL
+434,Edopia,Edopia@gmail.com,(051) 8432824,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 21:35,5/16/2024 21:35,NULL
+435,Shine Learning Academy,Shinelearning@gmail.com,0304 8992515,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 21:41,5/16/2024 21:41,NULL
+436,Beaconhouse Metropolitan Campus,Beaconhousemetropolitan@gmail.com,(051) 2221626,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 21:43,5/16/2024 21:43,NULL
+437,Army Public School Defence Complex Islamabad,ArmyPublicSchool@gmail.com,(051) 8462167,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 21:47,5/16/2024 21:47,NULL
+438,Career School & Girls College,Careerschool@gmail.com,(051) 2204398,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 21:49,5/16/2024 21:49,NULL
+439,"Jinnah Muslim School and College, Islamabad",Jinnahmuslimschool@gmail.com,0312 5265737,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 21:51,5/16/2024 21:51,NULL
+440,Beaconhouse School System- Northern Region,BeaconhouseNorth@gmail.com,(051) 111 232 266,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 22:01,5/16/2024 22:01,NULL
+441,Faran Public School Islamabad,FaranPublicschool@gmail.com,(051) 2362320,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 22:05,5/16/2024 22:05,NULL
+442,Westminster Academy (F-10 Office),Westminister@gmail.com,(051) 2292308,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 22:08,5/16/2024 22:08,NULL
+443,Global System of Integrated Studies (GSIS Avicenna Branch,GSIS@gmail.com,(051) 4939263,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 22:11,5/16/2024 22:11,NULL
+444,Beaconhouse Newlands Islamabad,Newlands@gmail.com,Not Available,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 22:14,5/16/2024 22:14,NULL
+445,Siddeeq Public School,Siddeeqpublicschool@gmail.com,(051) 4841494,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 22:20,5/16/2024 22:20,NULL
+446,Scienta Vision Academy,ScientaVision@gmail.com,(051) 2354598,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 22:22,5/16/2024 22:22,NULL
+447,The Pinefield School,ThePinefield@gmail.com,0334 5255742,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 22:24,5/16/2024 22:24,NULL
+448,islamabad boarding school (IBS),IBS@gmail.com,Not Available,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 22:25,5/16/2024 22:25,NULL
+449,EMS High School,EMShighschool@gmail.com,(051) 8730410,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 22:56,5/16/2024 22:56,NULL
+450,Islamabad College of Arts and Sciences (ICAS),ICAS@gmail.com,(051) 2360771,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 22:58,5/16/2024 22:58,NULL
+451,"A. L. I. School Systems, G11 Campus.",ALI@gmail.com,0335 0555695,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 23:00,5/16/2024 23:00,NULL
+452,Ecole des Lumieres Primary Campus,Ecole@gmail.com,0347 5310592,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 23:04,5/16/2024 23:04,NULL
+453,Imperial International School & College,Internationalschool@gmail.com,(051) 4914079,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 23:11,5/16/2024 23:11,NULL
+454,The City School DHA Campus Islamabad,CitySchoolDHAcampus@gmail.com,(051) 5208090,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 23:19,5/16/2024 23:19,NULL
+455,Khaldunia High School,Khaldunia@gmail.com,(051) 2223620,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 23:20,5/16/2024 23:20,NULL
+456,Bahria Foundation School,BahriaFoundation@gmail.com,(051) 2298148,NULL,School,NULL,NULL,7,2,9,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/16/2024,5/16/2024 23:26,5/16/2024 23:26,NULL
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,,,,,,,,

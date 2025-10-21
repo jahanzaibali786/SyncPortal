@@ -35,7 +35,7 @@ class JobsObserver
                 $this->logRecruitJobsActivity($event->id, user()->id, 'createJob', null, null, null);
             }
 
-            event(new NewJobEvent($event));
+            // event(new NewJobEvent($event));
         }
     }
 
