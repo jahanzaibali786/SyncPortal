@@ -10,9 +10,8 @@
         <div class="minimized rounded bg-additional-grey border-grey mr-3">
             <!-- TASK BOARD HEADER START -->
             <div class="d-flex mt-4 mx-1 b-p-header align-items-center">
-                <a href="javascript:;" class="d-grid f-8 mb-3 text-lightest collapse-column"
-                    data-column-id="{{ $column->id }}" data-type="maximize" data-toggle="tooltip"
-                    data-original-title=@lang('app.expand')>
+                <a href="javascript:;" class="d-grid f-8 mb-3 text-lightest collapse-column" data-column-id="{{ $column->id }}"
+                    data-type="maximize" data-toggle="tooltip" data-original-title=@lang('app.expand')>
                     <i class="fa fa-chevron-right ml-1"></i>
                     <i class="fa fa-chevron-left"></i>
                 </a>
@@ -55,8 +54,7 @@
                         </a>
                         @if ($addLeadPermission != 'none')
                             <div class="dropdown">
-                                <button
-                                    class="btn bg-white btn-lg f-10 px-2 py-1 text-dark-grey  rounded  dropdown-toggle"
+                                <button class="btn bg-white btn-lg f-10 px-2 py-1 text-dark-grey  rounded  dropdown-toggle"
                                     type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
                                     <i class="fa fa-ellipsis-h"></i>
@@ -86,7 +84,8 @@
                 </div>
 
                 <div class="mr-3 ml-4 f-11 text-dark-grey">
-                    {{ currency_format($column->total_value, company()->currency_id) }}</div>
+                    {{ currency_format($column->total_value, company()->currency_id) }}
+                </div>
             </div>
 
             <!-- TASK BOARD HEADER END -->
@@ -111,7 +110,8 @@
                     {{-- @dd($allLabels) --}}
 
                     @foreach ($column['deals'] as $lead)
-                        <x-cards.lead-card :draggable="$changeStatusPermission == 'all' ? 'true' : 'false'" :lead="$lead" :allLabels="$allLabels" />
+                        <x-cards.lead-card :draggable="$changeStatusPermission == 'all' ? 'true' : 'false'" :lead="$lead"
+                            :allLabels="$allLabels" />
                     @endforeach
                 </div>
                 <!-- MAIN TASKS END -->
@@ -128,32 +128,6 @@
         </div>
         <!-- BOARD PANEL 2 END -->
 
-        <div id="bulkActionBar" class="position-fixed bg-white border-top shadow-sm p-2 d-none"
-            style="top: 20%; left: 57%; width: 620px; transform: translateX(-50%); z-index: 999999;">
-            <div class="container-fluid d-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center">
-                    <button type="button" id="clearSelection" class=" mr-3 f-12 bg-white">
-                        <i class="fa fa-times mr-1"></i> Deselect All
-                    </button>
-                    <span id="selectedCount" class="font-weight-bold f-12">0 Card(s) Selected</span>
-                </div>
-                <div class="d-flex align-items-center">
-                    <select id="bulkStageSelect" class="form-control mr-3 pb-2 pt-2 f-12" style="width: 150px;">
-                        <option value="">Move to Stage...</option>
-                        @foreach ($result['boardColumns'] as $col)
-                            <option value="{{ $col->id }}">{{ $col->name }}</option>
-                        @endforeach
-                    </select>
-
-                    <select id="bulkPipelineSelect" class="form-control mr-3 pb-2 pt-2 f-12" style="width: 150px;">
-                        <option value="">Move to Pipeline...</option>
-                        @foreach ($pipelines as $pipe)
-                            <option value="{{ $pipe->id }}">{{ $pipe->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-        </div>
     @endif
 
     <style>
@@ -163,33 +137,112 @@
     </style>
 @endforeach
 
+<div id="bulkActionBar" class="position-fixed bg-white border-top shadow-sm p-2 d-none"
+    style="top: 20%; left: 57%; width: 720px; transform: translateX(-50%); z-index: 999999;">
+    <div class="container-fluid d-flex align-items-center justify-content-between">
+
+        {{-- <div style="width: 150px!important;">
+            <select id="bulkAssignAgents" class="form-control select-picker mr-3 pb-2 pt-2 f-12"
+                style="width: 150px!important; position: static!important; display: none!important;"
+                data-live-search="true" data-actions-box="true" multiple>
+                <option value="">--</option>
+            </select>
+        </div> --}}
+
+        <button type="button" id="btnBulkAssignAgents" class="btn btn-primary f-12">
+            <i class="fa fa-user-plus mr-1"></i> Assign Users
+        </button>
+
+        <div class="d-flex align-items-center">
+            <button type="button" id="clearSelection" class=" mr-3 f-11 bg-white">
+                <i class="fa fa-times mr-1"></i> Deselect All
+            </button>
+            <span id="selectedCount" class="font-weight-bold f-12">0 Card(s) Selected</span>
+        </div>
+        <div class="d-flex align-items-center">
+
+            <select id="bulkPipelineSelect" class="form-control mr-3 pb-2 pt-2 f-12" style="width: 150px;">
+                <option value="">Move to Pipeline...</option>
+                @foreach ($pipelines as $pipe)
+                    <option value="{{ $pipe->id }}">{{ $pipe->name }}</option>
+                @endforeach
+            </select>
+
+            <select id="bulkStageSelect" class="form-control mr-3 pb-2 pt-2 f-12" style="width: 150px;">
+                <option value="">Move to Stage...</option>
+                @foreach ($result['boardColumns'] as $col)
+                    <option value="{{ $col->id }}">{{ $col->name }}</option>
+                @endforeach
+            </select>
+            
+        </div>
+    </div>
+</div>
+
+
+<!-- Bulk Assign Agents Modal -->
+<div class="modal fade" id="bulkAssignAgentsModal" tabindex="-1" role="dialog"
+    aria-labelledby="bulkAssignAgentsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form id="bulkAssignAgentsForm">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bulkAssignAgentsModalLabel">Assign Users / Agents</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="bulkAssignAgentsSelect">Select Agents</label>
+                        <select id="bulkAssignAgentsSelect" class="form-control select-picker" data-live-search="true"
+                            multiple>
+                            <option value="">--</option>
+                        </select>
+                    </div>
+                    <small class="text-muted">
+                        Existing agents already assigned to selected deals will not be duplicated.
+                    </small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
 <!-- Drag and Drop Plugin -->
 <script>
     var arraylike = document.getElementsByClassName('b-p-tasks');
     var containers = Array.prototype.slice.call(arraylike);
     var drake = dragula({
-            containers: containers,
-            moves: function(el, source, handle, sibling) {
-                if (el.classList.contains('move-disable') || !KTUtil.isDesktopDevice()) {
-                    return false;
-                }
+        containers: containers,
+        moves: function (el, source, handle, sibling) {
+            if (el.classList.contains('move-disable') || !KTUtil.isDesktopDevice()) {
+                return false;
+            }
 
-                return true; // elements are always draggable by default
-            },
-        })
-        .on('drag', function(el) {
+            return true; // elements are always draggable by default
+        },
+    })
+        .on('drag', function (el) {
             el.className = el.className.replace('ex-moved', '');
-        }).on('drop', function(el) {
+        }).on('drop', function (el) {
             el.className += ' ex-moved';
-        }).on('over', function(el, container) {
+        }).on('over', function (el, container) {
             container.className += ' ex-over';
-        }).on('out', function(el, container) {
+        }).on('out', function (el, container) {
             container.className = container.className.replace('ex-over', '');
         });
 </script>
 
 <script>
-    drake.on('drop', function(element, target, source, sibling) {
+    drake.on('drop', function (element, target, source, sibling) {
         var elementId = element.id;
         $children = $('#' + target.id).children();
         var boardColumnId = $('#' + target.id).data('column-id');
@@ -201,7 +254,7 @@
         var taskIds = [];
         var prioritys = [];
 
-        $children.each(function(ind, el) {
+        $children.each(function (ind, el) {
             taskIds.push($(el).data('task-id'));
             prioritys.push($(el).index());
         });
@@ -219,7 +272,7 @@
                 prioritys: prioritys,
                 '_token': '{{ csrf_token() }}'
             },
-            success: function() {
+            success: function () {
                 let leadID = movingTaskId;
                 let statusID = boardColumnId;
 
@@ -240,7 +293,7 @@
                         statusID: statusID,
                         '_token': '{{ csrf_token() }}'
                     },
-                    success: function(response) {
+                    success: function (response) {
                         if (response.slug === 'win' || response.slug === 'lost') {
                             var modalUrl =
                                 "{{ route('deals.stage_change', ':id') }}?via=deal&leadID=" +
@@ -259,138 +312,322 @@
 </script>
 
 <script>
-$(function() {
+    $(function () {
 
-    let selectedDeals = new Set();
+        selectedDeals = new Set();
 
-    // ✅ Toggle individual checkbox
-    $(document).on('change', '.deal-select-checkbox', function() {
-        let dealId = $(this).val();
-        if ($(this).is(':checked')) {
-            selectedDeals.add(dealId);
-        } else {
-            selectedDeals.delete(dealId);
-        }
-        updateBulkBar();
-    });
-
-    // ✅ "Select All" per column
-    $(document).on('change', '.select-all-column', function() {
-        let columnId = $(this).data('column-id');
-        let isChecked = $(this).is(':checked');
-        $(`#drag-container-${columnId} .deal-select-checkbox`).each(function() {
-            $(this).prop('checked', isChecked).trigger('change');
-        });
-    });
-
-    // ✅ Clear selection
-    $('#clearSelection').on('click', function() {
-        clearSelection();
-    });
-
-    // ✅ Move to Stage (NO RELOAD)
-    $('#bulkStageSelect').on('change', function() {
-        let stageId = $(this).val();
-        if (!stageId || selectedDeals.size === 0) return;
-
-        $.easyAjax({
-            url: "{{ route('deals.bulk-move-stage') }}",
-            type: "POST",
-            data: {
-                _token: '{{ csrf_token() }}',
-                stage_id: stageId,
-                deal_ids: Array.from(selectedDeals)
-            },
-            blockUI: true,
-            success: function(response) {
-                if (response.status === 'success') {
-                    moveDealsToStage(stageId);
-                    // toastr.success('Deals moved successfully.');
-                    clearSelection();
-                }
+        // ✅ Toggle individual checkbox
+        $(document).on('change', '.deal-select-checkbox', function () {
+            let dealId = $(this).val();
+            if ($(this).is(':checked')) {
+                selectedDeals.add(dealId);
+            } else {
+                selectedDeals.delete(dealId);
             }
+            updateBulkBar();
         });
-    });
 
-    // ✅ Move to Pipeline (NO RELOAD)
-    $('#bulkPipelineSelect').on('change', function() {
-        let pipelineId = $(this).val();
-        if (!pipelineId || selectedDeals.size === 0) return;
+        // ✅ "Select All" per column
+        $(document).on('change', '.select-all-column', function () {
+            let columnId = $(this).data('column-id');
+            let isChecked = $(this).is(':checked');
+            $(`#drag-container-${columnId} .deal-select-checkbox`).each(function () {
+                $(this).prop('checked', isChecked).trigger('change');
+            });
+        });
 
-        $.easyAjax({
-            url: "{{ route('deals.bulk-move-pipeline') }}",
-            type: "POST",
-            data: {
-                _token: '{{ csrf_token() }}',
-                pipeline_id: pipelineId,
-                deal_ids: Array.from(selectedDeals)
-            },
-            blockUI: true,
-            success: function(response) {
-                if (response.status === 'success') {
-                    // Remove cards from view (new pipeline = not visible here)
-                    selectedDeals.forEach(dealId => {
-                        const $card = $(`#drag-task-${dealId}`);
-                        const $sourceContainer = $card.closest('.b-p-tasks');
-                        $card.remove();
+        // ✅ Clear selection
+        $('#clearSelection').on('click', function () {
+            clearSelection();
+        });
 
-                        // ✅ If source now empty → show Add Deal card
+        // ✅ Handle pipeline change — only load stages dynamically
+        $('#bulkPipelineSelect').on('change', function () {
+            let pipelineId = $(this).val();
+            const $stageSelect = $('#bulkStageSelect');
+
+            // Reset stage select first
+            $stageSelect.html('<option value="">Move to Stage...</option>').selectpicker('refresh');
+
+            if (!pipelineId) return;
+
+            // 🔹 Load stages for selected pipeline
+            $.easyAjax({
+                url: "{{ route('ajax.pipeline.stages') }}",
+                type: "GET",
+                data: { pipeline_id: pipelineId },
+                blockUI: true,
+                success: function (response) {
+                    if (response.status === 'success') {
+                        let html = '<option value="">Move to Stage...</option>';
+                        $.each(response.stages, function (i, stage) {
+                            html += `<option value="${stage.id}">${stage.name}</option>`;
+                        });
+                        $stageSelect.html(html).selectpicker('refresh');
+                    }
+                }
+            });
+        });
+
+
+        // ✅ Move deals to selected stage (within selected pipeline)
+        $('#bulkStageSelect').on('change', function () {
+            let stageId = $(this).val();
+            if (!stageId || selectedDeals.size === 0) return;
+
+            $.easyAjax({
+                url: "{{ route('deals.bulk-move-stage') }}",
+                type: "POST",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    stage_id: stageId,
+                    deal_ids: Array.from(selectedDeals)
+                },
+                blockUI: true,
+                success: function (response) {
+                    if (response.status === 'success') {
+                        moveDealsToStage(stageId);
+                        clearSelection();
+                    }
+                }
+            });
+        });
+
+
+        // ✅ Move cards visually between stages
+        function moveDealsToStage(stageId) {
+            const $targetContainer = $(`#drag-container-${stageId}`);
+            if ($targetContainer.length === 0) return;
+
+            selectedDeals.forEach(dealId => {
+                const $card = $(`#drag-task-${dealId}`);
+                const $sourceContainer = $card.closest('.b-p-tasks');
+
+                if ($card.length) {
+                    $card.fadeOut(150, function () {
+                        // ✅ Move card to target column
+                        $(this).appendTo($targetContainer).fadeIn(200);
+
+                        // ✅ Hide Add Deal card in target (now not empty)
+                        $targetContainer.find('.no-task-card').addClass('d-none');
+
+                        // ✅ If source column became empty → show Add Deal card
                         if ($sourceContainer.find('.task-card').length === 0) {
                             $sourceContainer.find('.no-task-card').removeClass('d-none');
                         }
                     });
-
-                    // toastr.success('Deals moved to new pipeline successfully.');
-                    clearSelection();
                 }
+            });
+        }
+
+        function clearSelection() {
+            selectedDeals.clear();
+            $('.deal-select-checkbox, .select-all-column').prop('checked', false);
+            updateBulkBar();
+        }
+
+        // ✅ Reset UI
+        function updateBulkBar() {
+            let count = selectedDeals.size;
+            if (count === 1) {
+                const dealId = Array.from(selectedDeals)[0];
+                $.easyAjax({
+                    url: "{{ route('deals.get-agents-for-deal') }}",
+                    type: "GET",
+                    data: { deal_id: dealId },
+                    success: function (response) {
+                        if (response.status === 'success') {
+                            $('#bulkAssignAgents').selectpicker('val', response.agent_ids);
+                        }
+                    }
+                });
+            } else {
+                $('#bulkAssignAgents').selectpicker('val', []);
             }
+
+            if (count > 0) {
+                $('#selectedCount').text(count + ' Card(s) Selected');
+                $('#bulkActionBar').removeClass('d-none');
+            } else {
+                $('#bulkActionBar').addClass('d-none');
+            }
+        }
+
+
+        function updateDealAgentAvatars(dealId, agents) {
+            const $card = $('#drag-task-' + dealId);
+            const $avatarContainer = $card.find('.cardagents'); // fixed selector
+
+            $avatarContainer.empty(); // clear old avatars
+
+            if (!agents || agents.length === 0) return;
+
+            agents.forEach(agent => {
+                $avatarContainer.append(`
+            <div class="avatar-img mr-1 rounded-circle">
+                <a href="/account/employees/${agent.id}" data-toggle="tooltip" title="${agent.name}">
+                    <img src="${agent.image_url}?v=${Date.now()}">
+                </a>
+            </div>
+        `);
+            });
+
+            $('[data-toggle="tooltip"]').tooltip(); // re-init tooltips
+        }
+
+
+
+        // 🔹 Load all agents + preselect assigned ones
+        function loadAgentsForBulk(preselectedIds = []) {
+            $.easyAjax({
+                url: "{{ route('ajax.deals.active_agents') }}",
+                type: "GET",
+                blockUI: true,
+                success: function (response) {
+                    const $select = $('#bulkAssignAgentsSelect');
+                    let optionsHtml = '<option value="">--</option>';
+
+                    // If response.data is HTML (your current setup)
+                    if (typeof response.data === 'string') {
+                        optionsHtml += response.data;
+                    }
+                    // If you ever return array data in future
+                    else if ($.isArray(response.data)) {
+                        $.each(response.data, function (index, value) {
+                            const selected = preselectedIds.includes(String(value.id)) ? 'selected' : '';
+                            optionsHtml += `<option value="${value.id}" ${selected}>${value.name}</option>`;
+                        });
+                    }
+
+                    $select.html(optionsHtml);
+
+                    // ✅ Apply selections explicitly (works even with HTML-based options)
+                    $select.selectpicker('refresh');
+                    $select.selectpicker('val', preselectedIds); // <– this is the missing line
+                }
+            });
+        }
+
+
+        // 🔹 Open modal (get preselected agents first)
+        $('#btnBulkAssignAgents').on('click', function () {
+            if (selectedDeals.size === 0) {
+                alert('Please select at least one deal.');
+                return;
+            }
+
+            $.easyAjax({
+                url: "{{ route('ajax.deals.assigned_agents') }}",
+                type: "POST",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    deal_ids: Array.from(selectedDeals)
+                },
+                blockUI: true,
+                success: function (response) {
+                    console.log(response);
+                    let preselectedIds = [];
+                    if (response.status === 'success' && Array.isArray(response.agent_ids)) {
+                        preselectedIds = response.agent_ids.map(String);
+                    }
+                    loadAgentsForBulk(preselectedIds);
+                    $('#bulkAssignAgentsModal').modal('show');
+                },
+                error: function () {
+                    alert('Failed to load assigned users.');
+                }
+            });
+        });
+
+        // 🔹 Handle Save (assign selected agents)
+        $('#bulkAssignAgentsForm').on('submit', function (e) {
+            e.preventDefault();
+
+            const agentIds = $('#bulkAssignAgentsSelect').val() || [];
+            // ❌ REMOVE this check:
+            // if (agentIds.length === 0 || selectedDeals.size === 0) {
+            //     alert('Please select at least one agent and one deal.');
+            //     return;
+            // }
+
+            if (selectedDeals.size === 0) {
+                alert('Please select at least one deal.');
+                return;
+            }
+
+            $.easyAjax({
+                url: "{{ route('deals.bulk-assign-agents') }}",
+                type: "POST",
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    agent_ids: agentIds, // ✅ may be empty
+                    deal_ids: Array.from(selectedDeals)
+                },
+                blockUI: true,
+                success: function (response) {
+                    if (response.status === 'success') {
+                        $('#bulkAssignAgentsModal').modal('hide');
+                        location.reload(); // ✅ simple reload
+                    } else {
+                        alert(response.message || 'Something went wrong.');
+                    }
+                },
+                error: function () {
+                    alert('Server error. Please try again.');
+                }
+            });
+        });
+
+
+
+    });
+</script>
+
+{{--
+<script>
+    $(document).ready(function () {
+        getAgentsForBulk(); // load all active agents on page load
+
+        function getAgentsForBulk() {
+            let url = "{{ route('ajax.deals.active_agents') }}";
+
+            $.easyAjax({
+                url: url,
+                type: "GET",
+                blockUI: true,
+                success: function (response) {
+                    const $select = $('#bulkAssignAgents');
+                    let optionsHtml = '<option value="">--</option>';
+
+                    if ($.isArray(response.data)) {
+                        $.each(response.data, function (index, value) {
+                            if (typeof value === 'object') {
+                                optionsHtml += `<option value="${value.id}">${value.name}</option>`;
+                            } else {
+                                optionsHtml += value;
+                            }
+                        });
+                    } else {
+                        optionsHtml = response.data;
+                    }
+
+                    $select.html(optionsHtml);
+                    $select.selectpicker('refresh');
+                }
+            });
+        }
+
+        $('#clearSelection').on('click', function () {
+            $('#bulkAssignAgents').val([]).selectpicker('refresh');
+            $('#selectedCount').text('0 Card(s) Selected');
         });
     });
 
-    // ✅ Move cards visually between stages
-    function moveDealsToStage(stageId) {
-        const $targetContainer = $(`#drag-container-${stageId}`);
-        if ($targetContainer.length === 0) return;
+</script> --}}
 
-        selectedDeals.forEach(dealId => {
-            const $card = $(`#drag-task-${dealId}`);
-            const $sourceContainer = $card.closest('.b-p-tasks');
+<script>
+    $(document).ready(function () {
 
-            if ($card.length) {
-                $card.fadeOut(150, function() {
-                    // ✅ Move card to target column
-                    $(this).appendTo($targetContainer).fadeIn(200);
 
-                    // ✅ Hide Add Deal card in target (now not empty)
-                    $targetContainer.find('.no-task-card').addClass('d-none');
-
-                    // ✅ If source column became empty → show Add Deal card
-                    if ($sourceContainer.find('.task-card').length === 0) {
-                        $sourceContainer.find('.no-task-card').removeClass('d-none');
-                    }
-                });
-            }
-        });
-    }
-
-    // ✅ Reset UI
-    function clearSelection() {
-        selectedDeals.clear();
-        $('.deal-select-checkbox, .select-all-column').prop('checked', false);
-        updateBulkBar();
-    }
-
-    // ✅ Update bulk action bar
-    function updateBulkBar() {
-        let count = selectedDeals.size;
-        if (count > 0) {
-            $('#selectedCount').text(count + ' Card(s) Selected');
-            $('#bulkActionBar').removeClass('d-none');
-        } else {
-            $('#bulkActionBar').addClass('d-none');
-        }
-    }
-
-});
+    });
 </script>
-
