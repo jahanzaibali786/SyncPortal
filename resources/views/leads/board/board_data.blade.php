@@ -4,6 +4,7 @@
 @endphp
 
 
+{{-- @dd($result['boardColumns']); --}}
 @foreach ($result['boardColumns'] as $key => $column)
     @if ($column->userSetting && $column->userSetting->collapsed)
         <!-- MINIMIZED BOARD PANEL START -->

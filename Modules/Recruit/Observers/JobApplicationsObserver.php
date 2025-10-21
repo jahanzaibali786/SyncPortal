@@ -37,7 +37,7 @@ class JobApplicationsObserver
             }
             $job=RecruitJob::where('id', $event->recruit_job_id)->first();
 
-            event(new NewJobApplicationEvent($event, $job));
+            // event(new NewJobApplicationEvent($event, $job));
         }
     }
 

@@ -37,15 +37,18 @@
 
         {{-- @dd($lead->lead->labels) --}}
 
-        <div class="mt-2">
-            @if ($lead->labels->count() > 0)
-                @foreach ($lead->labels as $label)
-                    <span class="badge badge-{{ $label->label_color }} mr-1">
-                        {{ $label->name }}
-                    </span>
-                @endforeach
-            @endif
-        </div>
+        @php
+            $leadLabels = is_iterable($lead->labels) ? $lead->labels : [];
+        @endphp
+
+        @if (count($leadLabels) > 0)
+            @foreach ($leadLabels as $label)
+                <span class="badge badge-{{ $label->label_color }} mr-1">
+                    {{ $label->name }}
+                </span>
+            @endforeach
+        @endif
+
 
         {{-- @dd($allLabels) --}}
 
