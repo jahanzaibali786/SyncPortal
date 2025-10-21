@@ -1,0 +1,2 @@
+id,name,email,phone,numbers,subject,contact_person,designation,user_id,pipeline_id,stage_id,sources,products,dummy,detail,country,labels,order,status,created_by,is_active,is_converted,date,created_at,updated_at,notes
+2,Mindstir Co-Working,info@mindstir.space,3316611193,NULL,Co-Working Software,NULL,NULL,7,1,6,NULL,NULL,,NULL,NULL,NULL,64,1,2,1,0,12/18/2023,12/18/2023 22:59,11/25/2024 22:51,NULL

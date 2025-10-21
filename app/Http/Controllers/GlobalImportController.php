@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Deal;
+use App\Models\DealNote;
 use App\Models\Lead;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -31,7 +32,9 @@ class GlobalImportController extends AccountBaseController
 
         if ($dataType == 'leads') {
             return $this->Leads($file, $request);
-        }  else {
+        } else if ($dataType == 'leads_discussion') {
+            return $this->LeadsDiscussion($file, $request);
+        } else {
             return redirect()->back()->with('error', 'No Data Type Selected');
         }
     }
@@ -58,7 +61,7 @@ class GlobalImportController extends AccountBaseController
 
                 while (($all_data = fgetcsv($handle, 5000, ",")) !== FALSE) {
                     if ($count > 0) {
-                        if($all_data[0] == ''){
+                        if ($all_data[0] == '') {
                             continue;
                         }
                         // dd($all_data);
@@ -91,7 +94,7 @@ class GlobalImportController extends AccountBaseController
                         $reason = '';
                         $all_data = array_pad($all_data, 4, '');
 
-                        if (empty($all_data[0]) || empty($all_data[1]) || empty($all_data[2]) || empty($all_data[3])) {
+                        if (empty($all_data[0]) || empty($all_data[1]) || empty($all_data[2]) || !isset($all_data[3]) || empty($all_data[3])) {
                             $reason = 'Required fields are missing';
                             $error_counter++;
                             $skip_data[] = array_merge($all_data, ['Status' => 'Error', 'Reason' => $reason]);
@@ -103,6 +106,7 @@ class GlobalImportController extends AccountBaseController
                         $lead = new Lead();
                         $lead->lead_id = $all_data[0];
                         $lead->user_id = $all_data[1];
+                        $lead->company_name = $all_data[5];
                         $lead->client_email = $all_data[2];
                         $lead->mobile = $all_data[3];
                         $lead->cell = $all_data[4];
@@ -113,8 +117,8 @@ class GlobalImportController extends AccountBaseController
                         $lead->source_id = $all_data[11];
                         $lead->note = $all_data[25];
                         $lead->country = $all_data[15] ?? null;
-                        $lead->created_at = date('Y-m-d', strtotime($all_data[22])).' '.date('H:i:s');
-                        $lead->updated_at = date('Y-m-d', strtotime($all_data[22])).' '.date('H:i:s');
+                        $lead->created_at = date('Y-m-d', strtotime($all_data[22])) . ' ' . date('H:i:s');
+                        $lead->updated_at = date('Y-m-d', strtotime($all_data[22])) . ' ' . date('H:i:s');
                         $lead->save();
                         $deal = new Deal();
                         $deal->name = $all_data[1];
@@ -127,8 +131,8 @@ class GlobalImportController extends AccountBaseController
                         $deal->subject = $all_data[5];
                         // $deal->agent_id = null;
                         $deal->deal_watcher = $all_data[8];
-                        $deal->created_at = date('Y-m-d', strtotime($all_data[22])).' '.date('H:i:s');
-                        $deal->updated_at = date('Y-m-d', strtotime($all_data[22])).' '.date('H:i:s');
+                        $deal->created_at = date('Y-m-d', strtotime($all_data[22])) . ' ' . date('H:i:s');
+                        $deal->updated_at = date('Y-m-d', strtotime($all_data[22])) . ' ' . date('H:i:s');
                         $deal->save();
                         // dd($deal,$lead);
                         // Add to successful records
@@ -165,5 +169,96 @@ class GlobalImportController extends AccountBaseController
             return redirect()->back()->with('error', "An error occurred: " . $e->getMessage());
         }
     }
+    public function LeadsDiscussion($file, $request)
+    {
+        // new code for enrollment
+        set_time_limit(0);
+        $file = $request->file('excel_file');
+        $filename = $file->getClientOriginalName();
+        $file->move(public_path('assets/import/csv_file/'), $filename);
+        $filepath = public_path('assets/import/csv_file/' . $filename);
 
+        // Initialize counters and tracking arrays
+        $success_counter = 0;
+        $error_counter = 0;
+        $duplication_counter = 0;
+        $skip_data = [];
+        $processed_records = [];
+
+        DB::beginTransaction();
+        try {
+            if (($handle = fopen($filepath, 'r')) !== FALSE) {
+                $count = 0;
+
+                while (($all_data = fgetcsv($handle, 5000, ",")) !== FALSE) {
+                    if ($count > 0) {
+                        if ($all_data[0] == '') {
+                            continue;
+                        }
+                        // dd($all_data);
+                        //0 id
+                        // 1 lead id
+                        // 2 detail /comment
+                        // 4 created at
+                        if(empty($all_data[1]) || empty($all_data[2])){
+                            $reason = 'Required fields are missing';
+                            $error_counter++;
+                            $skip_data[] = array_merge($all_data, ['Status' => 'Error', 'Reason' => $reason]);
+                            continue;
+                        }
+                        $lead = Lead::where('lead_id', $all_data[1])->first();
+                        if (!$lead) {
+                            $reason = 'Lead not found';
+                            $error_counter++;
+                            $skip_data[] = array_merge($all_data, ['Status' => 'Error', 'Reason' => $reason]);
+                            continue;
+                        }
+                        $deal = Deal::where('lead_id', $lead->id)->first();
+                        if (!$deal) {
+                            $reason = 'Deal not found';
+                            $error_counter++;
+                            $skip_data[] = array_merge($all_data, ['Status' => 'Error', 'Reason' => $reason]);
+                            continue;
+                        }
+                        $dealnotes = new DealNote();
+                        $dealnotes->deal_id = $deal->id;
+                        $dealnotes->title = $all_data[2];
+                        $dealnotes->details = $all_data[2];
+                        $dealnotes->added_by = auth()->user()->id;
+                        $dealnotes->created_at = date('Y-m-d', strtotime($all_data[4])) . ' ' . date('H:i:s');
+                        $dealnotes->updated_at = date('Y-m-d', strtotime($all_data[4])) . ' ' . date('H:i:s');
+                        $dealnotes->save();
+                        $record_status = 'Success';
+                        $processed_records[] = array_merge($all_data, ['Status' => 'Success', 'Reason' => '']);
+                        $success_counter++;
+                    } else {
+                        // Save the header row with additional columns
+                        $header = $all_data;
+                        $header[] = 'Status';
+                        $header[] = 'Reason';
+                        $processed_records[] = $header;
+                    }
+                    $count++;
+                }
+                fclose($handle);
+                DB::commit();
+                if (!empty($skip_data)) {
+                    $export_filename = 'enrollment_errors_' . time() . '.csv';
+                    $error_filepath = public_path('assets/import/csv_file/' . $export_filename);
+                    $error_file = fopen($error_filepath, 'w+');
+                    fputcsv($error_file, ['Enrollment ID', 'Registration No', 'Student Name', 'Status', 'Reason']);
+                    foreach ($skip_data as $row) {
+                        fputcsv($error_file, $row);
+                    }
+                    fclose($error_file);
+                    return response()->download($error_filepath)->deleteFileAfterSend(true);
+                }
+                return redirect()->back()->with('message', "{$success_counter} Enrollment(s) added successfully. {$error_counter} rows skipped due to errors. {$duplication_counter} duplicates found.");
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e, $all_data);
+            return redirect()->back()->with('error', "An error occurred: " . $e->getMessage());
+        }
+    }
 }

@@ -1,0 +1,26 @@
+id,name,email,phone,numbers,subject,contact_person,designation,user_id,pipeline_id,stage_id,sources,products,dummy,detail,country,labels,order,status,created_by,is_active,is_converted,date,created_at,updated_at,notes
+457,Shahida Khaliq Health Centre,Khaliqhealth@gmail.com,(051) 2331908,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,1,1,2,1,0,5/29/2024,5/29/2024 23:37,6/22/2024 20:56,NULL
+458,Care+ Medical Center,Caremedical@gmail.com,(051) 2855097,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,0,1,2,1,0,5/29/2024,5/29/2024 23:40,5/29/2024 23:40,NULL
+459,Begum Jan Hospital,BegumJan@gmail.com,0323 5380006,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,2,1,2,1,0,5/29/2024,5/29/2024 23:43,6/29/2024 18:10,<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<br></p>
+460,Al Nafees Medical College And Hospital,Nafeesmedical@gmail.com,(051) 8439901,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,3,1,2,1,0,5/29/2024,5/29/2024 23:46,6/22/2024 20:56,NULL
+461,Islamabad Medicare Hospital,IslamabadMedicare@gmail.com,0336 5048548,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,4,1,2,1,0,5/29/2024,5/29/2024 23:51,6/22/2024 20:56,NULL
+462,Quaid-e-Azam International Hospital,Quaid-e-AzamInternationalHospital@gmail.com,(051) 6009100,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,5,1,2,1,0,5/29/2024,5/29/2024 23:54,6/22/2024 20:56,NULL
+463,Jahangir Eye Hospital,JahangirEyeHospital@gmail.com,(051) 2826096,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,6,1,2,1,0,5/29/2024,5/29/2024 23:59,6/22/2024 20:56,NULL
+464,Aziz Hospital,AzizHospital@gmail.com,(051) 4491747,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,7,1,2,1,0,5/29/2024,5/30/2024 0:02,6/22/2024 20:56,NULL
+465,Life Care International Hospital,Lifecare@gmail.com,(051) 2355501,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,8,1,2,1,0,5/29/2024,5/30/2024 0:05,6/22/2024 20:56,NULL
+466,slamabad International Hospital & Research Center (IIHRC),IIHRC@gmail.com,Not Available,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,9,1,2,1,0,5/29/2024,5/30/2024 0:10,6/22/2024 20:56,NULL
+467,Ali Medical Centre,AliMedicalCentre@gmail.com,(051) 8090200,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,10,1,2,1,0,5/29/2024,5/30/2024 0:50,6/22/2024 20:56,NULL
+468,Max Health Hospital,MaxHealth@gmail.com,Not Available,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,11,1,2,1,0,5/29/2024,5/30/2024 0:52,6/22/2024 20:56,NULL
+469,Kulsum International Hospital,contact@kih.com.pk,051-8446666,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,12,1,2,1,0,5/29/2024,5/30/2024 0:57,6/22/2024 20:56,NULL
+470,Capital Hospital - G13,CapitalHospital@gmail.com,0315 3515555,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,13,1,2,1,0,5/29/2024,5/30/2024 1:02,6/22/2024 20:56,NULL
+471,Grace International Hospital Islamabad,GraceInternational@gmail.com,0301 5710777,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,14,1,2,1,0,5/29/2024,5/30/2024 1:04,6/22/2024 20:56,NULL
+472,Bilquis Memorial Hospital,BilquisMemorial@gmail.com,(051) 2252181,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,15,1,2,1,0,6/3/2024,6/4/2024 0:04,6/22/2024 20:56,NULL
+473,Falcon Complex,FalconComplex@gmail.com,0345 9702782,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,16,1,2,1,0,6/3/2024,6/4/2024 0:07,6/22/2024 20:56,NULL
+474,Family Health Hospital,FamilyHealth@gmail.com,(051) 4446840,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,17,1,2,1,0,6/3/2024,6/4/2024 0:08,6/22/2024 20:56,NULL
+475,MEDICSi,Medicsi@gmail.com,Not Available,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,18,1,2,1,0,6/3/2024,6/4/2024 0:10,6/22/2024 20:56,NULL
+476,Farooq Hospital (Islamabad Branch),FarooqHospital@gmail.com,(051) 2720213,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,19,1,2,1,0,6/3/2024,6/4/2024 0:26,6/22/2024 20:56,NULL
+477,Medicent Hospital,Medicent@gmail.com,0314 5118532,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,20,1,2,1,0,6/3/2024,6/4/2024 0:28,6/22/2024 20:56,NULL
+478,rehmanhospital,info@rehmanhospital.pk,051 - 2255599,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,21,1,2,1,0,6/3/2024,6/4/2024 0:34,6/22/2024 20:56,NULL
+479,Naqaish Medicare,NaqaishMedicare@gmail.com,0304 2252555,NULL,Hospitals,NULL,NULL,7,3,10,NULL,NULL,,NULL,NULL,NULL,22,1,2,1,0,6/3/2024,6/4/2024 0:36,6/22/2024 20:56,NULL
+1097,test comp,test_comp@gmail.com,12352,NULL,test,Test Sector,abc,7,3,10,2,21,,NULL,NULL,NULL,0,1,2,1,0,11/29/2024,11/29/2024 10:29,11/29/2024 10:29,<p>h</p>
+1100,Net Point,Netpoints@example.com,+1 (747) 189-5217,NULL,Netpoints,Limey,Sales Manager,6,3,10,NULL,NULL,,NULL,NULL,NULL,0,0,2,1,0,11/29/2024,11/29/2024 10:34,11/29/2024 10:34,NULL

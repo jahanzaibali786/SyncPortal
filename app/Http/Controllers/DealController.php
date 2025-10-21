@@ -249,9 +249,13 @@ class DealController extends AccountBaseController
 
             case 'call':
                 // --- CALLS TAB ---
-                $this->dealCalls = LeadCall::where('lead_id', $id)
+                 $deal = Deal::findOrFail($id);
+                 $lead = Lead::findOrFail($deal->lead_id);
+                
+                // dd($id,$lead);
+                $this->dealCalls = LeadCall::where('lead_id', $lead->lead_id)
                     ->with('user')
-                    ->orderByDesc( 'created_at')
+                    ->orderByDesc('created_at')
                     ->get();
 
                 if (user()->permission('view_lead_call') == 'added') {
@@ -1117,6 +1121,162 @@ class DealController extends AccountBaseController
         return response()->json([
             'status' => 'success',
             'message' => 'Deals moved to the selected pipeline successfully.',
+        ]);
+    }
+
+    public function bulkAssignAgents(Request $request)
+    {
+        $dealIds = array_filter($request->deal_ids ?? []);
+        $agentIds = array_filter(array_unique($request->agent_ids ?? []));
+
+        if (empty($dealIds)) {
+            return response()->json(['status' => 'error', 'message' => 'No deals selected.']);
+        }
+
+        foreach ($dealIds as $dealId) {
+            $deal = Deal::find($dealId);
+            if (!$deal)
+                continue;
+
+            // get main agents and current sub agents
+            $mainAgents = array_filter(explode(',', $deal->agent_id ?? ''));
+            $existingSubAgents = array_filter(explode(',', $deal->sub_agents ?? ''));
+
+            // remove anyone who is a main agent (they cannot be subagents)
+            $cleanSelected = array_diff($agentIds, $mainAgents);
+            // dd($agentIds, $mainAgents, $cleanSelected);
+            // ✅ reassign sub_agents with only these selected
+            $deal->sub_agents = implode(',', $cleanSelected);
+            $deal->save();
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Sub agents updated successfully.'
+        ]);
+    }
+
+
+
+
+    public function getAgentsForDeal(Request $request)
+    {
+        $deal = Deal::find($request->deal_id);
+        if (!$deal)
+            return response()->json(['status' => 'error']);
+
+        $agentIds = $deal->sub_agents ? explode(',', $deal->sub_agents) : [];
+        return response()->json(['status' => 'success', 'agent_ids' => $agentIds]);
+    }
+
+    public function getAgentsByPipeline($pipelineId)
+    {
+        // Example logic — adjust according to your schema
+        $pipeline = LeadPipeline::with(['leadCategory.enabledAgents.user'])
+            ->find($pipelineId);
+
+        if (!$pipeline || !$pipeline->leadCategory) {
+            return Reply::dataOnly(['data' => '<option value="">--</option>']);
+        }
+
+        $enabledAgents = $pipeline->leadCategory->enabledAgents
+            ->filter(fn($agent) => $agent->user->status !== 'deactive');
+
+        $data = [];
+
+        foreach ($enabledAgents as $agent) {
+            $data[] = view('components.user-option', [
+                'user' => $agent->user,
+                'agent' => false,
+                'pill' => false,
+                'selected' => false,
+            ])->render();
+        }
+
+        return Reply::dataOnly(['data' => $data]);
+    }
+
+    public function getActiveLeadAgents()
+    {
+        // dd("ofmw");
+        $agents = LeadAgent::with('user')
+            ->whereHas('user', function ($q) {
+                $q->where('status', 'active');
+            })
+            ->get();
+
+        $data = '';
+
+
+        foreach ($agents as $agent) {
+            $data .= view('components.user-option', [
+                'user' => $agent->user,
+                'agent' => false,
+                'pill' => false,
+                'selected' => false,
+            ])->render();
+        }
+
+        return Reply::dataOnly(['data' => $data]);
+    }
+
+    public function updateAgents(Request $request)
+    {
+        $deal = Deal::findOrFail($request->deal_id);
+        $agentIds = $request->agent_ids ?? [];
+
+        // Example logic:
+        $deal->sub_agents = implode(',', $agentIds);
+        $deal->save();
+
+        // Return the new agent data (so JS can refresh avatars)
+        $agents = User::whereIn('id', $agentIds)
+            ->select('id', 'name', 'image_url')
+            ->get();
+
+        return response()->json([
+            'status' => 'success',
+            'agents' => $agents
+        ]);
+    }
+
+    public function getAssignedAgents(Request $request)
+    {
+        $dealIds = array_filter($request->deal_ids ?? []);
+        if (empty($dealIds)) {
+            return response()->json(['status' => 'error', 'message' => 'No deals selected.']);
+        }
+
+        $allIds = collect();
+
+        $deals = Deal::whereIn('id', $dealIds)->get(['id', 'agent_id', 'sub_agents']);
+        foreach ($deals as $deal) {
+            $agents = array_filter(explode(',', $deal->agent ?? ''));
+            $subs = array_filter(explode(',', $deal->sub_agents ?? ''));
+            $allIds = $allIds->merge($agents)->merge($subs);
+        }
+
+        $uniqueIds = $allIds->unique()->values();
+
+        return response()->json([
+            'status' => 'success',
+            'agent_ids' => $uniqueIds
+        ]);
+    }
+
+    public function getPipelineStages(Request $request)
+    {
+        $request->validate([
+            'pipeline_id' => 'required|integer|exists:lead_pipelines,id',
+        ]);
+
+        $stages = PipelineStage::where('lead_pipeline_id', $request->pipeline_id)
+            ->orderBy('priority', 'asc')
+            ->get(['id', 'name']);
+
+        return response()->json([
+            'status' => 'success',
+            'stages' => $stages
         ]);
     }
 

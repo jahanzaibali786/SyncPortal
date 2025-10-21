@@ -506,7 +506,7 @@ $addTaskPermission = user()->permission('add_tasks');
             }
         }
 
-        $('#add-column').click(function() {
+        $('#add-column').click(function() {            
             const url = "{{ route('taskboards.create') }}";
             $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
             $.ajaxModal(MODAL_LG, url);

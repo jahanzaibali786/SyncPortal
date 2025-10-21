@@ -127,9 +127,12 @@ class Lead extends BaseModel
     public function clientNameSalutation(): Attribute
     {
         return Attribute::make(
-            get: fn($value) => ($this->salutation ? $this->salutation->label() . ' ' : '') . $this->client_name
+            get: fn($value) => 
+                ($this->salutation ? $this->salutation->label() . ' ' : '') .
+                ($this->client_name ?: $this->company_name)
         );
     }
+
 
     /**
      * Route notifications for the mail channel.

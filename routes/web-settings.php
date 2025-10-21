@@ -233,6 +233,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'account/settings'], function 
     Route::get('pipeline-labels/get-deal-labels', [PipelineLabelController::class, 'getDealLabels'])->name('pipeline-labels.get-deal-labels');
     Route::post('pipeline-labels/update-deal-labels', [PipelineLabelController::class, 'updateDealLabels'])->name('pipeline-labels.update-deal-labels');
 
+    
+
 
 
     /* Contract Setting */
