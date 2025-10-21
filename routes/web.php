@@ -183,7 +183,7 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
 
     Route::get('/google/login', [GoogleMeetController::class, 'redirectToGoogle'])->name('google.meet.login');
     Route::get('/google/callback', [GoogleMeetController::class, 'handleGoogleCallback'])->name('google.meet.callback');
-    Route::get('/google-calander',[GoogleMeetController::class, 'googleCalander'])->name('google.calander');
+    Route::get('/google-calander', [GoogleMeetController::class, 'googleCalander'])->name('google.calander');
     Route::get('/google-meet-form', [GoogleMeetController::class, 'showForm'])->name('google.form.meet');
     Route::post('/google/create-meet', [GoogleMeetController::class, 'createMeet'])->name('google.create.meet');
     // Route::get('/google-calendar', function () {
@@ -198,11 +198,11 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     Route::resource('lead-calls', LeadCallController::class);
     // Ledger report
 
-    Route::post('/chart-of-accounts/store',[chartOfAccounts::class,'store'])->name('coa.store');
+    Route::post('/chart-of-accounts/store', [chartOfAccounts::class, 'store'])->name('coa.store');
     Route::post('/chart-of-accounts/{id}', [chartOfAccounts::class, 'update'])->name('chart-of-accounts.update');
-    Route::get('/chart-of-accounts',[chartOfAccounts::class,'index'])->name('coa.index');
+    Route::get('/chart-of-accounts', [chartOfAccounts::class, 'index'])->name('coa.index');
     // create a create and store option
-    Route::get('/chart-of-accounts/create',[chartOfAccounts::class,'create'])->name('coa.create');
+    Route::get('/chart-of-accounts/create', [chartOfAccounts::class, 'create'])->name('coa.create');
     Route::get('/coa/get-parents', [chartOfAccounts::class, 'getParents'])->name('coa.getParents');
     Route::get('/ledger', [VoucherController::class, 'ledger'])->name('ledger.index');
     Route::get('trial-balance', [TrialBalanceController::class, 'index'])->name('trial-balance.index');
@@ -627,6 +627,13 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     Route::post('/deals/bulk-move-stage', [DealController::class, 'bulkMoveStage'])->name('deals.bulk-move-stage');
     Route::post('/deals/bulk-move-pipeline', [DealController::class, 'bulkMovePipeline'])->name('deals.bulk-move-pipeline');
 
+    Route::post('/deals/bulk-assign-agents', [DealController::class, 'bulkAssignAgents'])
+        ->name('deals.bulk-assign-agents');
+
+    Route::get('/deals/get-agents-for-deal', [DealController::class, 'getAgentsForDeal'])
+        ->name('deals.get-agents-for-deal');
+
+
 
     Route::post('lead-form/sortFields', [LeadCustomFormController::class, 'sortFields'])->name('lead-form.sortFields');
     Route::resource('lead-form', LeadCustomFormController::class);
@@ -652,6 +659,27 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     Route::get('deals/get-deals/{id}', [DealController::class, 'getDeals'])->name('deals.get-deals');
     Route::get('deals/get-agent/{id}', [DealController::class, 'getAgents'])->name('deals.get_agents');
     Route::resource('deals', DealController::class);
+
+    Route::get('deals/get-agents-by-pipeline/{pipelineId}', [DealController::class, 'getAgentsByPipeline'])
+        ->name('deals.get_agents_by_pipeline');
+
+    Route::get('ajax/deals/active-agents', [DealController::class, 'getActiveLeadAgents'])
+        ->name('ajax.deals.active_agents');
+
+    // routes/web.php
+    Route::post('/deals/update-agents', [DealController::class, 'updateAgents'])->name('deals.update-agents');
+
+    Route::post('/deals/assigned-agents', [DealController::class, 'getAssignedAgents'])
+        ->name('ajax.deals.assigned_agents');
+
+    // web.php
+    Route::get('/ajax/pipeline-stages', [DealController::class, 'getPipelineStages'])
+        ->name('ajax.pipeline.stages');
+
+
+
+
+
 
     // leaves files routes
     Route::get('leave-files/download/{id}', [LeaveFileController::class, 'download'])->name('leave-files.download');
@@ -916,6 +944,8 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     Route::get('task-report/consolidated-task-report', [TaskReportController::class, 'consolidatedTaskReport'])->name('consolidated-task-report');
 
     Route::resource('task-report', TaskReportController::class);
+
+    // Route::resource('call-recording-report', TaskReportController::class);
 
     Route::post('time-log-report-chart', [TimelogReportController::class, 'timelogChartData'])->name('time-log-report.chart');
     Route::get('time-log-consolidated-report', [TimelogReportController::class, 'consolidateIndex'])->name('time-log-consolidated.report');

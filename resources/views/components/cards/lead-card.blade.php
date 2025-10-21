@@ -28,10 +28,10 @@
                     <span class="ml-2 f-11 text-lightest">{{ currency_format($lead->value, $lead->currency_id) }}</span>
                 @endif
 
-                {{-- <button type="button" class="btn btn-sm btn-select-labels text-lightest p-0 ml-2"
+                <button type="button" class="btn btn-sm btn-select-labels text-lightest p-0 ml-2"
                     data-lead-id="{{ $lead->id }}">
                     <i class="bi bi-three-dots-vertical"></i>
-                </button> --}}
+                </button>
             </div>
         </div>
 
@@ -54,9 +54,9 @@
 
         {{-- <div class="mt-2">
             @foreach ($allLabels as $label)
-                <span class="badge badge-{{ $label->label_color }} mr-1">
-                    {{ $label->name }}
-                </span>
+            <span class="badge badge-{{ $label->label_color }} mr-1">
+                {{ $label->name }}
+            </span>
             @endforeach
         </div> --}}
 
@@ -78,7 +78,7 @@
         @endif
 
         <div class="d-flex justify-content-between align-items-center">
-            <div class="d-flex flex-wrap align-items-center">
+            <div class="d-flex flex-wrap align-items-center cardagents">
 
                 {{-- Main Agent --}}
                 @if (!is_null($lead->agent_id) && $lead->leadAgent && $lead->leadAgent->user)
@@ -142,13 +142,10 @@
                             @foreach ($allLabels as $label)
                                 <div class="form-check m-3 d-flex align-items-center" style="gap: 0.5rem;">
                                     <input class="form-check-input label-checkbox d-block" style="position: static;"
-                                        type="checkbox" name="labels[]"
-                                        id="label_{{ $lead->id }}_{{ $label->id }}"
-                                        value="{{ $label->id }}"
-                                        {{ $lead->labels->contains('id', $label->id) ? 'checked' : '' }}>
+                                        type="checkbox" name="labels[]" id="label_{{ $lead->id }}_{{ $label->id }}"
+                                        value="{{ $label->id }}" {{ $lead->labels->contains('id', $label->id) ? 'checked' : '' }}>
                                     <div class="form-check-label badge badge-{{ $label->label_color }} mt-1"
-                                        for="label_{{ $lead->id }}_{{ $label->id }}"
-                                        style="font-size: 0.9rem;">
+                                        for="label_{{ $lead->id }}_{{ $label->id }}" style="font-size: 0.9rem;">
                                         {{ $label->name }}
                                     </div>
                                 </div>
@@ -166,12 +163,12 @@
 </div>
 
 <script>
-    $(document).on('click', '.btn-select-labels', function() {
+    $(document).on('click', '.btn-select-labels', function () {
         let leadId = $(this).data('lead-id');
         $('#manageLabelsModal_' + leadId).modal('show');
     });
 
-    $(document).on('submit', '.manageLabelsForm', function(e) {
+    $(document).on('submit', '.manageLabelsForm', function (e) {
         e.preventDefault();
         let form = $(this);
         let leadId = form.data('lead-id');
@@ -181,7 +178,7 @@
             type: "POST",
             data: form.serialize() + '&deal_id=' + leadId,
             blockUI: true,
-            success: function(response) {
+            success: function (response) {
                 if (response.status === "success") {
                     $('#manageLabelsModal_' + leadId).modal('hide');
 
@@ -190,7 +187,7 @@
                     badgeContainer.html(''); // Clear existing badges
 
                     if (response.labels && response.labels.length > 0) {
-                        response.labels.forEach(function(label) {
+                        response.labels.forEach(function (label) {
                             badgeContainer.append(
                                 `<span class="badge badge-${label.label_color} mr-1">${label.name}</span>`
                             );
