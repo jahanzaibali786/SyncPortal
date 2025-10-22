@@ -2335,6 +2335,7 @@ return array(
         'contactName' => 'Contact Name',
         'leadName' => 'Lead Name',
         'leadReport' => 'Deal Report',
+        'description' => 'Description',
     ),
     'deal' => array(
         'title' => 'Deal',

@@ -576,6 +576,21 @@ class DealController extends AccountBaseController
         return Reply::success(__('messages.deleteSuccess'));
 
     }
+    // DealController.php
+public function updateLeadNote(Request $request)
+{
+    $request->validate([
+        'deal_id' => 'required|exists:deals,id',
+        'note' => 'nullable|string'
+    ]);
+
+    $deal = Deal::findOrFail($request->deal_id);
+    $deal->lead->update([
+        'note' => $request->note
+    ]);
+
+    return response()->json(['status' => 'success', 'message' => 'Lead note updated successfully.']);
+}
 
     /**
      * @param CommonRequest $request

@@ -660,6 +660,8 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
 
     Route::resource('lead-contact', LeadContactController::class);
     Route::post('lead-contact/apply-quick-action', [LeadContactController::class, 'applyQuickAction'])->name('lead-contact.apply_quick_action');
+    Route::post('deals/update-lead-note', [DealController::class, 'updateLeadNote'])
+        ->name('deals.update-lead-note');
 
     Route::get('deals/get-stage/{id}', [DealController::class, 'getStages'])->name('deals.get-stage');
     Route::get('deals/get-deals/{id}', [DealController::class, 'getDeals'])->name('deals.get-deals');
