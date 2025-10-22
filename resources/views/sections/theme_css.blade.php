@@ -4,14 +4,14 @@
         /* For Logged in user take header color a app theme*/
         /* For public pages use company specific header color example invoice,estimate public page*/
         /* For all other pages use like auth use global setting header*/
-        --header_color: @if (isset($appTheme))
-            {{ $appTheme->header_color }}
-        @elseif(isset($company))
-            {{ $company->header_color }}
-        @else
-            {{ global_setting()->header_color }}
-        @endif
-        ;
+        --header_color:
+            @if (isset($appTheme))
+                {{ $appTheme->header_color }}
+            @elseif(isset($company))
+                {{ $company->header_color }}
+            @else
+                {{ global_setting()->header_color }}
+            @endif ;
     }
 
     /* Global button styling with gradient - consistent with main.css */
@@ -19,10 +19,10 @@
     .btn-primary.disabled:hover,
     .btn-primary:disabled:hover {
         background: linear-gradient(90deg,
-            var(--gradientColor1) -0.06%,
-            var(--gradientColor2) 33.96%,
-            var(--gradientColor3) 72.98%,
-            var(--gradientColor4) 100%) !important;
+                var(--gradientColor1) -0.06%,
+                var(--gradientColor2) 33.96%,
+                var(--gradientColor3) 72.98%,
+                var(--gradientColor4) 100%) !important;
         border: 1px solid transparent !important;
         border-radius: 2rem !important;
         color: white !important;
@@ -32,10 +32,10 @@
     .btn-danger.disabled:hover,
     .btn-danger:disabled:hover {
         background: linear-gradient(90deg,
-            var(--gradientColor1) -0.06%,
-            var(--gradientColor2) 33.96%,
-            var(--gradientColor3) 72.98%,
-            var(--gradientColor4) 100%) !important;
+                var(--gradientColor1) -0.06%,
+                var(--gradientColor2) 33.96%,
+                var(--gradientColor3) 72.98%,
+                var(--gradientColor4) 100%) !important;
         border: 1px solid transparent !important;
         border-radius: 2rem !important;
         color: white !important;
@@ -45,10 +45,10 @@
     .btn-info,
     .btn-warning {
         background: linear-gradient(90deg,
-            var(--gradientColor1) -0.06%,
-            var(--gradientColor2) 33.96%,
-            var(--gradientColor3) 72.98%,
-            var(--gradientColor4) 100%) !important;
+                var(--gradientColor1) -0.06%,
+                var(--gradientColor2) 33.96%,
+                var(--gradientColor3) 72.98%,
+                var(--gradientColor4) 100%) !important;
         border: 1px solid transparent !important;
         border-radius: 2rem !important;
         color: white !important;
@@ -94,7 +94,13 @@
 
     .tabs .nav .nav-link.active,
     .tabs .nav .nav-item:hover {
-        border-bottom: 3px solid var(--header_color) !important;
+        /* old code */
+        /* border-bottom: 3px solid var(--header_color) !important; */
+
+        /* new code */
+        border-bottom: none !important;
+        background: linear-gradient(90deg, var(--gradientColor1) -0.06%, var(--gradientColor2) 33.96%, var(--gradientColor3) 72.98%, var(--gradientColor4) 100%);
+        color: white !important;
     }
 
     .sidebar-light .sidebar-menu li .nav-item:focus,

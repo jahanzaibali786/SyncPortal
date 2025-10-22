@@ -46,6 +46,8 @@ use App\Models\User;
 use App\Traits\ImportExcel;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\DataTables\LeadCallsDataTable;
+use App\DataTables\UserPerformanceDataTable;
 
 class DealController extends AccountBaseController
 {
@@ -249,9 +251,9 @@ class DealController extends AccountBaseController
 
             case 'call':
                 // --- CALLS TAB ---
-                 $deal = Deal::findOrFail($id);
-                 $lead = Lead::findOrFail($deal->lead_id);
-                
+                $deal = Deal::findOrFail($id);
+                $lead = Lead::findOrFail($deal->lead_id);
+
                 // dd($id,$lead);
                 $this->dealCalls = LeadCall::where('lead_id', $lead->lead_id)
                     ->with('user')
@@ -1294,6 +1296,50 @@ public function updateLeadNote(Request $request)
             'stages' => $stages
         ]);
     }
+
+    public function CallReports($type, Request $request)
+    {
+        $this->activeSettingMenu = 'reports';
+
+        // 🔹 Define custom titles here
+        $titles = [
+            'lead-calls-report' => 'Call Recordings Report',
+            'user-performance' => 'User Performance Report',
+        ];
+
+        // 🔹 Pick title or fallback to formatted version
+        $this->pageTitle = $titles[$type] ?? ucfirst(str_replace('-', ' ', $type));
+
+        $this->startDate = $request->get('start_date') ?? now()->startOfMonth()->format('Y-m-d');
+        $this->endDate = $request->get('end_date') ?? now()->endOfDay()->format('Y-m-d');
+
+        $this->data['startDate'] = $this->startDate;
+        $this->data['endDate'] = $this->endDate;
+        $this->data['reportType'] = $type;
+        $this->data['pageTitle'] = $this->pageTitle; // 🔹 pass to view
+
+        // 🔹 Choose DataTable dynamically
+        switch ($type) {
+            case 'lead-calls-report':
+                $dataTable = app(LeadCallsDataTable::class);
+                break;
+
+            case 'user-performance':
+                $dataTable = app(UserPerformanceDataTable::class);
+                break;
+
+            default:
+                abort(404, 'Invalid report type');
+        }
+
+        if ($request->ajax()) {
+            return $dataTable->ajax();
+        }
+
+        // 🔹 Render single blade for all
+        return $dataTable->render('leads.reports.lead_calls', $this->data);
+    }
+
 
 
 }
