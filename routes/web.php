@@ -633,8 +633,14 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     Route::get('/deals/get-agents-for-deal', [DealController::class, 'getAgentsForDeal'])
         ->name('deals.get-agents-for-deal');
 
+    // Abdullah Ali ALA REPORTS
+    // Route::get('/lead-calls-report', [DealController::class, 'LeadCallReport'])->name('lead.calls');
+    // Route::get('/user-performance-report', [DealController::class, 'UserPerformanceReport'])->name('lead.calls');
 
+    Route::get('/call-reports/{type}', [DealController::class, 'CallReports'])
+    ->name('call.reports');
 
+    
     Route::post('lead-form/sortFields', [LeadCustomFormController::class, 'sortFields'])->name('lead-form.sortFields');
     Route::resource('lead-form', LeadCustomFormController::class);
 

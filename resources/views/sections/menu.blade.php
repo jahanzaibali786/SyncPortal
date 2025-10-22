@@ -67,6 +67,13 @@
                     <x-sub-menu-item :link="route('leadboards.index')" :text="__('app.deal')" />
                 </div>
             @endif
+                <div class="accordionItemContent">
+                    <x-sub-menu-item 
+                        :link="route('call.reports', 'lead-calls-report')" 
+                        :text="'Call Recordings Report'" 
+                    /> 
+                </div>
+
         </x-menu-item>
     @endif
 
