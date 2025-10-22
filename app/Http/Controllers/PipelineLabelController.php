@@ -23,10 +23,16 @@ class PipelineLabelController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $pipelines = LeadPipeline::all();
-        return view('lead-settings.create-label-modal', compact('pipelines'));
+        if (isset($request->deal_id) && !empty($request->deal_id)) {
+            $deal = Deal::with('dealLabels')->findOrFail($request->deal_id);
+            $pipelines = LeadPipeline::where('id', $deal->lead_pipeline_id)->get();
+            return view('lead-settings.create-label-modal', compact('pipelines', 'deal'));
+        } else {
+            $pipelines = LeadPipeline::all();
+            return view('lead-settings.create-label-modal', compact('pipelines'));
+        }
     }
 
     public function store(Request $request)
@@ -37,14 +43,22 @@ class PipelineLabelController extends Controller
             'label_color' => 'nullable|string|max:20',
         ]);
 
-        PipelineLabel::create([
+        $label = PipelineLabel::create([
             'pipeline_id' => $request->lead_pipeline_id,
             'name' => $request->name,
             'label_color' => $request->label_color ?? '#009688', // default color
             'added_by' => auth()->id() ?? null, // null if no user is logged in
         ]);
 
-        return response()->json(['status' => 'success']);
+        // return response()->json(['status' => 'success']);
+        return response()->json([
+            'status' => 'success',
+            'label' => [
+                'id' => $label->id,
+                'name' => $label->name,
+                'label_color' => $label->label_color,
+            ],
+        ]);
     }
 
 
@@ -98,7 +112,7 @@ class PipelineLabelController extends Controller
         // dd($request->all());
 
         $lead = Lead::findOrFail($request->lead_id);
-        $lead->labels()->sync($request->labels ?? []);
+        $lead->dealLabels()->sync($request->labels ?? []);
 
         return response()->json(['status' => 'success']);
     }
@@ -107,7 +121,7 @@ class PipelineLabelController extends Controller
     // ✅ Get labels for a specific deal
     public function getDealLabels(Request $request)
     {
-        $deal = Deal::with('labels')->findOrFail($request->deal_id);
+        $deal = Deal::with('dealLabels')->findOrFail($request->deal_id);
 
         return response()->json([
             'status' => 'success',
@@ -124,11 +138,11 @@ class PipelineLabelController extends Controller
         ]);
 
         $deal = Deal::findOrFail($request->deal_id);
-        $deal->labels()->sync($request->labels ?? []);
+        $deal->dealLabels()->sync($request->labels ?? []);
 
         return response()->json([
             'status' => 'success',
-            'labels' => $deal->labels->map(function ($label) {
+            'labels' => $deal->dealLabels->map(function ($label) {
                 return [
                     'id' => $label->id,
                     'name' => $label->name,
