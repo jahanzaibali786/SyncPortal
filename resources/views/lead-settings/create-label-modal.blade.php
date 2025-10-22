@@ -61,9 +61,37 @@
             data: $('#createLabelForm').serialize(),
             success: function(response) {
                 if (response.status == "success") {
-                    window.location.reload();
+                    let openedModal = $('.modal.show[id^="manageLabelsModal_"]');
+
+                    if (openedModal.length) {
+                        $(MODAL_LG).modal('hide'); // close Add Label modal
+
+                        // Parse label safely
+                        let newLabel = response.label || response.data || response || {};
+                        if (!newLabel.id) {
+                            console.error("Label missing from response:", response);
+                            return;
+                        }
+                        let manageform = openedModal.find('.manageLabelsForm');
+                        let leadId = openedModal.attr('id').replace('manageLabelsModal_', '');
+
+                        let html = `
+                            <div class="form-check m-3 d-flex align-items-center" style="gap: 0.5rem;">
+                                <input class="form-check-input label-checkbox d-block" style="position: static;"
+                                    type="checkbox" name="labels[]" id="label_${leadId}_${newLabel.id}"
+                                    value="${newLabel.id}" checked>
+                                <div class="form-check-label badge badge-${newLabel.label_color} mt-1"
+                                    for="label_${leadId}_${newLabel.id}" style="font-size: 0.9rem;">
+                                    ${newLabel.name}
+                                </div>
+                            </div>
+                        `;
+                        manageform.find('.form-group > div').append(html);
+                    } else {
+                        window.location.reload();
+                    }
                 }
             }
-        })
+        });
     });
 </script>

@@ -633,8 +633,14 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     Route::get('/deals/get-agents-for-deal', [DealController::class, 'getAgentsForDeal'])
         ->name('deals.get-agents-for-deal');
 
+    // Abdullah Ali ALA REPORTS
+    // Route::get('/lead-calls-report', [DealController::class, 'LeadCallReport'])->name('lead.calls');
+    // Route::get('/user-performance-report', [DealController::class, 'UserPerformanceReport'])->name('lead.calls');
 
+    Route::get('/call-reports/{type}', [DealController::class, 'CallReports'])
+    ->name('call.reports');
 
+    
     Route::post('lead-form/sortFields', [LeadCustomFormController::class, 'sortFields'])->name('lead-form.sortFields');
     Route::resource('lead-form', LeadCustomFormController::class);
 
@@ -654,6 +660,8 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
 
     Route::resource('lead-contact', LeadContactController::class);
     Route::post('lead-contact/apply-quick-action', [LeadContactController::class, 'applyQuickAction'])->name('lead-contact.apply_quick_action');
+    Route::post('deals/update-lead-note', [DealController::class, 'updateLeadNote'])
+        ->name('deals.update-lead-note');
 
     Route::get('deals/get-stage/{id}', [DealController::class, 'getStages'])->name('deals.get-stage');
     Route::get('deals/get-deals/{id}', [DealController::class, 'getDeals'])->name('deals.get-deals');

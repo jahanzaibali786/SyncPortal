@@ -59,6 +59,7 @@ use Illuminate\Notifications\Notifiable;
  * @property-read mixed $icon
  * @property-read mixed $image_url
  * @property-read \App\Models\LeadAgent|null $leadAgent
+ * @property-read \App\Models\PipelineLabel|null $dealLabels
  * @property-read \App\Models\LeadSource|null $leadSource
  * @property-read \App\Models\LeadStatus|null $leadStatus
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
@@ -262,7 +263,7 @@ class Deal extends BaseModel
         return $this->belongsTo(\App\Models\Lead::class, 'lead_id');
     }
 
-    public function labels()
+    public function dealLabels()
     {
         return $this->belongsToMany(PipelineLabel::class, 'deal_label', 'deal_id', 'label_id')
             ->withTimestamps();
