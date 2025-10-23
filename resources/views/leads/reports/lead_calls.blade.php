@@ -30,17 +30,19 @@
             </div>
 
             <!-- Status -->
-            <div class="col-md-4">
-                <div class="form-group my-3">
-                    <label for="status_filter" class="form-label mb-12 text-dark-grey">Status</label>
-                    <select id="status_filter" class="form-control pt-2 pb-2" style="min-width: 200px; height: 40px;">
-                        <option value="">All</option>
-                        <option value="answered">Answered</option>
-                        <option value="missed">Missed</option>
-                        <option value="failed">Failed</option>
-                    </select>
+            @if($showStatusFilter)
+                <div class="col-md-4">
+                    <div class="form-group my-3">
+                        <label for="status_filter" class="form-label mb-12 text-dark-grey">Status</label>
+                        <select id="status_filter" class="form-control pt-2 pb-2" style="min-width: 200px; height: 40px;">
+                            <option value="">All</option>
+                            <option value="answered">Answered</option>
+                            <option value="missed">Missed</option>
+                            <option value="failed">Failed</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
+            @endif
 
 
             {{-- <div class="col-lg-2 align-items-end d-flex mt-1">

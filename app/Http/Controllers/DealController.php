@@ -48,6 +48,9 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\DataTables\LeadCallsDataTable;
 use App\DataTables\UserPerformanceDataTable;
+use App\DataTables\CallDateDataTable;
+use App\DataTables\UserProductivityDataTable;
+use App\DataTables\LeadCallsDataTableFullReport;
 
 class DealController extends AccountBaseController
 {
@@ -576,21 +579,6 @@ class DealController extends AccountBaseController
         return Reply::success(__('messages.deleteSuccess'));
 
     }
-    // DealController.php
-public function updateLeadNote(Request $request)
-{
-    $request->validate([
-        'deal_id' => 'required|exists:deals,id',
-        'note' => 'nullable|string'
-    ]);
-
-    $deal = Deal::findOrFail($request->deal_id);
-    $deal->lead->update([
-        'note' => $request->note
-    ]);
-
-    return response()->json(['status' => 'success', 'message' => 'Lead note updated successfully.']);
-}
 
     /**
      * @param CommonRequest $request
@@ -1301,13 +1289,14 @@ public function updateLeadNote(Request $request)
     {
         $this->activeSettingMenu = 'reports';
 
-        // 🔹 Define custom titles here
         $titles = [
             'lead-calls-report' => 'Call Recordings Report',
             'user-performance' => 'User Performance Report',
+            'call-date' => 'Daily Call Reports',
+            'user-productivity' => 'Agent Productivity Reports',
+            'lead-calls' => 'Call Reports',
         ];
 
-        // 🔹 Pick title or fallback to formatted version
         $this->pageTitle = $titles[$type] ?? ucfirst(str_replace('-', ' ', $type));
 
         $this->startDate = $request->get('start_date') ?? now()->startOfMonth()->format('Y-m-d');
@@ -1316,18 +1305,31 @@ public function updateLeadNote(Request $request)
         $this->data['startDate'] = $this->startDate;
         $this->data['endDate'] = $this->endDate;
         $this->data['reportType'] = $type;
-        $this->data['pageTitle'] = $this->pageTitle; // 🔹 pass to view
+        $this->data['pageTitle'] = $this->pageTitle;
 
-        // 🔹 Choose DataTable dynamically
+        // ✅ Only show status filter for specific reports (example)
+        $this->data['showStatusFilter'] = in_array($type, [
+            'lead-calls-report',
+            'lead-calls',
+            'user-performance',
+        ]);
+
         switch ($type) {
             case 'lead-calls-report':
                 $dataTable = app(LeadCallsDataTable::class);
                 break;
-
             case 'user-performance':
                 $dataTable = app(UserPerformanceDataTable::class);
                 break;
-
+            case 'call-date':
+                $dataTable = app(CallDateDataTable::class);
+                break;
+            case "user-productivity":
+                $dataTable = app(UserProductivityDataTable::class);
+                break;
+            case "lead-calls":
+                $dataTable = app(LeadCallsDataTableFullReport::class);
+                break;
             default:
                 abort(404, 'Invalid report type');
         }
@@ -1336,9 +1338,9 @@ public function updateLeadNote(Request $request)
             return $dataTable->ajax();
         }
 
-        // 🔹 Render single blade for all
         return $dataTable->render('leads.reports.lead_calls', $this->data);
     }
+
 
 
 
