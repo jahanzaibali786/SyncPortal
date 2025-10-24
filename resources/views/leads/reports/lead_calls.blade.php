@@ -28,8 +28,8 @@
                 <x-forms.datepicker fieldId="end_date" fieldName="end_date" fieldLabel="End Date" :fieldValue="$endDate"
                     :fieldPlaceholder="__('placeholders.date')" />
             </div>
-
             <!-- Status -->
+
             <div class="col-md-4">
                 <div class="form-group my-3">
                     <label for="status_filter" class="form-label mb-12 text-dark-grey">Status</label>
@@ -41,7 +41,7 @@
                         <option value="503">Power Off</option>
                     </select>
                 </div>
-            </div>
+            @endif
 
 
             {{-- <div class="col-lg-2 align-items-end d-flex mt-1">

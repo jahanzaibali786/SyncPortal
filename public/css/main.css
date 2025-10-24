@@ -25123,6 +25123,7 @@ button:disabled {
   display: block;
   white-space: nowrap;
   margin-left: 36px;
+  text-wrap: auto;
 }
 
 .sidebar-menu li .accordionItemContent a:hover {

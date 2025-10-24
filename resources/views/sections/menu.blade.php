@@ -67,12 +67,33 @@
                     <x-sub-menu-item :link="route('leadboards.index')" :text="__('app.deal')" />
                 </div>
             @endif
-                <div class="accordionItemContent">
+                {{-- <div class="accordionItemContent">
                     <x-sub-menu-item 
                         :link="route('call.reports', 'lead-calls-report')" 
                         :text="'Call Recordings Report'" 
                     /> 
-                </div>
+                </div> --}}
+
+                {{-- 🔹 Reports Section --}}
+                @php
+                    $reports = [
+                        'lead-calls' => 'Call Reports',
+                        'lead-calls-report' => 'Call Recordings Report',
+                        'user-performance' => 'User Performance Report',
+                        'call-date' => 'Daily Call Reports',
+                        'user-productivity' => 'Agent Productivity Reports',
+                    ];
+                @endphp             
+
+                @foreach ($reports as $type => $title)
+                    <div class="accordionItemContent">
+                        <x-sub-menu-item 
+                            :link="route('call.reports', $type)" 
+                            :text="$title" 
+                        /> 
+                    </div>
+                @endforeach
+
 
         </x-menu-item>
     @endif
