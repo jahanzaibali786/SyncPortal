@@ -11,21 +11,17 @@ class Lead extends \App\Models\Lead
         'company_name',
         'client_name',
         'client_email',
+        'company_name',
+        'status_id',
+        'source_id',
+        'category_id',
+        'created_at',
+        'updated_at'
     ];
 
     protected $dates = [
         'start_date',
         'deadline',
-    ];
-
-    protected $hidden = [
-        'created_at',
-        'updated_at',
-        'source_id',
-        'client_id',
-        'status_id',
-        'agent_id',
-        'category_id',
     ];
 
     protected $guarded = [
@@ -50,7 +46,7 @@ class Lead extends \App\Models\Lead
         'category_id',
         'next_follow_up',
     ];
-
+    protected $with = ['deals']; // auto include deals
     public static function boot()
     {
         parent::boot();
@@ -79,5 +75,9 @@ class Lead extends \App\Models\Lead
         }
 
         return $query;
+    }
+    public function deals()
+    {
+        return $this->hasMany(\App\Models\Deal::class, 'lead_id', 'id');
     }
 }
