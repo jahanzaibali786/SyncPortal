@@ -28,19 +28,20 @@
                 <x-forms.datepicker fieldId="end_date" fieldName="end_date" fieldLabel="End Date" :fieldValue="$endDate"
                     :fieldPlaceholder="__('placeholders.date')" />
             </div>
-
             <!-- Status -->
+
             <div class="col-md-4">
                 <div class="form-group my-3">
                     <label for="status_filter" class="form-label mb-12 text-dark-grey">Status</label>
                     <select id="status_filter" class="form-control pt-2 pb-2" style="min-width: 200px; height: 40px;">
                         <option value="">All</option>
-                        <option value="answered">Answered</option>
-                        <option value="missed">Missed</option>
-                        <option value="failed">Failed</option>
+                        <option value="200">Answered</option>
+                        <option value="408">No Answer</option>
+                        <option value="486">Busy</option>
+                        <option value="503">Power Off</option>
                     </select>
                 </div>
-            </div>
+            @endif
 
 
             {{-- <div class="col-lg-2 align-items-end d-flex mt-1">
