@@ -1327,7 +1327,7 @@ public function updateLeadNote(Request $request)
             case 'user-performance':
                 $dataTable = app(UserPerformanceDataTable::class);
                 break;
-
+            // case 'leads'
             default:
                 abort(404, 'Invalid report type');
         }
