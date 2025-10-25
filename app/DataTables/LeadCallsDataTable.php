@@ -52,7 +52,7 @@ class LeadCallsDataTable extends DataTable
 
     public function query(LeadCall $model)
     {
-        $start = request()->get('start_date') ?? now()->startOfMonth()->format('Y-m-d');
+        $start = request()->get('start_date') ?? now()->startOfDay()->format('Y-m-d');
         $end = request()->get('end_date') ?? now()->endOfDay()->format('Y-m-d');
         $status = request()->get('status'); // 👈 get dropdown value
         $query = $model->newQuery()

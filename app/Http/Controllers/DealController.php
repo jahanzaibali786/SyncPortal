@@ -1302,11 +1302,6 @@ class DealController extends AccountBaseController
         $this->startDate = $request->get('start_date') ?? now()->startOfMonth()->format('Y-m-d');
         $this->endDate = $request->get('end_date') ?? now()->endOfDay()->format('Y-m-d');
 
-        $this->data['startDate'] = $this->startDate;
-        $this->data['endDate'] = $this->endDate;
-        $this->data['reportType'] = $type;
-        $this->data['pageTitle'] = $this->pageTitle;
-
         // ✅ Only show status filter for specific reports (example)
         $this->data['showStatusFilter'] = in_array($type, [
             'lead-calls-report',
@@ -1314,11 +1309,18 @@ class DealController extends AccountBaseController
             'user-performance',
         ]);
 
+        // ✅ Add user filter only for "lead-calls"
+        $this->data['showUserFilter'] = ($type === 'lead-calls');
+
         switch ($type) {
             case 'lead-calls-report':
+                $this->startDate = $request->get('start_date') ?? now()->startOfDay()
+                ->format('Y-m-d');
                 $dataTable = app(LeadCallsDataTable::class);
                 break;
             case 'user-performance':
+                $this->startDate = $request->get('start_date') ?? now()->startOfDay()
+                ->format('Y-m-d');
                 $dataTable = app(UserPerformanceDataTable::class);
                 break;
             case 'call-date':
@@ -1328,11 +1330,18 @@ class DealController extends AccountBaseController
                 $dataTable = app(UserProductivityDataTable::class);
                 break;
             case "lead-calls":
+                $this->startDate = $request->get('start_date') ?? now()->startOfDay()
+                ->format('Y-m-d');
                 $dataTable = app(LeadCallsDataTableFullReport::class);
                 break;
             default:
                 abort(404, 'Invalid report type');
         }
+
+        $this->data['startDate'] = $this->startDate;
+        $this->data['endDate'] = $this->endDate;
+        $this->data['reportType'] = $type;
+        $this->data['pageTitle'] = $this->pageTitle;
 
         if ($request->ajax()) {
             return $dataTable->ajax();
