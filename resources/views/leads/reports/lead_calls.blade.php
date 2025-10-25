@@ -41,7 +41,7 @@
                         <option value="503">Power Off</option>
                     </select>
                 </div>
-            @endif
+            </div>
 
 
             {{-- <div class="col-lg-2 align-items-end d-flex mt-1">

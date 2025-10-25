@@ -225,15 +225,13 @@ class User extends BaseModel
     }
 
     //    protected $with = ['session:id'];
-    protected $with = [
-    //        'clientDetails:id,company_name',
-    //        'employeeDetail.designation:id,name',
-    //        'employeeDetail.department:id,team_name',
-    //        'company:id,company_name',
-    //        'roles:name,display_name',
-       'session:id',
-       'clientContact'
-    ];
+  protected $with = [
+   'clientDetails:id,company_name',
+   'employee:company_id,user_id,employee_id,department_id,designation_id,joining_date',
+   'session:id,user_id,ip_address,last_activity',
+   'clientContact'
+];
+
 
     /**
      * The attributes that are mass assignable.

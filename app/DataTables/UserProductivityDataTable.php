@@ -22,7 +22,7 @@ class UserProductivityDataTable extends DataTable
                         $unknownMap[$row->user_id] = "Unknown User {$unknownCounter}";
                         $unknownCounter++;
                     }
-                    return $unknownMap[$row->user_id];
+                    return $row->user_id;
                 }
                 return $row->agent_name;
             })
