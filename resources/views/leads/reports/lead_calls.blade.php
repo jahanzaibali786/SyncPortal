@@ -47,7 +47,7 @@
                         </select>
                     </div>
                 </div>
-            @endif
+            </div>
 
             <!-- User -->
             @if($showUserFilter)

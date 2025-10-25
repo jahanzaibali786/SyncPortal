@@ -5,6 +5,7 @@ namespace App\DataTables;
 use App\Models\LeadCall;
 use App\Models\Lead;
 use App\Models\User;
+use Storage;
 use Yajra\DataTables\Services\DataTable;
 use Yajra\DataTables\Html\Column;
 use Carbon\Carbon;
@@ -49,11 +50,15 @@ class LeadCallsDataTableFullReport extends DataTable
             ->editColumn('type', function ($row) {
                 return $row->type ?? 'N/A';
             })
-            ->editColumn('recording', function ($row) {
-                if (!empty($row->recording)) {
-                    return '<a href="' . asset('call_recordings/' . $row->recording) . '" target="_blank">Play</a>';
+           ->editColumn('recording', function ($row) {
+                if ($row->recording) {
+                    $audioUrl = Storage::disk('recordings')->url($row->recording);
+                    return '<audio controls style="width: 180px;">
+                                <source src="' . $audioUrl . '" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>';
                 }
-                return '<span class="text-muted">No Recording</span>';
+                return 'No Recording';
             })
             ->editColumn('user_id', function ($row) use (&$unknownUserCounter, &$unknownUserMap) {
                 $user = $row->user ?? User::find($row->user_id);
@@ -112,6 +117,7 @@ class LeadCallsDataTableFullReport extends DataTable
     {
         return [
             Column::computed('DT_RowIndex')->title('#')->orderable(false)->searchable(false),
+            Column::make('user_id')->title('User'),
             Column::make('subject')->title('Subject'),
             Column::make('call_type')->title('Call Type'),
             Column::make('start')->title('Start'),
@@ -119,7 +125,6 @@ class LeadCallsDataTableFullReport extends DataTable
             Column::make('duration')->title('Duration'),
             Column::make('type')->title('Type'),
             Column::computed('recording')->title('Recording')->exportable(false)->printable(false),
-            Column::make('user_id')->title('User'),
         ];
     }
 
