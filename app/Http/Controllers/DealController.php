@@ -1314,6 +1314,9 @@ class DealController extends AccountBaseController
             'user-performance',
         ]);
 
+        // ✅ Add user filter only for "lead-calls"
+        $this->data['showUserFilter'] = ($type === 'lead-calls');
+
         switch ($type) {
             case 'lead-calls-report':
                 $dataTable = app(LeadCallsDataTable::class);
