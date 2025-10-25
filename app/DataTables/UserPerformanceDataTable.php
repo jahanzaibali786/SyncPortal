@@ -195,7 +195,7 @@ class UserPerformanceDataTable extends DataTable
     public function query(Request $request)
     {
         $user = Auth::user();
-        $start = $request->get('start_date') ?? now()->startOfMonth()->format('Y-m-d');
+        $start = $request->get('start_date') ?? now()->startOfDay()->format('Y-m-d');
         $end = $request->get('end_date') ?? now()->endOfDay()->format('Y-m-d');
 
         $leads = Deal::pluck('id');
