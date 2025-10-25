@@ -76,9 +76,10 @@ class LeadCallsDataTableFullReport extends DataTable
 
     public function query(LeadCall $model)
     {
-        $start = request()->get('start_date') ?? now()->startOfMonth()->format('Y-m-d');
+        $start = request()->get('start_date') ?? now()->startOfDay()->format('Y-m-d');
         $end = request()->get('end_date') ?? now()->endOfDay()->format('Y-m-d');
         $status = request()->get('status');
+        $userId = request()->get('user_id'); // ✅ new
 
         $query = $model->newQuery()
             ->with(['lead', 'user'])
@@ -87,9 +88,14 @@ class LeadCallsDataTableFullReport extends DataTable
         if (!empty($status)) {
             $query->where('status', $status);
         }
-        
+
+        if (!empty($userId)) {
+            $query->where('user_id', $userId); // ✅ filter by user
+        }
+
         return $query;
     }
+
 
     public function html()
     {

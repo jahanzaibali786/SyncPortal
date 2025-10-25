@@ -83,7 +83,7 @@
                         'call-date' => 'Daily Call Reports',
                         'user-productivity' => 'Agent Productivity Reports',
                     ];
-                @endphp             
+                @endphp
 
                 @foreach ($reports as $type => $title)
                     <div class="accordionItemContent">
