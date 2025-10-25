@@ -119,7 +119,7 @@ class UserPerformanceDataTable extends DataTable
                     'recording',
                 ]);
 
-            // Apply filters based on clicked column
+            // 🔹 add this block
             if ($type === 'answered') {
                 $calls->where('status', '200');
             } elseif ($type === 'converted') {
@@ -127,8 +127,15 @@ class UserPerformanceDataTable extends DataTable
                     ->pluck('lead_id')
                     ->unique()
                     ->toArray();
-
                 $calls->whereIn('lead_id', $convertedLeadIds);
+            } elseif ($type === 'leads') {
+                // 🟢 For total leads, show one latest call per unique lead
+                $leadIds = LeadCall::where('user_id', $user->id)
+                    ->pluck('lead_id')
+                    ->unique()
+                    ->toArray();
+
+                $calls->whereIn('lead_id', $leadIds);
             }
 
             $details = $calls->get();
@@ -148,6 +155,7 @@ class UserPerformanceDataTable extends DataTable
                     $rem = $sec % 60;
                     return "{$min}m {$rem}s";
                 })
+
                 ->editColumn('recording', function ($row) {
                     if ($row->recording) {
                         $url = \Storage::disk('recordings')->url($row->recording);
@@ -187,7 +195,12 @@ class UserPerformanceDataTable extends DataTable
                 return '<a href="#" class="show-modal-details" data-user="' . e($row['agent_name']) . '" data-type="converted">'
                     . $row['converted_leads'] . '</a>';
             })
-            ->rawColumns(['conversion_rate', 'total_calls', 'answered_calls', 'converted_leads']);
+            ->editColumn('total_leads', function ($row) {
+                return '<a href="#" class="show-modal-details" data-user="' . e($row['agent_name']) . '" data-type="leads">'
+                    . $row['total_leads'] . '</a>';
+            })
+            ->rawColumns(['conversion_rate', 'total_calls', 'answered_calls', 'converted_leads', 'total_leads']);
+
     }
 
 
@@ -195,7 +208,7 @@ class UserPerformanceDataTable extends DataTable
     public function query(Request $request)
     {
         $user = Auth::user();
-        $start = $request->get('start_date') ?? now()->startOfDay()->format('Y-m-d');
+        $start = $request->get('start_date') ?? now()->startOfYear()->format('Y-m-d');
         $end = $request->get('end_date') ?? now()->endOfDay()->format('Y-m-d');
 
         $leads = Deal::pluck('id');
