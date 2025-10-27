@@ -1081,7 +1081,32 @@ class DealController extends AccountBaseController
 
         return Reply::success(__('messages.updateSuccess'));
     }
+    // addNumber
+    public function addNumber(Request $request)
+    {
+        // dd($request->all());
+        $request->validate([
+            'contact_id' => 'required|integer',
+            'number' => 'required|string'
+        ]);
+        $deal = Deal::findOrFail($request->contact_id);
 
+        $lead = Lead::findOrFail($deal->lead_id);
+        $existing = $lead->cell ? explode(',', $lead->cell) : [];
+         $existing = array_map('trim', $existing);
+
+        if (!in_array($request->number, $existing)) {
+            $existing[] = $request->number;
+            $lead->cell = implode(', ', $existing);
+            $lead->save();
+        }
+        // dd($existing);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Number added successfully',
+            'numbers' => $existing
+        ]);
+    }
     public function bulkMoveStage(Request $request)
     {
         $request->validate([

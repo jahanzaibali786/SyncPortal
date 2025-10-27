@@ -287,6 +287,7 @@ class GoogleMeetController extends Controller
     // }
     public function createMeet(Request $request, GoogleCalendarService $calendarService)
     {
+        // dd($request->all());
         $validator = \Validator::make($request->all(), [
             'description' => 'nullable|string',
             'lead_id' => 'required',
@@ -294,7 +295,7 @@ class GoogleMeetController extends Controller
             'time' => 'required',
             'mint' => 'required|integer',
             'date' => 'required|date_format:d-m-Y',
-            'cohost_email' => 'nullable|email',
+            'cohost_email' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -322,6 +323,7 @@ class GoogleMeetController extends Controller
             // Prepare attendees array for co-host
             $attendees = [];
             $cohostEmailToUse = $request->cohost_email ?? $this->cohostEmail;
+            // dd($cohostEmailToUse);
             if ($cohostEmailToUse) {
                 $emailList = array_map('trim', explode(',', $cohostEmailToUse));
                 foreach ($emailList as $email) {
@@ -407,7 +409,7 @@ class GoogleMeetController extends Controller
 
         } catch (\Exception $e) {
             \Log::error('Error creating Google Meet: ' . $e->getMessage());
-
+            // dd($e->getMessage());
             // Check if it's a Google authentication error
             if (method_exists($e, 'getResponse') && $e->getResponse()) {
                 $response = $e->getResponse();

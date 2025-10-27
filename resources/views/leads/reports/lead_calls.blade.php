@@ -47,7 +47,7 @@
                         </select>
                     </div>
                 </div>
-            </div>
+            @endif
 
             <!-- User -->
             @if($showUserFilter)
@@ -66,8 +66,6 @@
         </div>
     </x-filters.filter-box>
 
-
-    <!-- 🌐 Universal DataTable Modal -->
     <div class="modal fade" id="universalDataModal" tabindex="-1" aria-labelledby="universalDataModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-xl modal-dialog-scrollable">
