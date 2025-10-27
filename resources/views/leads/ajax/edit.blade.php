@@ -17,7 +17,8 @@
         <x-form id="save-lead-data-form" method="PUT">
             <div class="add-client bg-white rounded">
                 <h4 class="mb-0 p-20 f-21 font-weight-normal  border-bottom-grey">
-                    @lang('modules.deal.dealDetails')</h4>
+                    @lang('modules.deal.dealDetails')
+                </h4>
 
                 <div class="row p-20">
                     {{-- <div class="col-lg-4 ">
