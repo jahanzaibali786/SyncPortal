@@ -12,6 +12,13 @@
         table a {
             color: black;
         }
+        .modal-dialog-scrollable {
+            /* overflow: auto; */
+            /* background: white; */
+        }
+        .modal-dialog .modal-body {
+            overflow: auto;
+        }
     </style>
 @endpush
 
