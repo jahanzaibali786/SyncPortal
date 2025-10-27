@@ -623,7 +623,7 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     Route::post('leadboards/updateIndex', [LeadBoardController::class, 'updateIndex'])->name('leadboards.update_index');
     Route::get('leadboards/loadMore', [LeadBoardController::class, 'loadMore'])->name('leadboards.load_more');
     Route::resource('leadboards', LeadBoardController::class);
-
+    Route::post('/contacts/add-number', [DealController::class, 'addNumber'])->name('contacts.add-number');
     Route::post('/deals/bulk-move-stage', [DealController::class, 'bulkMoveStage'])->name('deals.bulk-move-stage');
     Route::post('/deals/bulk-move-pipeline', [DealController::class, 'bulkMovePipeline'])->name('deals.bulk-move-pipeline');
 

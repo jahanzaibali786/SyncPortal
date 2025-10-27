@@ -79,7 +79,7 @@
     </div>
 </div>
 
-@push('scripts')
+{{-- @push('scripts') --}}
     <script>
         (function() {
             $(document).on('click', '#add-lead-meeting', function() {
@@ -139,4 +139,4 @@
             });
         })();
     </script>
-@endpush
+{{-- @endpush --}}
