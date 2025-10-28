@@ -84,3 +84,6 @@ $deleteLeadFollowUpPermission = user()->permission('delete_lead_follow_up');
 </div>
 <!-- TAB CONTENT END -->
 
+<script>
+    
+</script>
