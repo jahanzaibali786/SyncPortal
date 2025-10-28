@@ -13,12 +13,12 @@
                 <x-slot name="action">
                     <div class="dropdown">
                         <button class="btn f-14 px-0 py-0 text-dark-grey dropdown-toggle" type="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-ellipsis-h"></i>
                         </button>
 
                         <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
-                            aria-labelledby="dropdownMenuLink" tabindex="0">
+                                aria-labelledby="dropdownMenuLink" tabindex="0">
                             <a class="dropdown-item openRightModal"
                                 href="{{ route('deals.edit', $deal->id) . '?tab=overview' }}">@lang('app.edit')</a>
                             @if (
@@ -27,9 +27,9 @@
                                     || ($deleteLeadPermission == 'owned' && ((!is_null($deal->agent_id) && user()->id == $deal->leadAgent->user->id) || (!is_null($deal->deal_watcher) && user()->id == $deal->deal_watcher)))
                                     || ($deleteLeadPermission == 'both' && (((!is_null($deal->agent_id) && user()->id == $deal->leadAgent->user->id) || (!is_null($deal->deal_watcher) && user()->id == $deal->deal_watcher)) || user()->id == $deal->added_by))
                                 )
-                                <a class="dropdown-item delete-table-row" href="javascript:;" data-id="{{ $deal->id }}">
-                                    @lang('app.delete')
-                                </a>
+                                        <a class="dropdown-item delete-table-row" href="javascript:;" data-id="{{ $deal->id }}">
+                                            @lang('app.delete')
+                                        </a>
                             @endif
                         </div>
                     </div>
@@ -47,26 +47,27 @@
                 </div>
                 <p class="f-w-500">
                     <x-status style="color: {{ $deal->pipeline->label_color }}" color="yellow"
-                        :value="$deal->pipeline->name" />
+                                :value="$deal->pipeline->name"/>
                     <i class="bi bi-arrow-right mx-2"></i>
                     <x-status style="color: {{ $deal->leadStage->label_color }}" color="yellow"
-                        :value="$deal->leadStage->name" />
+                                :value="$deal->leadStage->name"/>
                 </p>
 
-                <x-cards.data-row :label="__('modules.deal.dealName')" :value="$deal->name ?? '--'" />
+                <x-cards.data-row :label="__('modules.deal.dealName')" :value="$deal->name ?? '--'"/>
                 <x-cards.data-row :label="__('modules.leadContact.leadContact')"
-                    :value="$deal->contact->client_name_salutation ?? '--'" />
-                <x-cards.data-row :label="__('app.email')" :value="$deal->contact->client_email ?? '--'" />
-                <x-cards.data-row :label="__('modules.lead.companyName')" :value="!empty($deal->contact->company_name) ? $deal->contact->company_name : '--'" />
-                <x-cards.data-row :label="__('modules.deal.dealCategory')" :value="$deal->category->category_name ?? '--'" />
+                                    :value="$deal->contact->client_name_salutation ?? '--'"/>
+                <x-cards.data-row :label="__('app.email')" :value="$deal->contact->client_email ?? '--'"/>
+                <x-cards.data-row :label="__('modules.lead.companyName')"
+                                    :value="!empty($deal->contact->company_name) ? $deal->contact->company_name : '--'"/>
+                <x-cards.data-row :label="__('modules.deal.dealCategory')"
+                                    :value="$deal->category->category_name ?? '--'"/>
 
                 <div class="col-12 px-0 pb-3 d-flex">
                     <p class="mb-0 text-lightest f-14 w-30 d-inline-block">
-                        @lang('modules.deal.dealAgent')
-                    </p>
+                        @lang('modules.deal.dealAgent')</p>
                     <p class="mb-0 text-dark-grey f-14">
                         @if (!is_null($deal->leadAgent))
-                            <x-employee :user="$deal->leadAgent->user" />
+                            <x-employee :user="$deal->leadAgent->user"/>
                         @else
                             --
                         @endif
@@ -87,7 +88,7 @@
                         @if ($subAgents->count() > 0)
                             @foreach ($subAgents as $subAgent)
                                 <div class="mr-2 mb-1">
-                                    <x-employee :user="$subAgent" />
+                                    <x-employee :user="$subAgent"/>
                                 </div>
                             @endforeach
                         @else
@@ -100,7 +101,7 @@
                     <p class="mb-0 text-lightest f-14 w-30 d-inline-block">{{ __('app.dealWatcher') }}</p>
                     <p class="mb-0 text-dark-grey f-14">
                         @if (!is_null($deal->dealWatcher))
-                            <x-employee :user="$deal->dealWatcher" />
+                            <x-employee :user="$deal->dealWatcher"/>
                         @else
                             --
                         @endif
@@ -111,14 +112,18 @@
                     <div class="col-12 px-0 pb-3 d-flex">
                         <p class="mb-0 text-lightest f-14 w-30 d-inline-block">@lang('app.status')</p>
                         <p class="mb-0 text-dark-grey f-14">
-                            <x-status :value="$deal->leadStatus->type" :style="'color:' . $deal->leadStatus->label_color" />
+                            <x-status :value="$deal->leadStatus->type"
+                                        :style="'color:' . $deal->leadStatus->label_color"/>
                         </p>
                     </div>
                 @endif
 
-                <x-cards.data-row :label="__('modules.deal.closeDate')" :value="($deal->close_date) ? $deal->close_date->translatedFormat(company()->date_format) : '--'" />
-                <x-cards.data-row :label="__('modules.deal.dealValue')" :value="($deal->value) ? currency_format($deal->value, $deal->currency_id) : '--'" />
-                <x-cards.data-row :label="__('modules.lead.products')" :value="($productNames) ? implode(', ', $productNames) : '--'" />
+                <x-cards.data-row :label="__('modules.deal.closeDate')"
+                                    :value="($deal->close_date) ? $deal->close_date->translatedFormat(company()->date_format) : '--'"/>
+                <x-cards.data-row :label="__('modules.deal.dealValue')"
+                                    :value="($deal->value) ? currency_format($deal->value, $deal->currency_id) : '--'"/>
+                <x-cards.data-row :label="__('modules.lead.products')"
+                                    :value="($productNames) ? implode(', ', $productNames) : '--'"/>
 
                 {{-- Custom fields data --}}
                 <x-forms.custom-field-show :fields="$fields" :model="$deal"></x-forms.custom-field-show>
@@ -130,33 +135,40 @@
                     <x-tab-section class="deal-tabs">
                         @if($viewLeadFilePermission != 'none')
                             <x-tab-item class="ajax-tab files" :active="(request('tab') === 'files' || !request('tab'))"
-                                :link="route('deals.show', $deal->id) . '?tab=files'">@lang('modules.lead.file')</x-tab-item>
+                                            :link="route('deals.show', $deal->id) . '?tab=files'">@lang('modules.lead.file')</x-tab-item>
                         @endif
                         @if($viewLeadFollowupPermission != 'none')
                             <x-tab-item class="ajax-tab follow-up" :active="request('tab') === 'follow-up'"
-                                :link="route('deals.show', $deal->id) . '?tab=follow-up'">@lang('modules.lead.followUp')</x-tab-item>
+                                            :link="route('deals.show', $deal->id) . '?tab=follow-up'">@lang('modules.lead.followUp')</x-tab-item>
                         @endif
                         @if($viewProposalPermission != 'none')
                             <x-tab-item class="ajax-tab proposals" :active="request('tab') === 'proposals'"
-                                :link="route('deals.show', $deal->id) . '?tab=proposals'">@lang('modules.lead.proposal')</x-tab-item>
+                                            :link="route('deals.show', $deal->id) . '?tab=proposals'">@lang('modules.lead.proposal')</x-tab-item>
                         @endif
                         @if ($viewClientNote != 'none')
-                            <x-tab-item class="ajax-tab notes" :active="request('tab') === 'notes'" :link="route('deals.show', $deal->id) . '?tab=notes'">@lang('app.notes')</x-tab-item>
+                            <x-tab-item class="ajax-tab notes" :active="request('tab') === 'notes'"
+                                            :link="route('deals.show', $deal->id) . '?tab=notes'">@lang('app.notes')</x-tab-item>
                         @endif
                         @if ($gdpr->enable_gdpr)
-                            <x-tab-item class="ajax-tab gdpr" :active="request('tab') === 'gdpr'" :link="route('deals.show', $deal->id) . '?tab=gdpr'">@lang('app.menu.gdpr')</x-tab-item>
+                            <x-tab-item class="ajax-tab gdpr" :active="request('tab') === 'gdpr'"
+                                        :link="route('deals.show', $deal->id) . '?tab=gdpr'">@lang('app.menu.gdpr')</x-tab-item>
                         @endif
                         <x-tab-item class="ajax-tab history" :active="request('tab') === 'history'"
-                            :link="route('deals.show', $deal->id) . '?tab=history'">@lang('modules.tasks.history')</x-tab-item>
-                        <x-tab-item class="ajax-tab meeting-tab" :active="request('tab') == 'meeting'"
-                            :link="route('deals.show', $deal->id) . '?tab=meeting'">@lang('modules.meeting.meeting')</x-tab-item>
-                        <x-tab-item class="ajax-tab call-tab" :active="request('tab') === 'call'"
-                            :link="route('deals.show', $deal->id) . '?tab=call'">@lang('modules.call.call')</x-tab-item>
+                                    :link="route('deals.show', $deal->id) . '?tab=history'">@lang('modules.tasks.history')</x-tab-item>
+                        <x-tab-item class="ajax-tab meeting-tab"  
+                            :active="request('tab') == 'meeting'"  
+                            :link="route('deals.show', $deal->id) . '?tab=meeting'">
+                            @lang('modules.meeting.meeting')
+                        </x-tab-item>
+                        <x-tab-item class="ajax-tab call-tab"
+                            :active="request('tab') === 'call'"
+                            :link="route('deals.show', $deal->id) . '?tab=call'">
+                            @lang('modules.call.call')
+                        </x-tab-item>
                     </x-tab-section>
 
                     <div class="s-b-n-content">
-                        <div class="tab-content" id="nav-tabContent"
-                            style="max-height:400px !important; overflow-y:scroll;">
+                        <div class="tab-content" id="nav-tabContent" style="max-height:400px !important; overflow-y:scroll;">
                             @include($tab)
                         </div>
                     </div>
@@ -169,88 +181,54 @@
         <div class="col-lg-4 col-md-12">
             <!-- Contact Details Card -->
             <x-cards.data :title="__('modules.leadContact.leadDetails')" class="mb-4">
-                <x-cards.data-row :label="__('modules.leadContact.leadContact')" otherClasses="mb-3"
+                <x-cards.data-row 
+                    :label="__('modules.leadContact.leadContact')" 
+                    otherClasses="mb-3" 
                     labelClasses="f-13 text-muted"
-                    value="<a href='{{ route('lead-contact.show', $deal->contact->id) }}' class='text-darkest-grey f-14 font-weight-medium'> {{ $deal->contact->client_name_salutation }}</a>" />
+                    value="<a href='{{ route('lead-contact.show', $deal->contact->id) }}' class='text-darkest-grey f-14 font-weight-medium'> {{ $deal->contact->client_name_salutation }}</a>"
+                />
 
-                <x-cards.data-row :label="__('app.email')" :value="$deal->contact->client_email ?? '--'"
-                    otherClasses="mb-3" labelClasses="f-13 text-muted" />
+                <x-cards.data-row 
+                    :label="__('app.email')" 
+                    :value="$deal->contact->client_email ?? '--'" 
+                    otherClasses="mb-3" 
+                    labelClasses="f-13 text-muted"
+                />
+                
+                <x-cards.data-row 
+                    :label="__('modules.lead.mobile')" 
+                    :value="$deal->contact->mobile ?? '--'" 
+                    otherClasses="mb-3" 
+                    labelClasses="f-13 text-muted"
+                />
 
-                <x-cards.data-row :label="__('modules.lead.mobile')" otherClasses="mb-3" labelClasses="f-13 text-muted">
-                    <div class="d-flex flex-wrap align-items-center gap-2" id="mobile-container">
-                        @if ($deal->contact->mobile)
-                            <span class="text-dark-grey f-14">
-                                {{ $deal->contact->mobile }}
-                                <button class="btn btn-outline-primary btn-sm rounded-circle p-1 ml-1 call-number"
-                                    data-number="{{ $deal->contact->mobile }}" data-deal="{{ $deal->id }}"
-                                    data-contact="{{ $deal->contact->id }}" title="Call">
-                                    <i class="fa fa-phone"></i>
-                                </button>
-                            </span>
-                        @else
-                            <span>--</span>
-                        @endif
-                    </div>
-                </x-cards.data-row>
-
-                <x-cards.data-row :label="__('modules.lead.othercell')" otherClasses="mb-3"
-                    labelClasses="f-13 text-muted">
-                    <div id="other-numbers-container" class="d-flex flex-wrap align-items-center gap-2">
-                        @php
-                            $otherNumbers = !empty($deal->contact->cell)
-                                ? array_filter(array_map('trim', explode(',', $deal->contact->cell)))
-                                : [];
-                        @endphp
-
-                        @forelse ($otherNumbers as $num)
-                            <span class="badge badge-light border text-dark mr-2 mb-1 d-flex align-items-center">
-                                {{ $num }}
-                                <button class="btn btn-outline-success btn-xs rounded-circle p-1 ml-2 call-number"
-                                    data-number="{{ $num }}" data-deal="{{ $deal->id }}"
-                                    data-contact="{{ $deal->contact->id }}" title="Call">
-                                    <i class="fa fa-phone"></i>
-                                </button>
-                            </span>
-                        @empty
-                            <span>--</span>
-                        @endforelse
-
-                        {{-- Add new number button --}}
-                        <button id="add-new-number-btn" class="btn btn-sm btn-outline-secondary rounded-circle p-1 ml-2"
-                            title="Add Number">
-                            <i class="fa fa-plus"></i>
-                        </button>
-
-                        {{-- Hidden input for new number --}}
-                        <div id="add-number-form" class="d-none ml-2">
-                            <input type="text" id="new-number-input" class="form-control form-control-sm d-inline-block"
-                                style="width: 120px;" placeholder="Enter number">
-                            <button id="save-new-number" class="btn btn-primary btn-sm ml-1">
-                                <i class="fa fa-check"></i>
-                            </button>
-                            <button id="cancel-new-number" class="btn btn-light btn-sm ml-1">
-                                <i class="fa fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                </x-cards.data-row>
-
-                <x-cards.data-row :label="__('modules.lead.companyName')" :value="!empty($deal->contact->company_name) ? $deal->contact->company_name : '--'" otherClasses="mb-4" labelClasses="f-13 text-muted" />
+                <x-cards.data-row 
+                    :label="__('modules.lead.companyName')"
+                    :value="!empty($deal->contact->company_name) ? $deal->contact->company_name : '--'" 
+                    otherClasses="mb-4" 
+                    labelClasses="f-13 text-muted"
+                />
 
                 <!-- Action Buttons -->
                 <div class="d-flex flex-wrap gap-2">
                     @if ($deal->contact->client_email)
-                        <x-forms.link-secondary class="btn-sm mb-2" link='mailto:{{ $deal->contact->client_email }}'
+                        <x-forms.link-secondary 
+                            class="btn-sm mb-2" 
+                            link='mailto:{{ $deal->contact->client_email }}'
                             icon="envelope">
                             @lang('app.email')
                         </x-forms.link-secondary>
                     @endif
-
+                    
                     @if ($deal->contact->mobile)
-                        <x-forms.button-secondary class="btn-copy call btn-sm mb-2"
-                            data-clipboard-text="{{ $deal->contact->mobile }}" data-deal="{{ $deal->id }}"
-                            data-contact="{{ $deal->contact->id }}" data-user="{{ user()->id }}"
-                            data-number="{{ $deal->contact->mobile }}" icon="phone">
+                        <x-forms.button-secondary 
+                            class="btn-copy call btn-sm mb-2" 
+                            data-clipboard-text="{{ $deal->contact->mobile }}"
+                            data-deal="{{ $deal->id }}"
+                            data-contact="{{ $deal->contact->id }}"
+                            data-user="{{ user()->id }}"
+                            data-number="{{ $deal->contact->mobile }}"
+                            icon="phone">
                             @lang('app.mobile')
                         </x-forms.button-secondary>
                     @endif
@@ -262,9 +240,14 @@
                     <input type="hidden" name="deal_id" value="{{ $deal->id }}">
 
                     <div class="form-group mb-3">
-                        <textarea name="note" id="lead-note-editor" rows="8" class="form-control border-grey"
+                        <textarea 
+                            name="note" 
+                            id="lead-note-editor" 
+                            rows="8" 
+                            class="form-control border-grey"
                             placeholder="@lang('placeholders.description')"
-                            style="resize: vertical; min-height: 120px;">{!! $deal->lead->note ?? '' !!}</textarea>
+                            style="resize: vertical; min-height: 120px;"
+                        >{!! $deal->lead->note ?? '' !!}</textarea>
                     </div>
 
                     <div class="d-flex justify-content-end">
@@ -283,42 +266,40 @@
         .description-card .card-body {
             padding: 1.5rem;
         }
-
+        
         .description-card textarea {
             border-radius: 8px;
             border: 1px solid #e9ecef;
             font-size: 14px;
             line-height: 1.5;
         }
-
+        
         .description-card textarea:focus {
             border-color: #80bdff;
             box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
-
-        .gap-2>* {
+        
+        .gap-2 > * {
             margin-right: 0.5rem;
         }
-
-        .gap-2>*:last-child {
+        
+        .gap-2 > *:last-child {
             margin-right: 0;
         }
-
+        
         @media (max-width: 991.98px) {
-
-            .col-lg-7,
-            .col-lg-5 {
+            .col-lg-7, .col-lg-5 {
                 width: 100%;
                 margin-bottom: 1rem;
             }
         }
-
+        
         @media (min-width: 992px) {
             .col-lg-7 {
                 flex: 0 0 58.333333%;
                 max-width: 58.333333%;
             }
-
+            
             .col-lg-5 {
                 flex: 0 0 41.666667%;
                 max-width: 41.666667%;
@@ -328,293 +309,238 @@
 
     <!-- Scripts remain the same -->
     <script>
-        (function () {
-            const TEXTAREA_ID = 'lead-note-editor';
-            const MAX_RETRIES = 25;
-            const RETRY_DELAY = 200;
+    (function () {
+        const TEXTAREA_ID = 'lead-note-editor';
+        const MAX_RETRIES = 25;
+        const RETRY_DELAY = 200;
 
-            function loadCkeditorIfNeeded(callback) {
-                if (window.CKEDITOR) {
-                    return callback();
-                }
-
-                const existing = document.querySelector('script[data-ckeditor-loader]');
-                if (!existing) {
-                    const s = document.createElement('script');
-                    s.src = 'https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js';
-                    s.async = true;
-                    s.setAttribute('data-ckeditor-loader', '1');
-                    s.onload = function () {
-                        callback();
-                    };
-                    s.onerror = function () {
-                        console.error('Failed to load CKEditor script.');
-                        callback();
-                    };
-                    document.head.appendChild(s);
-                } else {
-                    let waitCount = 0;
-                    const wait = setInterval(function () {
-                        if (window.CKEDITOR || ++waitCount > 50) {
-                            clearInterval(wait);
-                            callback();
-                        }
-                    }, 100);
-                }
+        function loadCkeditorIfNeeded(callback) {
+            if (window.CKEDITOR) {
+                return callback();
             }
 
-            function initCKEditorWithRetry(attempt = 0) {
-                const textarea = document.getElementById(TEXTAREA_ID);
-                if (!textarea) {
-                    if (attempt < MAX_RETRIES) {
-                        setTimeout(() => initCKEditorWithRetry(attempt + 1), RETRY_DELAY);
+            const existing = document.querySelector('script[data-ckeditor-loader]');
+            if (!existing) {
+                const s = document.createElement('script');
+                s.src = 'https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js';
+                s.async = true;
+                s.setAttribute('data-ckeditor-loader', '1');
+                s.onload = function () {
+                    callback();
+                };
+                s.onerror = function () {
+                    console.error('Failed to load CKEditor script.');
+                    callback();
+                };
+                document.head.appendChild(s);
+            } else {
+                let waitCount = 0;
+                const wait = setInterval(function () {
+                    if (window.CKEDITOR || ++waitCount > 50) {
+                        clearInterval(wait);
+                        callback();
                     }
-                    return;
-                }
+                }, 100);
+            }
+        }
 
-                if (!window.CKEDITOR) {
-                    if (attempt < MAX_RETRIES) {
-                        setTimeout(() => initCKEditorWithRetry(attempt + 1), RETRY_DELAY);
-                    } else {
-                        console.warn('CKEditor not available after retries, using fallback textarea.');
-                    }
-                    return;
+        function initCKEditorWithRetry(attempt = 0) {
+            const textarea = document.getElementById(TEXTAREA_ID);
+            if (!textarea) {
+                if (attempt < MAX_RETRIES) {
+                    setTimeout(() => initCKEditorWithRetry(attempt + 1), RETRY_DELAY);
                 }
+                return;
+            }
 
-                try {
-                    if (CKEDITOR.instances[TEXTAREA_ID]) {
-                        CKEDITOR.instances[TEXTAREA_ID].destroy(true);
-                    }
-                } catch (err) {
-                    console.warn('Error destroying CKEditor instance:', err);
+            if (!window.CKEDITOR) {
+                if (attempt < MAX_RETRIES) {
+                    setTimeout(() => initCKEditorWithRetry(attempt + 1), RETRY_DELAY);
+                } else {
+                    console.warn('CKEditor not available after retries, using fallback textarea.');
                 }
+                return;
+            }
 
-                try {
-                    CKEDITOR.replace(TEXTAREA_ID, {
-                        height: 150,
-                        removePlugins: 'elementspath',
-                        toolbarGroups: [
-                            { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
-                            { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align'] },
-                            { name: 'styles' },
-                            { name: 'colors' },
-                            { name: 'tools' }
-                        ],
+            try {
+                if (CKEDITOR.instances[TEXTAREA_ID]) {
+                    CKEDITOR.instances[TEXTAREA_ID].destroy(true);
+                }
+            } catch (err) {
+                console.warn('Error destroying CKEditor instance:', err);
+            }
+
+            try {
+                CKEDITOR.replace(TEXTAREA_ID, {
+                    height: 150,
+                    removePlugins: 'elementspath',
+                    toolbarGroups: [
+                        { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
+                        { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align'] },
+                        { name: 'styles' },
+                        { name: 'colors' },
+                        { name: 'tools' }
+                    ],
+                });
+
+                const inst = CKEDITOR.instances[TEXTAREA_ID];
+                if (inst) {
+                    inst.on('instanceReady', function () {
+                        // Editor ready
                     });
-
-                    const inst = CKEDITOR.instances[TEXTAREA_ID];
-                    if (inst) {
-                        inst.on('instanceReady', function () {
-                            // Editor ready
-                        });
-                    }
-                } catch (err) {
-                    if (attempt < MAX_RETRIES) {
-                        setTimeout(() => initCKEditorWithRetry(attempt + 1), RETRY_DELAY);
-                    } else {
-                        console.error('Failed to initialize CKEditor after retries:', err);
-                    }
+                }
+            } catch (err) {
+                if (attempt < MAX_RETRIES) {
+                    setTimeout(() => initCKEditorWithRetry(attempt + 1), RETRY_DELAY);
+                } else {
+                    console.error('Failed to initialize CKEditor after retries:', err);
                 }
             }
+        }
 
-            loadCkeditorIfNeeded(function () {
-                initCKEditorWithRetry();
-            });
+        loadCkeditorIfNeeded(function () {
+            initCKEditorWithRetry();
+        });
 
-            $(document).off('submit', '#updateLeadNoteForm').on('submit', '#updateLeadNoteForm', function (e) {
-                e.preventDefault();
+        $(document).off('submit', '#updateLeadNoteForm').on('submit', '#updateLeadNoteForm', function (e) {
+            e.preventDefault();
 
-                const $btn = $('#update-lead-note-btn');
-                $btn.prop('disabled', true);
+            const $btn = $('#update-lead-note-btn');
+            $btn.prop('disabled', true);
 
-                let noteContent = '';
+            let noteContent = '';
 
-                if (window.CKEDITOR && CKEDITOR.instances && CKEDITOR.instances[TEXTAREA_ID]) {
-                    try {
-                        noteContent = CKEDITOR.instances[TEXTAREA_ID].getData();
-                    } catch (err) {
-                        console.warn('Error reading CKEditor data, falling back to textarea:', err);
-                        noteContent = $('#' + TEXTAREA_ID).val();
-                    }
-                } else {
-                    noteContent = $('#' + TEXTAREA_ID).val();
+            if (window.CKEDITOR && CKEDITOR.instances && CKEDITOR.instances[TEXTAREA_ID]) {
+                try {
+                    noteContent = CKEDITOR.instances[TEXTAREA_ID].getData();
+                } catch (err) {
+                    console.warn('Error reading CKEditor data, falling back to textarea:', err);
+                    noteContent = $('#'+TEXTAREA_ID).val();
                 }
+            } else {
+                noteContent = $('#'+TEXTAREA_ID).val();
+            }
 
-                $.ajax({
-                    url: "{{ route('deals.update-lead-note') }}",
-                    method: 'POST',
-                    dataType: 'json',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        deal_id: '{{ $deal->id }}',
-                        note: noteContent
-                    },
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest'
-                    },
-                    success: function (response) {
-                        if (response && response.status === 'success') {
-                            //toast sawl
-                            Swal.fire({
-                                icon: 'success',
-                                text: response.message || '@lang("messages.updatedSuccessfully")',
-                                toast: true,
-                                position: 'top-end',
-                                timer: 1400,
-                                showConfirmButton: false
-                            });
+            $.ajax({
+                url: "{{ route('deals.update-lead-note') }}",
+                method: 'POST',
+                dataType: 'json',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    deal_id: '{{ $deal->id }}',
+                    note: noteContent
+                },
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                success: function (response) {
+                    if (response && response.status === 'success') {
+                        //toast sawl
+                        Swal.fire({
+                            icon: 'success',
+                            text: response.message || '@lang("messages.updatedSuccessfully")',
+                            toast: true,
+                            position: 'top-end',
+                            timer: 1400,
+                            showConfirmButton: false
+                        });
 
-                            if (window.CKEDITOR && CKEDITOR.instances && CKEDITOR.instances[TEXTAREA_ID]) {
-                                try {
-                                    CKEDITOR.instances[TEXTAREA_ID].setData(noteContent);
-                                } catch (err) {
-                                    console.warn('Error setting CKEditor data after save:', err);
-                                }
-                            } else {
-                                $('#' + TEXTAREA_ID).val(noteContent);
+                        if (window.CKEDITOR && CKEDITOR.instances && CKEDITOR.instances[TEXTAREA_ID]) {
+                            try {
+                                CKEDITOR.instances[TEXTAREA_ID].setData(noteContent);
+                            } catch (err) {
+                                console.warn('Error setting CKEditor data after save:', err);
                             }
                         } else {
-                            const message = (response && response.message) ? response.message : 'Failed to update note';
-                            Swal.fire({
-                                icon: 'error',
-                                text: message,
-                                toast: true,
-                                position: 'top-end',
-                                timer: 3000,
-                                showConfirmButton: false
-                            });
+                            $('#'+TEXTAREA_ID).val(noteContent);
                         }
-                    },
-                    error: function (xhr) {
-                        let msg = 'Server error';
-                        if (xhr && xhr.responseJSON) {
-                            if (xhr.responseJSON.message) msg = xhr.responseJSON.message;
-                            else if (xhr.responseJSON.errors) {
-                                const firstKey = Object.keys(xhr.responseJSON.errors)[0];
-                                if (firstKey) msg = xhr.responseJSON.errors[firstKey][0];
-                            }
-                        }
+                    } else {
+                        const message = (response && response.message) ? response.message : 'Failed to update note';
                         Swal.fire({
                             icon: 'error',
-                            text: msg,
+                            text: message,
                             toast: true,
                             position: 'top-end',
                             timer: 3000,
                             showConfirmButton: false
                         });
-                    },
-                    complete: function () {
-                        $btn.prop('disabled', false);
                     }
-                });
+                },
+                error: function (xhr) {
+                    let msg = 'Server error';
+                    if (xhr && xhr.responseJSON) {
+                        if (xhr.responseJSON.message) msg = xhr.responseJSON.message;
+                        else if (xhr.responseJSON.errors) {
+                            const firstKey = Object.keys(xhr.responseJSON.errors)[0];
+                            if (firstKey) msg = xhr.responseJSON.errors[firstKey][0];
+                        }
+                    }
+                    Swal.fire({
+                            icon: 'error',
+                            text:msg,
+                            toast: true,
+                            position: 'top-end',
+                            timer: 3000,
+                            showConfirmButton: false
+                        });
+                },
+                complete: function () {
+                    $btn.prop('disabled', false);
+                }
             });
-        })();
+        });
+    })();
     </script>
 
     <script src="{{ asset('vendor/jquery/clipboard.min.js') }}"></script>
 
     <script>
-        $(document).ready(function () {
-            // 📞 Handle click-to-call for any number
-            $(document).on("click", ".call-number", function () {
-                let number = $(this).data("number").replace(/\s+/g, '');
-                let dealId = $(this).data("deal");
-                let contactId = $(this).data("contact");
+        document.querySelectorAll(".call").forEach(function(button) {
+            button.addEventListener("click", function() {
+                let dealId = "{{ $deal->id }}";
                 let userId = "{{ user()->id }}";
-
+                let contactId = "{{ $deal->contact->id }}";
+                let number = "{{ $deal->contact->mobile }}";
+                
+                number = number.replace(/\s+/g, '');
+                console.log('Calling number:', number, contactId, userId, dealId);
+                
                 fetch("http://localhost:5000/call", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json", "Accept": "application/json" },
-                    body: JSON.stringify({
-                        extension: number,
-                        deal_id: dealId,
-                        contact_id: contactId,
-                        user_id: userId
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Accept": "application/json"
+                        },
+                        body: JSON.stringify({
+                            extension: number,
+                            deal_id: dealId,
+                            contact_id: contactId,
+                            user_id: userId
+                        })
                     })
-                })
-                    .then(res => res.ok ? res.json() : Promise.reject(res))
-                    .catch(() => {
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.json().then(err => {
+                                throw new Error(err.error ||
+                                    `HTTP error! Status: ${response.status}`);
+                            });
+                        }
+                        return response.json();
+                    })
+                    .catch(error => {
+                        console.error("Fetch Error:", error.message);
                         Swal.fire({
                             icon: 'error',
-                            text: 'Failed to initiate call.',
+                            text: 'Failed to initiate call: ' + error.message,
                             toast: true,
                             position: 'top-end',
-                            timer: 2500,
+                            timer: 3000,
                             showConfirmButton: false
                         });
                     });
             });
-
-            // ➕ Show input to add new number
-            $("#add-new-number-btn").on("click", function () {
-                $(this).addClass('d-none');
-                $("#add-number-form").removeClass('d-none');
-                $("#add-number-form").addClass('d-flex');
-                $("#new-number-input").focus();
-            });
-
-            // ❌ Cancel new number
-            $("#cancel-new-number").on("click", function () {
-                $("#add-number-form").removeClass('d-flex');
-                $("#add-number-form").addClass('d-none');
-                $("#add-new-number-btn").removeClass('d-none');
-                $("#new-number-input").val('');
-            });
-
-            // ✅ Save new number
-            $("#save-new-number").on("click", function () {
-                let newNumber = $("#new-number-input").val().trim();
-                if (!newNumber) {
-                    Swal.fire({ icon: 'warning', text: 'Please enter a number', toast: true, position: 'top-end', timer: 2000, showConfirmButton: false });
-                    return;
-                }
-
-                $.ajax({
-                    url: "{{ route('contacts.add-number') }}", // 👈 create this route
-                    method: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        contact_id: "{{ $deal->contact->id }}",
-                        number: newNumber
-                    },
-                    success: function (response) {
-                        if (response.status === 'success') {
-                            $("#other-numbers-container").prepend(`
-                        <span class="badge badge-light border text-dark mr-2 mb-1 d-flex align-items-center">
-                            ${newNumber}
-                            <button 
-                                class="btn btn-outline-success btn-xs rounded-circle p-1 ml-2 call-number" 
-                                data-number="${newNumber}"
-                                data-deal="{{ $deal->id }}"
-                                data-contact="{{ $deal->contact->id }}"
-                                title="Call">
-                                <i class="fa fa-phone"></i>
-                            </button>
-                        </span>
-                    `);
-                            $("#new-number-input").val('');
-                            $("#add-number-form").removeClass('d-flex');
-                            $("#add-number-form").addClass('d-none');
-                            $("#add-new-number-btn").removeClass('d-none');
-
-                            Swal.fire({
-                                icon: 'success',
-                                text: 'Number added successfully!',
-                                toast: true,
-                                position: 'top-end',
-                                timer: 1500,
-                                showConfirmButton: false
-                            });
-                        }
-                    },
-                    error: function () {
-                        Swal.fire({ icon: 'error', text: 'Failed to save number.', toast: true, position: 'top-end', timer: 2500, showConfirmButton: false });
-                    }
-                });
-            });
         });
     </script>
-
 
     <script>
         $(document).ready(function () {
@@ -659,7 +585,7 @@
                     id: leadID,
                     layout: layout
                 },
-                success: function (response) {
+                success: function(response) {
                     $('#layout').html(response.html);
                     if (layout == 'gridview') {
                         $('#list-tabs').removeClass('btn-active');
@@ -673,7 +599,7 @@
         }
 
         // File tab scripts
-        $('body').on('click', '.delete-lead-file', function () {
+        $('body').on('click', '.delete-lead-file', function() {
             var id = $(this).data('file-id');
             var deleteView = $(this).data('pk');
             Swal.fire({
@@ -705,7 +631,7 @@
                             '_token': token,
                             '_method': 'DELETE'
                         },
-                        success: function (response) {
+                        success: function(response) {
                             if (response.status == "success") {
                                 let dealsIndexUrl = "{{ route('deals.index') }}";
                                 window.location.href = dealsIndexUrl;
@@ -716,8 +642,117 @@
             });
         });
 
+        $('body').on('click', '#add-files', function() {
+            const url = "{{ route('deal-files.create') }}";
+            $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+            $.ajaxModal(MODAL_LG, url);
+        });
+
+        // FIle tab scripts end
+
+        // Follow up tab script start
+        $('body').on('click', '#add-lead-followup', function() {
+            const url = "{{ route('deals.follow_up', $deal->id) }}";
+            $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+            $.ajaxModal(MODAL_LG, url);
+        })
+
+        $('body').on('click', '.edit-table-row-lead', function() {
+            var id = $(this).data('followup-id');
+            var url = "{{ route('deals.follow_up_edit', ':id') }}";
+            url = url.replace(':id', id);
+            $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+            $.ajaxModal(MODAL_LG, url);
+        });
+
+        $('body').on('click', '.delete-table-row-lead', function() {
+            var id = $(this).data('followup-id');
+            Swal.fire({
+                title: "@lang('messages.sweetAlertTitle')",
+                text: "@lang('messages.recoverRecord')",
+                icon: 'warning',
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText: "@lang('messages.confirmDelete')",
+                cancelButtonText: "@lang('app.cancel')",
+                customClass: {
+                    confirmButton: 'btn btn-primary mr-3',
+                    cancelButton: 'btn btn-secondary'
+                },
+                showClass: {
+                    popup: 'swal2-noanimation',
+                    backdrop: 'swal2-noanimation'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var url = "{{ route('deals.follow_up_delete', ':id') }}";
+                    url = url.replace(':id', id);
+
+                    var token = "{{ csrf_token() }}";
+
+                    $.easyAjax({
+                        type: 'POST',
+                        url: url,
+                        data: {
+                            '_token': token,
+                        },
+                        success: function(response) {
+                            if (response.status == "success") {
+                                location.reload();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        $('body').on('click', '.delete-table-row', function() {
+            var id = $(this).data('id');
+            Swal.fire({
+                title: "@lang('messages.sweetAlertTitle')",
+                text: "@lang('messages.recoverRecord')",
+                icon: 'warning',
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText: "@lang('messages.confirmDelete')",
+                cancelButtonText: "@lang('app.cancel')",
+                customClass: {
+                    confirmButton: 'btn btn-primary mr-3',
+                    cancelButton: 'btn btn-secondary'
+                },
+                showClass: {
+                    popup: 'swal2-noanimation',
+                    backdrop: 'swal2-noanimation'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var url = "{{ route('deals.destroy', ':id') }}";
+                    url = url.replace(':id', id);
+                    var token = "{{ csrf_token() }}";
+                    $.easyAjax({
+                        type: 'POST',
+                        url: url,
+                        data: {
+                            '_token': token,
+                            '_method': 'DELETE'
+                        },
+                        success: function(response) {
+                            if (response.status == "success") {
+                                let dealsIndexUrl = "{{ route('deals.index') }}";
+                                window.location.href = dealsIndexUrl;
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        // Follow up tab script end
+
         // Notes tab scripts
-        $('body').on('click', '.delete-note-lead', function () {
+        $('body').on('click', '.delete-note-lead', function() {
             var id = $(this).data('id');
             Swal.fire({
                 title: "@lang('messages.sweetAlertTitle')",
@@ -749,7 +784,7 @@
                             '_token': token,
                             '_method': 'DELETE'
                         },
-                        success: function (response) {
+                        success: function(response) {
                             if (response.status == "success") {
                                 window.location.reload();
                             }
@@ -760,7 +795,7 @@
         });
 
         // Proposal tab scripts
-        $('body').on('click', '.delete-proposal-table-row', function () {
+        $('body').on('click', '.delete-proposal-table-row', function() {
             Swal.fire({
                 title: "@lang('messages.sweetAlertTitle')",
                 text: "@lang('messages.recoverRecord')",
@@ -792,7 +827,7 @@
                             '_token': token,
                             '_method': 'DELETE'
                         },
-                        success: function (response) {
+                        success: function(response) {
                             if (response.status == "success") {
                                 window.location.reload();
                             }
@@ -802,7 +837,7 @@
             });
         });
 
-        $('body').on('click', '.sendButton', function () {
+        $('body').on('click', '.sendButton', function() {
             var id = $(this).data('proposal-id');
             var url = "{{ route('proposals.send_proposal', ':id') }}";
             url = url.replace(':id', id);
@@ -816,12 +851,24 @@
                 data: {
                     '_token': token
                 },
-                success: function (response) {
+                success: function(response) {
                     if (response.status == "success") {
                         window.location.reload();
                     }
                 }
             });
         });
+        $('body').on('click', '#add-files', function() {
+            console.log('clicked');
+            const url = "{{ route('deal-files.create') }}";
+            $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+            $.ajaxModal(MODAL_LG, url);
+        });
+        // $('body').on('click', '#add-lead-followup', function() {
+        //     console.log('clicked');
+            
+        //     $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+        //     $.ajaxModal(MODAL_LG, url);
+        // });
     </script>
 </div>

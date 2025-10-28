@@ -1093,7 +1093,7 @@ class DealController extends AccountBaseController
 
         $lead = Lead::findOrFail($deal->lead_id);
         $existing = $lead->cell ? explode(',', $lead->cell) : [];
-         $existing = array_map('trim', $existing);
+        $existing = array_map('trim', $existing);
 
         if (!in_array($request->number, $existing)) {
             $existing[] = $request->number;
@@ -1107,6 +1107,27 @@ class DealController extends AccountBaseController
             'numbers' => $existing
         ]);
     }
+    // public function bulkMoveStage(Request $request)
+    // {
+    //     $request->validate([
+    //         'deal_ids' => 'required|array',
+    //         'stage_id' => 'required|integer|exists:pipeline_stages,id',
+    //     ]);
+
+    //     // Get the stage and its parent pipeline
+    //     $stage = PipelineStage::findOrFail($request->stage_id);
+
+    //     // Update all selected deals
+    //     Deal::whereIn('id', $request->deal_ids)->update([
+    //         'pipeline_stage_id' => $stage->id,
+    //         'lead_pipeline_id' => $stage->lead_pipeline_id, // keep pipeline consistent
+    //     ]);
+
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => 'Deals moved to the new stage successfully.',
+    //     ]);
+    // }
     public function bulkMoveStage(Request $request)
     {
         $request->validate([
@@ -1114,14 +1135,19 @@ class DealController extends AccountBaseController
             'stage_id' => 'required|integer|exists:pipeline_stages,id',
         ]);
 
-        // Get the stage and its parent pipeline
+        // Fetch the target stage and its parent pipeline
         $stage = PipelineStage::findOrFail($request->stage_id);
 
-        // Update all selected deals
-        Deal::whereIn('id', $request->deal_ids)->update([
-            'pipeline_stage_id' => $stage->id,
-            'lead_pipeline_id' => $stage->lead_pipeline_id, // keep pipeline consistent
-        ]);
+        // Retrieve all the deals as Eloquent models (important for triggering observers)
+        $deals = Deal::whereIn('id', $request->deal_ids)->get();
+
+        foreach ($deals as $deal) {
+            // Update each deal individually
+            $deal->update([
+                'pipeline_stage_id' => $stage->id,
+                'lead_pipeline_id' => $stage->lead_pipeline_id, // keep pipeline consistent
+            ]);
+        }
 
         return response()->json([
             'status' => 'success',
@@ -1340,12 +1366,12 @@ class DealController extends AccountBaseController
         switch ($type) {
             case 'lead-calls-report':
                 $this->startDate = $request->get('start_date') ?? now()->startOfDay()
-                ->format('Y-m-d');
+                    ->format('Y-m-d');
                 $dataTable = app(LeadCallsDataTable::class);
                 break;
             case 'user-performance':
                 $this->startDate = $request->get('start_date') ?? now()->startOfDay()
-                ->format('Y-m-d');
+                    ->format('Y-m-d');
                 $dataTable = app(UserPerformanceDataTable::class);
                 break;
             case 'call-date':
@@ -1356,7 +1382,7 @@ class DealController extends AccountBaseController
                 break;
             case "lead-calls":
                 $this->startDate = $request->get('start_date') ?? now()->startOfDay()
-                ->format('Y-m-d');
+                    ->format('Y-m-d');
                 $dataTable = app(LeadCallsDataTableFullReport::class);
                 break;
             default:
