@@ -1,5 +1,5 @@
 @php
-$addLeadFilePermission = user()->permission('add_lead_files');
+    $addLeadFilePermission = user()->permission('add_lead_files');
 @endphp
 <!-- ROW START -->
 <div class="row">
@@ -30,6 +30,11 @@ $addLeadFilePermission = user()->permission('add_lead_files');
 
 
 <script>
+    $('body').on('click', '#add-files', function () {
+        const url = "{{ route('deal-files.create') }}";
+        $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+        $.ajaxModal(MODAL_LG, url);
+    });
     var fileLayout = 'thumbnail-list';
     function leadFilesView(layout) {
         $('#layout').html('');
@@ -44,7 +49,7 @@ $addLeadFilePermission = user()->permission('add_lead_files');
                 id: leadID,
                 layout: layout
             },
-            success: function(response) {
+            success: function (response) {
                 $('#layout').html(response.html);
                 if (layout == 'gridview') {
                     $('#list-tabs').removeClass('btn-active');
@@ -57,7 +62,7 @@ $addLeadFilePermission = user()->permission('add_lead_files');
         });
     }
 
-    $('body').on('click', '.delete-lead-file', function() {
+    $('body').on('click', '.delete-lead-file', function () {
         var id = $(this).data('file-id');
         var deleteView = $(this).data('pk');
         Swal.fire({
@@ -92,7 +97,7 @@ $addLeadFilePermission = user()->permission('add_lead_files');
                         '_token': token,
                         '_method': 'DELETE'
                     },
-                    success: function(response) {
+                    success: function (response) {
                         if (response.status == "success") {
                             leadFilesView(fileLayout);
                         }
