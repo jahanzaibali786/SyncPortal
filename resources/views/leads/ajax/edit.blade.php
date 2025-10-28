@@ -415,8 +415,8 @@
             }
         });
 
-        <
-        x - forms.custom - field - filejs / >
+        // <
+        // x - forms.custom - field - filejs / >
 
             init(RIGHT_MODAL);
     });

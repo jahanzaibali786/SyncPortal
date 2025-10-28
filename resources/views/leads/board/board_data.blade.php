@@ -140,11 +140,11 @@
     style="top: 20%; left: 57%; width: 720px; transform: translateX(-50%); z-index: 999999;">
     <div class="container-fluid d-flex align-items-center justify-content-between">
 
-        @if($addLeadPermission)
+        {{-- @if($addLeadPermission) --}}
             <button type="button" id="btnBulkAssignAgents" class="btn btn-primary f-12">
                 <i class="fa fa-user-plus mr-1"></i> Assign Users
             </button>
-        @endif
+        {{-- @endif --}}
 
         <div class="d-flex align-items-center">
             <button type="button" id="clearSelection" class=" mr-3 f-11 bg-white">
@@ -174,7 +174,7 @@
 
 
 <!-- Bulk Assign Agents Modal -->
-@if($addLeadPermission)
+{{-- @if($addLeadPermission) --}}
     <div class="modal fade" id="bulkAssignAgentsModal" tabindex="-1" role="dialog"
         aria-labelledby="bulkAssignAgentsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -207,7 +207,7 @@
             </div>
         </div>
     </div>
-@endif
+{{-- @endif --}}
 
 
 
