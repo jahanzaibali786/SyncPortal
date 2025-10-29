@@ -1180,13 +1180,81 @@ class DealController extends AccountBaseController
         ]);
     }
 
+    // public function bulkAssignAgents(Request $request)
+    // {
+    //     $dealIds = array_filter($request->deal_ids ?? []);
+    //     $agentIds = array_filter(array_unique($request->agent_ids ?? []));
+
+    //     if (empty($dealIds)) {
+    //         return response()->json(['status' => 'error', 'message' => 'No deals selected.']);
+    //     }
+
+    //     foreach ($dealIds as $dealId) {
+    //         $deal = Deal::find($dealId);
+    //         if (!$deal)
+    //             continue;
+
+    //         // get main agents and current sub agents
+    //         $mainAgents = array_filter(explode(',', $deal->agent_id ?? ''));
+    //         $existingSubAgents = array_filter(explode(',', $deal->sub_agents ?? ''));
+
+    //         // remove anyone who is a main agent (they cannot be subagents)
+    //         $cleanSelected = array_diff($agentIds, $mainAgents);
+    //         // dd($agentIds, $mainAgents, $cleanSelected);
+    //         // ✅ reassign sub_agents with only these selected
+    //         $deal->sub_agents = implode(',', $cleanSelected);
+    //         $deal->save();
+    //     }
+
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => 'Sub agents updated successfully.'
+    //     ]);
+    // }
+
+    // public function bulkAssignAgents(Request $request)
+    // {
+    //     $dealIds = array_filter($request->deal_ids ?? []);
+    //     $assignIds = array_filter(array_unique($request->assign_ids ?? []));
+    //     $unassignIds = array_filter(array_unique($request->unassign_ids ?? []));
+
+    //     if (empty($dealIds)) {
+    //         return response()->json(['status' => 'error', 'message' => 'No deals selected.']);
+    //     }
+
+    //     foreach ($dealIds as $dealId) {
+    //         $deal = Deal::find($dealId);
+    //         if (!$deal)
+    //             continue;
+
+    //         $mainAgents = array_filter(explode(',', $deal->agent_id ?? ''));
+    //         $subAgents = array_filter(explode(',', $deal->sub_agents ?? ''));
+
+    //         // ✅ Remove unassignIds only if present
+    //         $subAgents = array_diff($subAgents, $unassignIds);
+
+    //         // ✅ Add assignIds but skip main agents & existing sub_agents
+    //         $cleanAssign = array_diff($assignIds, $mainAgents, $subAgents);
+    //         $subAgents = array_merge($subAgents, $cleanAssign);
+
+    //         $deal->sub_agents = implode(',', $subAgents);
+    //         $deal->save();
+    //     }
+
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => 'Sub agents updated successfully.'
+    //     ]);
+    // }
+
     public function bulkAssignAgents(Request $request)
     {
         $dealIds = array_filter($request->deal_ids ?? []);
         $agentIds = array_filter(array_unique($request->agent_ids ?? []));
+        $actionType = $request->action_type;
 
-        if (empty($dealIds)) {
-            return response()->json(['status' => 'error', 'message' => 'No deals selected.']);
+        if (empty($dealIds) || empty($agentIds)) {
+            return response()->json(['status' => 'error', 'message' => 'Please select deals and agents.']);
         }
 
         foreach ($dealIds as $dealId) {
@@ -1194,24 +1262,27 @@ class DealController extends AccountBaseController
             if (!$deal)
                 continue;
 
-            // get main agents and current sub agents
             $mainAgents = array_filter(explode(',', $deal->agent_id ?? ''));
-            $existingSubAgents = array_filter(explode(',', $deal->sub_agents ?? ''));
+            $subAgents = array_filter(explode(',', $deal->sub_agents ?? ''));
 
-            // remove anyone who is a main agent (they cannot be subagents)
-            $cleanSelected = array_diff($agentIds, $mainAgents);
-            // dd($agentIds, $mainAgents, $cleanSelected);
-            // ✅ reassign sub_agents with only these selected
-            $deal->sub_agents = implode(',', $cleanSelected);
+            if ($actionType === 'assign') {
+                // ✅ Add only new agents (not already main or sub)
+                $cleanAssign = array_diff($agentIds, $mainAgents, $subAgents);
+                $subAgents = array_merge($subAgents, $cleanAssign);
+            } elseif ($actionType === 'unassign') {
+                // ✅ Remove selected agents only if they exist
+                $subAgents = array_diff($subAgents, $agentIds);
+            }
+
+            $deal->sub_agents = implode(',', $subAgents);
             $deal->save();
         }
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Sub agents updated successfully.'
+            'message' => 'Agents updated successfully.'
         ]);
     }
-
 
 
 

@@ -46,7 +46,8 @@ trait DealHistoryTrait
         $noteId = null,
         $agentId = null,
         $proposalId = null,
-        $labelId = null   // 🆕 Add this
+        $labelId = null,   // 🆕 Add this
+        $callId = null // 🆕 added
     ): void {
         DealHistory::create([
             'deal_id' => $dealId,
@@ -60,7 +61,8 @@ trait DealHistoryTrait
             'follow_up_id' => $followUpId,
             'agent_id' => $agentId,
             'proposal_id' => $proposalId,
-            'label_id' => $labelId   // 🆕 Save label reference
+            'label_id' => $labelId,   // 🆕 Save label reference
+            'call_id' => $callId // 🆕 Save call reference
         ]);
     }
 }
