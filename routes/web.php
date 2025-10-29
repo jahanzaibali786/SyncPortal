@@ -213,7 +213,16 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     Route::get('/google-calendar/events', [GoogleMeetController::class, 'googleCalander'])->name('google.calander');
     Route::Post('available-time', [MeetingController::class, 'availabletime'])->name('available-time');
     Route::resource('lead-meetings', MeetingController::class);
+    
+    // Lead Calls Routes
+    Route::prefix('lead-calls')->name('lead-calls.')->group(function () {
+        Route::get('create-modal', [App\Http\Controllers\LeadCallController::class, 'callCreateModal'])->name('create-modal');
+        Route::post('store-modal', [App\Http\Controllers\LeadCallController::class, 'callStoreModal'])->name('store-modal');
+    });
+
     Route::resource('lead-calls', LeadCallController::class);
+
+
     // Ledger report
 
     Route::post('/chart-of-accounts/store', [chartOfAccounts::class, 'store'])->name('coa.store');
@@ -660,9 +669,9 @@ Route::get('/service-worker.js', function () {
     // Route::get('/user-performance-report', [DealController::class, 'UserPerformanceReport'])->name('lead.calls');
 
     Route::get('/call-reports/{type}', [DealController::class, 'CallReports'])
-    ->name('call.reports');
+        ->name('call.reports');
 
-    
+
     Route::post('lead-form/sortFields', [LeadCustomFormController::class, 'sortFields'])->name('lead-form.sortFields');
     Route::resource('lead-form', LeadCustomFormController::class);
 

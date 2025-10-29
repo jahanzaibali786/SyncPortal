@@ -24,6 +24,7 @@ class DealHistory extends BaseModel
         'agent_id',
         'proposal_id',
         'label_id', // 🆕 add this line
+        'call_id', // 🆕 added
     ];
 
     protected $with = [];
@@ -46,6 +47,11 @@ class DealHistory extends BaseModel
     public function label()
     {
         return $this->belongsTo(\App\Models\PipelineLabel::class, 'label_id');
+    }
+
+    public function call()
+    {
+        return $this->belongsTo(LeadCall::class, 'call_id');
     }
 
 

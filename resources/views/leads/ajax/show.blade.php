@@ -27,9 +27,9 @@
                                     || ($deleteLeadPermission == 'owned' && ((!is_null($deal->agent_id) && user()->id == $deal->leadAgent->user->id) || (!is_null($deal->deal_watcher) && user()->id == $deal->deal_watcher)))
                                     || ($deleteLeadPermission == 'both' && (((!is_null($deal->agent_id) && user()->id == $deal->leadAgent->user->id) || (!is_null($deal->deal_watcher) && user()->id == $deal->deal_watcher)) || user()->id == $deal->added_by))
                                 )
-                                        <a class="dropdown-item delete-table-row" href="javascript:;" data-id="{{ $deal->id }}">
-                                            @lang('app.delete')
-                                        </a>
+                                            <a class="dropdown-item delete-table-row" href="javascript:;" data-id="{{ $deal->id }}">
+                                                @lang('app.delete')
+                                            </a>
                             @endif
                         </div>
                     </div>
@@ -858,12 +858,22 @@
                 }
             });
         });
-        $('body').on('click', '#add-files', function() {
+
+        $(document).on('click', '#add-lead-calls', function () {
             console.log('clicked');
-            const url = "{{ route('deal-files.create') }}";
-            $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+            const leadId = "{{ $lead->id ?? $deal->id ?? '' }}"; // fallback safety
+            const url = "{{ route('lead-calls.create-modal') }}" + "?lead_id=" + leadId;
+
+            $(MODAL_LG + ' ' + MODAL_HEADING).html("@lang('modules.call.addCalls')");
             $.ajaxModal(MODAL_LG, url);
         });
+
+        // $('body').on('click', '#add-files', function() {
+        //     console.log('clicked');
+        //     const url = "{{ route('deal-files.create') }}";
+        //     $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+        //     $.ajaxModal(MODAL_LG, url);
+        // });
         // $('body').on('click', '#add-lead-followup', function() {
         //     console.log('clicked');
             
