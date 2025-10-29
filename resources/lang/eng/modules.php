@@ -151,6 +151,23 @@ return array(
         'duration' => 'Duration',
         'recording' => 'Recording',
         'playRecording' => 'Play Recording',
+        'addCalls' => 'Add Call',
+        'phoneNumber' => 'Phone Number',
+        'inbound' => 'Inbound',
+        'outbound' => 'Outbound',
+        'status' => 'Status',
+        // Status labels
+        'answered' => 'Answered',
+        'noAnswer' => 'No Answer',
+        'busy' => 'Busy',
+        'powerOff' => 'Power Off',
+        'date' => 'Date',
+        // Table / UI
+        'createdBy' => 'Created By',
+        'createdAt' => 'Created At',
+        'actions' => 'Actions',
+        'description' => 'Description',
+        'result' => 'Result',
     ),
     'meeting' => array(
         'meeting' => 'Meeting',

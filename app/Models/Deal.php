@@ -283,7 +283,8 @@ class Deal extends BaseModel
 
 
 
-    protected $touches = ['updated_at'];
+    // protected $touches = ['updated_at'];
+    
 
     public function getSubAgentsArrayAttribute()
     {

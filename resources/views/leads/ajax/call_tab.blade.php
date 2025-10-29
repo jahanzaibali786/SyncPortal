@@ -4,8 +4,18 @@
 
 <!-- TAB CONTENT START -->
 <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="nav-call-tab">
+    <div class="d-flex p-20">
+        <div class="row">
+            <div class="col-md-12">
+                <a class="f-15 f-w-500" href="javascript:;" id="add-lead-calls">
+                    <i class="icons icon-plus font-weight-bold mr-1"></i>
+                    @lang('modules.call.addCalls')
+                </a>
+            </div>
+        </div>
+    </div>
     {{-- Call Table --}}
-    <div class="d-flex flex-wrap p-20" id="call-list">
+    <div class="d-flex flex-wrap" id="call-list">
         @if ($viewLeadCallPermission == 'all' || $viewLeadCallPermission == 'added')
             <x-table headType="thead-light">
                 <x-slot name="thead">
@@ -32,8 +42,7 @@
                             {{-- @if ($call->recording && Storage::exists('uploads/recording/' . $call->recording)) --}}
                             @if ($call->recording)
                                 <audio controls>
-                                    <source src="{{ Storage::disk('recordings')->url($call->recording) }}"
-                                        type="audio/mpeg">
+                                    <source src="{{ Storage::disk('recordings')->url($call->recording) }}" type="audio/mpeg">
                                     Your browser does not support the audio element.
                                 </audio>
                             @else
@@ -62,7 +71,9 @@
 
 @push('scripts')
     <script>
-        $(document).on('click', '.delete-call', function() {
+
+
+        $(document).on('click', '.delete-call', function () {
             var id = $(this).data('call-id');
             var url = "{{ route('lead-calls.destroy', ':id') }}".replace(':id', id);
 
@@ -83,7 +94,7 @@
                         data: {
                             _token: '{{ csrf_token() }}'
                         },
-                        success: function(response) {
+                        success: function (response) {
                             if (response.success) {
                                 $('#call-row-' + id).fadeOut();
                             }

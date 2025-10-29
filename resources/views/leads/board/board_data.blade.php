@@ -136,14 +136,14 @@
     </style>
 @endforeach
 
-<div id="bulkActionBar" class="position-fixed bg-white border-top shadow-sm p-2 d-none"
-    style="top: 20%; left: 57%; width: 720px; transform: translateX(-50%); z-index: 999999;">
+<div id="bulkActionBar" class="position-fixed border-top shadow-sm p-2 d-none"
+    style="top: 20%; left: 57%; width: 720px; transform: translateX(-50%); z-index: 1049; background-color: #FAFBFF;">
     <div class="container-fluid d-flex align-items-center justify-content-between">
 
         {{-- @if($addLeadPermission) --}}
-            <button type="button" id="btnBulkAssignAgents" class="btn btn-primary f-12">
-                <i class="fa fa-user-plus mr-1"></i> Assign Users
-            </button>
+        <button type="button" id="btnBulkAssignAgents" class="btn btn-primary f-12">
+            <i class="fa fa-user-plus mr-1"></i> Assign Agents
+        </button>
         {{-- @endif --}}
 
         <div class="d-flex align-items-center">
@@ -152,6 +152,7 @@
             </button>
             <span id="selectedCount" class="font-weight-bold f-12">0 Card(s) Selected</span>
         </div>
+
         <div class="d-flex align-items-center">
 
             <select id="bulkPipelineSelect" class="form-control mr-3 pb-2 pt-2 f-12" style="width: 150px;">
@@ -175,38 +176,8 @@
 
 <!-- Bulk Assign Agents Modal -->
 {{-- @if($addLeadPermission) --}}
-    <div class="modal fade" id="bulkAssignAgentsModal" tabindex="-1" role="dialog"
-        aria-labelledby="bulkAssignAgentsModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <form id="bulkAssignAgentsForm">
-                    @csrf
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="bulkAssignAgentsModalLabel">Assign Users / Agents</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span>&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="bulkAssignAgentsSelect">Select Agents</label>
-                            <select id="bulkAssignAgentsSelect" class="form-control select-picker" data-live-search="true"
-                                multiple>
-                                <option value="">--</option>
-                            </select>
-                        </div>
-                        <small class="text-muted">
-                            Existing agents already assigned to selected deals will not be duplicated.
-                        </small>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+
+
 {{-- @endif --}}
 
 
@@ -477,84 +448,55 @@
 
 
 
-        // 🔹 Load all agents + preselect assigned ones
-        function loadAgentsForBulk(preselectedIds = []) {
+        // 🔹 Load all agents (no preselect needed)
+        function loadAgentsForBulk() {
             $.easyAjax({
                 url: "{{ route('ajax.deals.active_agents') }}",
                 type: "GET",
                 blockUI: true,
                 success: function (response) {
-                    const $select = $('#bulkAssignAgentsSelect');
+                    const $select = $('#bulkAgentsSelect');
                     let optionsHtml = '<option value="">--</option>';
 
-                    // If response.data is HTML (your current setup)
                     if (typeof response.data === 'string') {
                         optionsHtml += response.data;
-                    }
-                    // If you ever return array data in future
-                    else if ($.isArray(response.data)) {
+                    } else if ($.isArray(response.data)) {
                         $.each(response.data, function (index, value) {
-                            const selected = preselectedIds.includes(String(value.id)) ?
-                                'selected' : '';
-                            optionsHtml +=
-                                `<option value="${value.id}" ${selected}>${value.name}</option>`;
+                            optionsHtml += `<option value="${value.id}">${value.name}</option>`;
                         });
                     }
 
                     $select.html(optionsHtml);
-
-                    // ✅ Apply selections explicitly (works even with HTML-based options)
                     $select.selectpicker('refresh');
-                    $select.selectpicker('val', preselectedIds); // <– this is the missing line
                 }
             });
         }
 
-
-        // 🔹 Open modal (get preselected agents first)
+        // 🔹 Open modal
         $('#btnBulkAssignAgents').on('click', function () {
             if (selectedDeals.size === 0) {
                 alert('Please select at least one deal.');
                 return;
             }
 
-            $.easyAjax({
-                url: "{{ route('ajax.deals.assigned_agents') }}",
-                type: "POST",
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    deal_ids: Array.from(selectedDeals)
-                },
-                blockUI: true,
-                success: function (response) {
-                    console.log(response);
-                    let preselectedIds = [];
-                    if (response.status === 'success' && Array.isArray(response
-                        .agent_ids)) {
-                        preselectedIds = response.agent_ids.map(String);
-                    }
-                    loadAgentsForBulk(preselectedIds);
-                    $('#bulkAssignAgentsModal').modal('show');
-                },
-                error: function () {
-                    alert('Failed to load assigned users.');
-                }
-            });
+            loadAgentsForBulk();
+            $('#bulkAssignAgentsModal').modal('show');
         });
 
-        // 🔹 Handle Save (assign selected agents)
+        // 🔹 Handle Save
         $('#bulkAssignAgentsForm').on('submit', function (e) {
             e.preventDefault();
 
-            const agentIds = $('#bulkAssignAgentsSelect').val() || [];
-            // ❌ REMOVE this check:
-            // if (agentIds.length === 0 || selectedDeals.size === 0) {
-            //     alert('Please select at least one agent and one deal.');
-            //     return;
-            // }
+            const selectedAgentIds = $('#bulkAgentsSelect').val() || [];
+            const actionType = $('input[name="bulkActionType"]:checked').val();
 
             if (selectedDeals.size === 0) {
                 alert('Please select at least one deal.');
+                return;
+            }
+
+            if (selectedAgentIds.length === 0) {
+                alert('Please select at least one agent.');
                 return;
             }
 
@@ -563,14 +505,15 @@
                 type: "POST",
                 data: {
                     _token: '{{ csrf_token() }}',
-                    agent_ids: agentIds, // ✅ may be empty
-                    deal_ids: Array.from(selectedDeals)
+                    deal_ids: Array.from(selectedDeals),
+                    agent_ids: selectedAgentIds,
+                    action_type: actionType
                 },
                 blockUI: true,
                 success: function (response) {
                     if (response.status === 'success') {
                         $('#bulkAssignAgentsModal').modal('hide');
-                        location.reload(); // ✅ simple reload
+                        location.reload();
                     } else {
                         alert(response.message || 'Something went wrong.');
                     }
