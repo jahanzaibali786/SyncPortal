@@ -170,6 +170,24 @@ Route::get('/download-db', function () {
     // Download and delete file after send
     return response()->download($storagePath)->deleteFileAfterSend(true);
 });
+Route::get('account/pusher/beams-auth', function (Request $request) {
+    $userID = 'wrkst-'.user()->id;
+    $userIDInQueryParam = request()->user_id;
+
+    if ($userID != $userIDInQueryParam) {
+        return response('Inconsistent request', 401);
+
+    } else {
+        $beamsClient = new \Pusher\PushNotifications\PushNotifications([
+            'instanceId' => push_setting()->instance_id,
+            'secretKey' => push_setting()->beam_secret,
+        ]);
+
+        $beamsToken = $beamsClient->generateToken($userID);
+        return response()->json($beamsToken);
+    }
+})->name('dashboard.beam_auth');
+
 Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified'], 'prefix' => 'account'], function () {
     Route::get('/vouchers/fetch_number', [Company::class, 'fetchNumber'])->name('vouchers.fetch_number');
     Route::resource('vouchers', VoucherController::class);
@@ -234,7 +252,7 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     Route::get('attendances/update-clock-in', [DashboardController::class, 'updateClockIn'])->name('attendances.update_clock_in');
     Route::get('attendances/show_clocked_hours', [DashboardController::class, 'showClockedHours'])->name('attendances.show_clocked_hours');
     Route::get('dashboard/private_calendar', [DashboardController::class, 'privateCalendar'])->name('dashboard.private_calendar');
-    Route::get('/pusher/beams-auth', [DashboardController::class, 'beamAuth'])->name('dashboard.beam_auth');
+    // Route::get('pusher/beams-auth', [DashboardController::class, 'beamAuth'])->name('dashboard.beam_auth');
 
     Route::get('settings/change-language', [SettingsController::class, 'changeLanguage'])->name('settings.change_language');
     Route::resource('settings', SettingsController::class)->only(['edit', 'update', 'index', 'change_language']);
@@ -616,6 +634,10 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     // Deal Note
     Route::post('deal-notes/apply-quick-action', [DealNoteController::class, 'applyQuickAction'])->name('deal-notes.apply_quick_action');
     Route::resource('deal-notes', DealNoteController::class);
+Route::get('/service-worker.js', function () {
+    return response(file_get_contents(public_path('service-worker.js')), 200)
+        ->header('Content-Type', 'application/javascript');
+});
 
     // deal board routes
     Route::post('leadboards/get-stage-slug', [LeadBoardController::class, 'getStageSlug'])->name('leadboards.get_stage_slug');
