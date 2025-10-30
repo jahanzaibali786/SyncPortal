@@ -171,7 +171,7 @@ Route::get('/download-db', function () {
     return response()->download($storagePath)->deleteFileAfterSend(true);
 });
 Route::get('account/pusher/beams-auth', function (Request $request) {
-    $userID = 'wrkst-'.user()->id;
+    $userID = 'wrkst-' . user()->id;
     $userIDInQueryParam = request()->user_id;
 
     if ($userID != $userIDInQueryParam) {
@@ -199,6 +199,8 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     Route::get('/google-meetings/{meeting}/assign-user', [GoogleMeetController::class, 'assignUserModal'])->name('meetings.assign.user');
     Route::post('/google-meetings/assign-users/{id}', [GoogleMeetController::class, 'assignusers'])->name('meetings.assign.users');
 
+    Route::post('/meetings/send-invites', [MeetingController::class, 'sendInvites'])->name('meetings.send-invites');
+
     Route::get('/google/login', [GoogleMeetController::class, 'redirectToGoogle'])->name('google.meet.login');
     Route::get('/google/callback', [GoogleMeetController::class, 'handleGoogleCallback'])->name('google.meet.callback');
     Route::get('/google-calander', [GoogleMeetController::class, 'googleCalander'])->name('google.calander');
@@ -213,7 +215,7 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     Route::get('/google-calendar/events', [GoogleMeetController::class, 'googleCalander'])->name('google.calander');
     Route::Post('available-time', [MeetingController::class, 'availabletime'])->name('available-time');
     Route::resource('lead-meetings', MeetingController::class);
-    
+
     // Lead Calls Routes
     Route::prefix('lead-calls')->name('lead-calls.')->group(function () {
         Route::get('create-modal', [App\Http\Controllers\LeadCallController::class, 'callCreateModal'])->name('create-modal');
@@ -643,10 +645,10 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     // Deal Note
     Route::post('deal-notes/apply-quick-action', [DealNoteController::class, 'applyQuickAction'])->name('deal-notes.apply_quick_action');
     Route::resource('deal-notes', DealNoteController::class);
-Route::get('/service-worker.js', function () {
-    return response(file_get_contents(public_path('service-worker.js')), 200)
-        ->header('Content-Type', 'application/javascript');
-});
+    Route::get('/service-worker.js', function () {
+        return response(file_get_contents(public_path('service-worker.js')), 200)
+            ->header('Content-Type', 'application/javascript');
+    });
 
     // deal board routes
     Route::post('leadboards/get-stage-slug', [LeadBoardController::class, 'getStageSlug'])->name('leadboards.get_stage_slug');
@@ -698,6 +700,10 @@ Route::get('/service-worker.js', function () {
     Route::get('deals/get-deals/{id}', [DealController::class, 'getDeals'])->name('deals.get-deals');
     Route::get('deals/get-agent/{id}', [DealController::class, 'getAgents'])->name('deals.get_agents');
     Route::resource('deals', DealController::class);
+
+    Route::post('/leads/{id}/update-cell', [DealController::class, 'updateCell'])
+        ->name('leads.updateCell');
+
 
     Route::get('deals/get-agents-by-pipeline/{pipelineId}', [DealController::class, 'getAgentsByPipeline'])
         ->name('deals.get_agents_by_pipeline');

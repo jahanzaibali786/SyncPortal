@@ -27049,10 +27049,26 @@ table {
   color: #616E80 !important;
 }
 
-.project-header .project-menu .p-sub-menu {
+/* .project-header .project-menu .p-sub-menu {
   position: relative;
   font-size: 14px;
   display: block;
+} */
+
+.project-header .project-menu .p-sub-menu {
+  color: rgb(100, 116, 139);
+  font-size: 12px;
+  text-align: center;
+  margin-right: 8px;
+  border-radius: 50px;
+  background: rgb(236, 240, 245);
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+  padding: 8px 16px;
+  margin-block: 12px;
+  transition: transform 0.2s ease-in-out;
 }
 
 @media (max-width: 991.98px) {
@@ -27061,7 +27077,7 @@ table {
   }
 }
 
-.project-header .project-menu .p-sub-menu.active:after,
+/* .project-header .project-menu .p-sub-menu.active:after,
 .project-header .project-menu .p-sub-menu.active:hover:after {
   width: 100%;
   height: 3px;
@@ -27070,10 +27086,23 @@ table {
   bottom: 0;
   position: absolute;
   content: "";
+} */
+
+.project-header .project-menu .p-sub-menu.active:after,
+.project-header .project-menu .p-sub-menu.active:hover:after,
+.project-header .project-menu .p-sub-menu:after {
+  display: none;
+}
+
+.project-header .project-menu .p-sub-menu.active,
+.project-header .project-menu .p-sub-menu.active:hover,
+.project-header .project-menu .p-sub-menu:hover {
+  background: linear-gradient(90deg, var(--gradientColor1) -0.06%, var(--gradientColor2) 33.96%, var(--gradientColor3) 72.98%, var(--gradientColor4) 100%);
+  color: white !important;
 }
 
 .project-header .project-menu .p-sub-menu span {
-  padding: 13px 26px;
+  /* padding: 13px 26px; */
   display: block;
   white-space: nowrap;
   text-align: center;

@@ -277,13 +277,24 @@ class LeadBoardController extends AccountBaseController
             foreach ($boardColumns as $key => $boardColumn) {
                 $result['boardColumns'][] = $boardColumn;
 
-                $leads = Deal::select('deals.*', DB::raw("(select next_follow_up_date from lead_follow_up where deal_id = deals.id and deals.next_follow_up  = 'yes' ORDER BY next_follow_up_date desc limit 1) as next_follow_up_date"))
-                    ->leftJoin('leads', 'leads.id', 'deals.lead_id')
-                    ->with('leadAgent', 'leadAgent.user')
-                    ->where('deals.pipeline_stage_id', $boardColumn->id)
-                    ->orderBy('deals.column_priority', 'asc')
-                    ->groupBy('deals.id');
+                // $leads = Deal::select('deals.*', DB::raw("(select next_follow_up_date from lead_follow_up where deal_id = deals.id and deals.next_follow_up  = 'yes' ORDER BY next_follow_up_date desc limit 1) as next_follow_up_date"))
+                //     ->leftJoin('leads', 'leads.id', 'deals.lead_id')
+                //     ->with('leadAgent', 'leadAgent.user')
+                //     ->where('deals.pipeline_stage_id', $boardColumn->id)
+                //     ->orderBy('deals.column_priority', 'asc')
+                //     ->groupBy('deals.id');
 
+                $leads = Deal::select(
+                    'deals.*',
+                    DB::raw("(select next_follow_up_date from lead_follow_up where deal_id = deals.id and deals.next_follow_up  = 'yes' ORDER BY next_follow_up_date desc limit 1) as next_follow_up_date"),
+                    DB::raw("(select MAX(updated_at) from deal_histories where deal_histories.deal_id = deals.id) as last_edited_at")
+                )
+                ->leftJoin('leads', 'leads.id', 'deals.lead_id')
+                ->with('leadAgent', 'leadAgent.user')
+                ->where('deals.pipeline_stage_id', $boardColumn->id)
+                ->orderByDesc('last_edited_at')  // 👈 NEW: show most recently edited first
+                ->orderBy('deals.column_priority', 'asc') // fallback
+                ->groupBy('deals.id');
 
                 $this->dateFilter($leads, $startDate, $endDate, $request);
 

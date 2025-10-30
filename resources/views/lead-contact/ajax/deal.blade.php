@@ -30,10 +30,13 @@
                         <x-forms.label :fieldLabel="__('modules.deal.pipeline')" fieldId="pipeline" />
                         <div class="select-status">
                             <select class="form-control select-picker pipelineFilter" name="pipeline" id="pipeline">
-                                @foreach($pipelines as $pipeline)
-                                    <option @if($pipeline->default == 1) selected @endif value="{{ $pipeline->id }}">{{ $pipeline->name }}</option>
-                                @endforeach
-                            </select>
+    <option value="all" selected>@lang('app.all')</option>
+    @foreach($pipelines as $pipeline)
+        <option value="{{ $pipeline->id }}">{{ $pipeline->name }}</option>
+    @endforeach
+</select>
+
+
                         </div>
                     </div>
                     <!-- PIPELINE END -->
