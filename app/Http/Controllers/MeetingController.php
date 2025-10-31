@@ -285,15 +285,16 @@ class MeetingController extends Controller
             if (!filter_var($email, FILTER_VALIDATE_EMAIL))
                 continue;
 
-            Mail::send([], [], function ($message) use ($email, $html, $meeting) {
-                $message->to($email)
-                    ->subject('Meeting Invitation: ' . ($meeting->title ?? 'Meeting'))
-                    ->html($html); // ✅ correct modern syntax
-            });
+            // Mail::send([], [], function ($message) use ($email, $html, $meeting) {
+            //     $message->to($email)
+            //         // ->subject('Invitation to Join Scheduled Meeting' . ($meeting->title ?? 'Meeting'))
+            //         ->subject('Invitation to Join Scheduled Meeting')
+            //         ->html($html); // ✅ correct modern syntax
+            // });
 
         }
 
-        return response()->json(['success' => true]);
+        return response()->json(['success' => true, 'view' => $html]);
     }
 
 

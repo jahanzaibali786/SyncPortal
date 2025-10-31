@@ -2437,6 +2437,8 @@ return array(
         'labelColor' => 'Label Color',
         'addLabel' => 'Add Label',
         'editLabel' => 'Edit Label',
+        'phoneNumber' => 'Phone Number',
+        'designation' => 'Designation',
     ),
     'estimateRequest' => array(
         'estimateRequest' => 'Estimate Request',
