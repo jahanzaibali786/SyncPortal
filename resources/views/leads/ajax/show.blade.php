@@ -27,9 +27,9 @@
                                     || ($deleteLeadPermission == 'owned' && ((!is_null($deal->agent_id) && user()->id == $deal->leadAgent->user->id) || (!is_null($deal->deal_watcher) && user()->id == $deal->deal_watcher)))
                                     || ($deleteLeadPermission == 'both' && (((!is_null($deal->agent_id) && user()->id == $deal->leadAgent->user->id) || (!is_null($deal->deal_watcher) && user()->id == $deal->deal_watcher)) || user()->id == $deal->added_by))
                                 )
-                                            <a class="dropdown-item delete-table-row" href="javascript:;" data-id="{{ $deal->id }}">
-                                                @lang('app.delete')
-                                            </a>
+                                                                                                                                                                                                    <a class="dropdown-item delete-table-row" href="javascript:;" data-id="{{ $deal->id }}">
+                                                                                                                                                                                                        @lang('app.delete')
+                                                                                                                                                                                                    </a>
                             @endif
                         </div>
                     </div>
@@ -194,12 +194,133 @@
                     labelClasses="f-13 text-muted"
                 />
                 
-                <x-cards.data-row 
+                {{-- <x-cards.data-row 
                     :label="__('modules.lead.mobile')" 
                     :value="$deal->contact->mobile ?? '--'" 
                     otherClasses="mb-3" 
                     labelClasses="f-13 text-muted"
                 />
+
+                @php
+                    // Split comma-separated values and clean up spaces
+                    $cellNumbers = $deal->contact->cell ? array_map('trim', explode(',', $deal->contact->cell)) : [];
+                @endphp
+                            
+                @if(count($cellNumbers))
+                    <div class="ml-4">
+                        @foreach($cellNumbers as $number)
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="mr-2">{{ $number }}</span>
+                                <button type="button" class="btn btn-sm btn-light border">
+                                    <i class="fa fa-phone text-success"></i>
+                                </button>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="ml-4 text-muted">--</div>
+                @endif --}}
+
+                @php
+                    $cellRaw = $deal->contact->cell;
+                    $cellNumbers = [];
+
+                    if ($cellRaw) {
+                        $decoded = json_decode($cellRaw, true);
+                        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                            $cellNumbers = $decoded;
+                        } else {
+                            $split = array_filter(array_map('trim', explode(',', $cellRaw)));
+                            foreach ($split as $num) {
+                                $cellNumbers[""] = isset($cellNumbers[""]) ? $cellNumbers[""] . ',' . $num : $num;
+                            }
+                        }
+                    }
+                @endphp
+
+                @php
+                    $cellRaw = $deal->contact->cell;
+                    $cellNumbers = [];
+
+                    if ($cellRaw) {
+                        $decoded = json_decode($cellRaw, true);
+                        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                            $cellNumbers = $decoded;
+                        } else {
+                            $split = array_filter(array_map('trim', explode(',', $cellRaw)));
+                            foreach ($split as $num) {
+                                $cellNumbers[""] = isset($cellNumbers[""]) ? $cellNumbers[""] . ',' . $num : $num;
+                            }
+                        }
+                    }
+                @endphp
+
+
+                {{-- PRIMARY MOBILE ROW --}}
+                <x-cards.data-row 
+                    :label="__('modules.lead.mobile')" 
+                    otherClasses="" 
+                    labelClasses="f-13 text-muted"
+                >
+                    <div class="d-flex align-items-center">
+                        <span>{{ $deal->contact->mobile ?? '--' }}</span>
+                        @if(!empty($deal->contact->mobile))
+                            <button type="button" class="btn btn-sm">
+                                <i class="fa fa-phone text-primary"></i>
+                            </button>
+                        @endif
+
+                        {{-- ➕ Add new button --}}
+                        <button type="button" class="btn btn-sm ml-2 text-success" id="add-cell-btn">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                </x-cards.data-row>
+
+
+
+                {{-- EXISTING CELL NUMBERS --}}
+                <div id="cell-container">
+                @foreach($cellNumbers as $name => $numbers)
+                    @foreach(explode(',', $numbers) as $number)
+                        <x-cards.data-row 
+                            :label="$name ? strtoupper($name) . ':' : ''" 
+                            otherClasses="mb-2" 
+                            labelClasses="f-13 text-muted"
+                        >
+                            <div class="d-flex align-items-center">
+                                <span>{{ $number }}</span>
+                                <button type="button" class="btn btn-sm">
+                                    <i class="fa fa-phone text-primary"></i>
+                                </button>
+                            </div>
+                        </x-cards.data-row>
+                    @endforeach
+                @endforeach
+                </div>
+
+
+
+                {{-- ADD NEW CONTACT FORM --}}
+                <div id="new-cell-form" class="mt-2" style="display:none;">
+
+                    <div class="col-12 px-0 pb-2 d-lg-flex d-md-flex d-block">
+        <input type="text" id="new-cell-name" class="form-control form-control-sm mr-2 w-25 f-13 mt-1" style="height: 23.1px;" placeholder="Name">
+        <div class="mb-0 text-dark-grey f-13 w-70 text-wrap mb-2">
+            <div class="d-flex align-items-center mb-1">
+                            
+                            <input type="text" id="new-cell-number" class="form-control form-control-sm mr-2 w-50" placeholder="Number">
+                            <button type="button" class="btn btn-sm text-success" id="save-cell-btn">
+                                <i class="fa fa-check"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm text-danger" id="cancel-cell-btn">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+        </div>
+    </div>
+                </div>
+
 
                 <x-cards.data-row 
                     :label="__('modules.lead.companyName')"
@@ -879,4 +1000,107 @@
         //     $.ajaxModal(MODAL_LG, url);
         // });
     </script>
+
+
+                                                                                                    <script>
+                                                                                                        const addBtn = document.getElementById('add-cell-btn');
+                                                                                                        const form = document.getElementById('new-cell-form');
+                                                                                                        const saveBtn = document.getElementById('save-cell-btn');
+                                                                                                        const cancelBtn = document.getElementById('cancel-cell-btn');
+                                                                                                        const nameInput = document.getElementById('new-cell-name');
+                                                                                                        const numberInput = document.getElementById('new-cell-number');
+
+                                                                                                        // Show add form
+                                                                                                        addBtn.addEventListener('click', () => {
+                                                                                                            form.style.display = 'block';
+                                                                                                            nameInput.focus();
+                                                                                                        });
+
+                                                                                                        // Hide form + reset fields
+                                                                                                        cancelBtn.addEventListener('click', () => {
+                                                                                                            form.style.display = 'none';
+                                                                                                            nameInput.value = '';
+                                                                                                            numberInput.value = '';
+                                                                                                        });
+
+                                                                                                        // Allow only numbers in number field
+                                                                                                        numberInput.addEventListener('input', function() {
+                                                                                                            this.value = this.value.replace(/\D/g, '');
+                                                                                                        });
+                                                                                                    </script>
+
+                                                                                                    <script>
+
+                                                                                                     saveBtn.addEventListener('click', () => {
+                        const name = nameInput.value.trim();
+                        const number = numberInput.value.trim();
+
+                        if (!number) {
+                            alert('Please enter a number.');
+                            return;
+                        }
+
+                        fetch(`{{ route('leads.updateCell', $deal->contact->id) }}`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ name, number })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                const parentContainer = document.getElementById('cell-container');
+
+                                // create the wrapper div
+                                const wrapper = document.createElement('div');
+                                wrapper.className = "col-12 px-0 pb-2 d-lg-flex d-md-flex d-block";
+
+                                // label <p>
+                                const labelP = document.createElement('p');
+                                labelP.className = "mb-0 text-lightest f-13 w-30 f-13 text-muted";
+                                labelP.textContent = name ? name.toUpperCase() + ':' : '';
+                                wrapper.appendChild(labelP);
+
+                                // value container
+                                const valueDiv = document.createElement('div');
+                                valueDiv.className = "mb-0 text-dark-grey f-13 w-70 text-wrap mb-2";
+
+                                const innerDiv = document.createElement('div');
+                                innerDiv.className = "d-flex align-items-center";
+
+                                innerDiv.innerHTML = `
+                                    <span>${number}</span>
+                                    <button type="button" class="btn btn-sm">
+                                        <svg class="svg-inline--fa fa-phone fa-w-16 text-primary" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="phone" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                            <path fill="currentColor" d="M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 13.9l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C3.9 366.5-2 378.1.6 389.4l24 104C27.1 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.7-20.9-18.6-23.4z"></path>
+                                        </svg>
+                                    </button>
+                                `;
+
+                                valueDiv.appendChild(innerDiv);
+                                wrapper.appendChild(valueDiv);
+
+                                // append new number at the end
+                                parentContainer.appendChild(wrapper);
+
+                                // reset form
+                                form.style.display = 'none';
+                                nameInput.value = '';
+                                numberInput.value = '';
+                            } else {
+                                alert('Something went wrong while saving.');
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Fetch error:', err);
+                            alert('Error saving number.');
+                        });
+                    });
+
+
+
+
+                                                                                                    </script>
 </div>

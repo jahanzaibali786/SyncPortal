@@ -1478,6 +1478,43 @@ class DealController extends AccountBaseController
         return $dataTable->render('leads.reports.lead_calls', $this->data);
     }
 
+    public function updateCell(Request $request, $id)
+    {
+        $lead = Lead::findOrFail($id);
+
+        $request->validate([
+            'name' => 'nullable|string|max:255',
+            'number' => ['required', 'regex:/^[0-9]+$/', 'max:50'],
+        ], [
+            'number.regex' => 'The number field must contain only digits.',
+        ]);
+
+        $name = trim($request->input('name'));
+        $number = trim($request->input('number'));
+
+        $existing = $lead->cell;
+        $decoded = json_decode($existing, true);
+
+        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+            $decoded[$name] = $number;
+            $lead->cell = json_encode($decoded);
+        } else {
+            $numbers = array_filter(array_map('trim', explode(',', $existing)));
+            $assoc = [];
+            foreach ($numbers as $num) {
+                $assoc[""] = isset($assoc[""]) ? $assoc[""] . ',' . $num : $num;
+            }
+            $assoc[$name] = $number;
+            $lead->cell = json_encode($assoc);
+        }
+
+        $lead->save();
+
+        return response()->json([
+            'success' => true,
+            'cell' => $lead->cell,
+        ]);
+    }
 
 
 

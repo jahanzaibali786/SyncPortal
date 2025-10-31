@@ -6,6 +6,15 @@ use App\Models\Meeting;
 use App\Models\LeadMeeting;
 use App\Models\Deal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\View;
+use Symfony\Component\Mime\Part\TextPart;
+use Illuminate\Mail\MailManager;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
+use Symfony\Component\Mailer\Mailer as SymfonyMailer;
+use Symfony\Component\Mime\Email;
+use App\Models\EmailSetting;
+use App\Models\SmtpSetting;
 
 class MeetingController extends Controller
 {
@@ -78,7 +87,10 @@ class MeetingController extends Controller
     public function availabletime(Request $request)
     {
         $slotDuration = (int) $request->time ?? 15; // in minutes
-        $providedDate = \DateTime::createFromFormat('d-m-Y', $request->date);
+
+        // $providedDate = \DateTime::createFromFormat('d-m-Y', $request->date);
+        $providedDate = \DateTime::createFromFormat('d-m-Y', $request->date, new \DateTimeZone('Asia/Karachi'));
+
 
         if (!$providedDate) {
             return response()->json([
@@ -91,7 +103,10 @@ class MeetingController extends Controller
         $bookedMeetings = Meeting::whereDate('date', $providedDate->format('Y-m-d'))
             ->get(['time', 'end_time']);
 
-        $now = new \DateTime();
+        // $now = new \DateTime();
+        $now = new \DateTime('now', new \DateTimeZone('Asia/Karachi'));
+
+        $providedDate->setTimezone(new \DateTimeZone('Asia/Karachi'));
         $start = ($providedDate->format('Y-m-d') === $now->format('Y-m-d'))
             ? clone $now
             : (clone $providedDate)->setTime(0, 0);
@@ -191,4 +206,97 @@ class MeetingController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+
+
+    // public function sendInvites(Request $request)
+    // {
+    //     $request->validate([
+    //         'emails' => 'required|string',
+    //         'meeting_id' => 'required|exists:meetings,id',
+    //     ]);
+
+    //     $emails = array_map('trim', explode(',', $request->emails));
+    //     $meeting = Meeting::findOrFail($request->meeting_id);
+
+    //     // --- build Gmail SMTP transport (no .env change) ---
+    //     $transport = new EsmtpTransport(
+    //         'smtp.gmail.com',   // host
+    //         465,                // port
+    //         true                // use SSL
+    //     );
+    //     $transport->setUsername('mabdullahali420@gmail.com');
+    //     $transport->setPassword('hlhk zhbq knia qupr'); // your Gmail App Password
+
+    //     $symfonyMailer = new SymfonyMailer($transport);
+
+    //     // --- loop and send ---
+    //     foreach ($emails as $email) {
+    //         if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+    //             continue;
+
+    //         $html = View::make('leads.mail.invite', compact('meeting'))->render();
+
+    //         $message = (new Email())
+    //             ->from('mabdullahali420@gmail.com')
+    //             ->to($email)
+    //             ->subject('Meeting Invitation: ' . ($meeting->title ?? 'Meeting'))
+    //             ->html($html);
+
+    //         $symfonyMailer->send($message);
+    //     }
+
+    //     return response()->json(['success' => true]);
+    // }
+
+
+    public function sendInvites(Request $request)
+    {
+        $request->validate([
+            'emails' => 'required|string',
+            'meeting_id' => 'required|exists:meetings,id',
+        ]);
+
+        $emails = array_map('trim', explode(',', $request->emails));
+        $meeting = Meeting::findOrFail($request->meeting_id);
+
+        // --- 1️⃣ Load Worksuite Email Settings from DB ---
+        // $emailSetting = EmailSetting::first();
+        $emailSetting = SmtpSetting::first();
+
+        if ($emailSetting) {
+            config([
+                'mail.default' => 'smtp',
+                'mail.mailers.smtp.host' => $emailSetting->mail_host,
+                'mail.mailers.smtp.port' => $emailSetting->mail_port,
+                'mail.mailers.smtp.username' => $emailSetting->mail_username,
+                'mail.mailers.smtp.password' => $emailSetting->mail_password,
+                'mail.mailers.smtp.encryption' => $emailSetting->mail_encryption,
+                'mail.from.address' => $emailSetting->mail_from_email,
+                'mail.from.name' => $emailSetting->mail_from_name,
+            ]);
+        }
+
+        // --- 2️⃣ Prepare your email view as HTML ---
+        $html = View::make('leads.mail.invite', compact('meeting'))->render();
+
+        // --- 3️⃣ Send to multiple recipients ---
+        foreach ($emails as $email) {
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+                continue;
+
+            Mail::send([], [], function ($message) use ($email, $html, $meeting) {
+                $message->to($email)
+                    ->subject('Meeting Invitation: ' . ($meeting->title ?? 'Meeting'))
+                    ->html($html); // ✅ correct modern syntax
+            });
+
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+
+
+
 }
