@@ -12,6 +12,7 @@ return new class extends Migration {
     {
         Schema::table('deal_histories', function (Blueprint $table) {
             //
+            $table->unsignedBigInteger('label_id')->nullable()->after('proposal_id');
             $table->unsignedBigInteger('call_id')->nullable()->after('label_id');
             $table->foreign('call_id')->references('id')->on('lead_calls')->onDelete('cascade');
         });

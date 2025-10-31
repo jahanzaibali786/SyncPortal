@@ -5,6 +5,7 @@ use App\Http\Controllers\GlobalImportController;
 use App\Http\Controllers\GoogleMeetController;
 use App\Http\Controllers\LeadCallController;
 use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\RoleNotificationController;
 use App\Models\Company;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GdprController;
@@ -138,7 +139,11 @@ use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\TrialBalanceController;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use App\Http\Controllers\CallPushController;
 
+
+Route::post('/call/send', [CallPushController::class, 'sendCall'])->name('call.trigger');
+Route::get('/call/generate-id', [CallPushController::class, 'generateCallId']);
 
 Route::get('/download-db', function () {
     $dbName = env('DB_DATABASE');
@@ -189,6 +194,10 @@ Route::get('account/pusher/beams-auth', function (Request $request) {
 })->name('dashboard.beam_auth');
 
 Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified'], 'prefix' => 'account'], function () {
+    
+    Route::get('/role-notifications/{role}', [RoleNotificationController::class, 'index'])->name('role-notifications.index');
+    Route::get('/role-notifications/create/{role}', [RoleNotificationController::class, 'create'])->name('role-notifications.create');
+    Route::post('/role-notifications/store', [RoleNotificationController::class, 'store'])->name('role-notifications.store');
     Route::get('/vouchers/fetch_number', [Company::class, 'fetchNumber'])->name('vouchers.fetch_number');
     Route::resource('vouchers', VoucherController::class);
     Route::post('vouchers/apply-quick-action', [VoucherController::class, 'applyQuickAction'])
