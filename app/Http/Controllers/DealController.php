@@ -916,7 +916,14 @@ class DealController extends AccountBaseController
             session()->forget('is_deal');
         }
     }
-
+    public function updateLeadNote(Request $request)
+    {
+        $deal = Deal::findOrFail($request->deal_id);
+        $lead = Lead::findOrFail($deal->lead_id);
+        $lead->note = $request->note;
+        $lead->save();
+        return Reply::success(__('messages.updateSuccess'));
+    }
     public function notes()
     {
         $dataTable = new DealNotesDataTable();
@@ -1252,7 +1259,7 @@ class DealController extends AccountBaseController
         $dealIds = array_filter($request->deal_ids ?? []);
         $agentIds = array_filter(array_unique($request->agent_ids ?? []));
         $actionType = $request->action_type;
-
+        // dd($request->all());
         if (empty($dealIds) || empty($agentIds)) {
             return response()->json(['status' => 'error', 'message' => 'Please select deals and agents.']);
         }
@@ -1310,7 +1317,6 @@ class DealController extends AccountBaseController
             ->filter(fn($agent) => $agent->user->status !== 'deactive');
 
         $data = [];
-
         foreach ($enabledAgents as $agent) {
             $data[] = view('components.user-option', [
                 'user' => $agent->user,
