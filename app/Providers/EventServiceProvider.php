@@ -345,7 +345,7 @@ use App\Observers\CustomFieldsObserver;
 use App\Observers\CustomLinkSettingObserver;
 use App\Observers\DashboardWidgetObserver;
 use App\Observers\DealNoteObserver;
-use App\Observers\DealLabelObserver;
+// use App\Observers\DealLabelObserver;
 use App\Observers\DealObserver;
 use App\Observers\DesignationObserver;
 use App\Observers\DiscussionCategoryObserver;
@@ -625,7 +625,7 @@ class EventServiceProvider extends ServiceProvider
         DealFollowUp::class => [LeadFollowUpObserver::class],
         LeadNote::class => [LeadNoteObserver::class],
         DealNote::class => [DealNoteObserver::class],
-        Deal::class => [DealLabelObserver::class], // 🆕 add this line
+        // Deal::class => [DealLabelObserver::class], // 🆕 add this line
         LeadSource::class => [LeadSourceObserver::class],
         LeadStatus::class => [LeadStatusObserver::class],
         Leave::class => [LeaveObserver::class],

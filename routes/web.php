@@ -319,6 +319,15 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     Route::post('employees/send-invite', [EmployeeController::class, 'sendInvite'])->name('employees.send_invite');
     Route::post('employees/create-link', [EmployeeController::class, 'createLink'])->name('employees.create_link');
     Route::post('/get-exit-date-message', [EmployeeController::class, 'getExitDateMessage'])->name('getExitDateMessage');
+
+    Route::get('templates/joining-letter', [EmployeeController::class, 'loadJoiningLetterTemplateBlade'])
+        ->name('templates.joining');
+    Route::post('templates/joining-letter', [EmployeeController::class, 'storeJoiningLetterTemplate'])
+        ->name('templates.joining.store');
+    Route::get('employees/{id}/joining-letter-pdf', [EmployeeController::class, 'downloadJoiningLetterPDF'])
+        ->name('employees.joining-letter.pdf');
+
+
     Route::resource('employees', EmployeeController::class);
     Route::resource('passport', PassportController::class);
     Route::resource('employee-visa', EmployeeVisaController::class);
@@ -1023,6 +1032,7 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
 
     Route::get('deal-report/chart', [LeadReportController::class, 'averageDealSizeReport'])->name('lead-report.chart');
     Route::get('deal-report/profile', [LeadReportController::class, 'profile'])->name('lead-report.profile');
+    Route::get('deal-report/subagent', [LeadReportController::class, 'subagent'])->name('lead-report.subagent');
     Route::get('deal-report/export/{year}/{pipeline}/{category}', [LeadReportController::class, 'exportDealReport'])->name('deal-report.export');
 
 

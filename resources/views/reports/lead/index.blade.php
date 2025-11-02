@@ -13,8 +13,13 @@
             <a class="d-none close-it" href="javascript:;" id="close-client-detail">
                 <i class="fa fa-times"></i>
             </a>
-            <x-tab :href="route('lead-report.profile') . '?tab=profile'" :text="__('modules.deal.profile')" class="profile" />
-            <x-tab :href="route('lead-report.chart') . '?tab=chart'" :text="__('modules.leadContact.leadReport')" class="files active-tab" ajax="false" />
+            <x-tab :href="route('lead-report.profile') . '?tab=profile'" :text="__('modules.deal.profile')"
+                class="profile {{ request()->routeIs('lead-report.profile') ? 'active' : '' }}" ajax="false" />
+            <x-tab :href="route('lead-report.chart') . '?tab=chart'" :text="__('modules.leadContact.leadReport')"
+                class="files active-tab" ajax="false" />
+            <x-tab :href="route('lead-report.subagent') . '?tab=profile'" :text="__('Subagent Report')"
+                class="subagent {{ request()->routeIs('lead-report.subagent') ? 'active' : '' }}" ajax="false" />
+
         </div>
         <a class="mb-0 d-block d-lg-none text-dark-grey ml-auto mr-2 border-left-grey"
             onclick="openClientDetailSidebar()"><i class="fa fa-ellipsis-v "></i></a>
@@ -26,7 +31,8 @@
             <div class="select-box d-flex pr-2 border-right-grey border-right-grey-sm-0">
                 <p class="mb-0 pr-2 f-14 text-dark-grey d-flex align-items-center">@lang('app.duration')</p>
                 <div class="select-status d-flex">
-                    <input type="text" class="position-relative text-dark form-control border-0 p-2 text-left f-14 f-w-500 border-additional-grey"
+                    <input type="text"
+                        class="position-relative text-dark form-control border-0 p-2 text-left f-14 f-w-500 border-additional-grey"
                         id="datatableRange2" placeholder="@lang('placeholders.dateRange')">
                 </div>
             </div>
@@ -37,16 +43,15 @@
             <div class="select-box d-flex  py-2 px-lg-2 px-md-2 px-0 border-right-grey border-right-grey-sm-0">
                 <p class="mb-0 pr-2 f-14 text-dark-grey d-flex align-items-center">@lang('app.leadAgent')</p>
                 <div class="select-status">
-                    <select class="form-control select-picker" name="agent" id="agent" data-live-search="true"
-                        data-size="8">
+                    <select class="form-control select-picker" name="agent" id="agent" data-live-search="true" data-size="8">
                         <option value="all">@lang('app.all')</option>
-                    @php  $uniqueAgents = $agents->unique('user_id'); @endphp
+                        @php $uniqueAgents = $agents->unique('user_id'); @endphp
 
 
                         @foreach ($uniqueAgents as $agent) {
-                        <x-user-option :user="$agent->user" />
+                            <x-user-option :user="$agent->user" />
 
-                        }
+                            }
                         @endforeach
                     </select>
                 </div>
@@ -85,7 +90,7 @@
     @include('sections.datatable_js')
 
     <script>
-        $("body").on("click", ".project-menu .ajax-tab", function(event) {
+        $("body").on("click", ".project-menu .ajax-tab", function (event) {
             event.preventDefault();
 
             $('.project-menu .p-sub-menu').removeClass('active');
@@ -98,7 +103,7 @@
                 blockUI: true,
                 container: ".content-wrapper",
                 historyPush: true,
-                success: function(response) {
+                success: function (response) {
                     if (response.status == "success") {
                         $('.content-wrapper').html(response.html);
                         init('.content-wrapper');
@@ -108,9 +113,9 @@
         });
 
         const activeTab = "{{ $activeTab }}";
-        $('.project-menu .' + activeTab).addClass('active');
+        // $('.project-menu .' + activeTab).addClass('active');
 
-        $('body').on('click', '.delete-table-row', function() {
+        $('body').on('click', '.delete-table-row', function () {
             var id = $(this).data('id');
             Swal.fire({
                 title: "@lang('messages.sweetAlertTitle')",
@@ -143,7 +148,7 @@
                             '_token': token,
                             '_method': 'DELETE'
                         },
-                        success: function(response) {
+                        success: function (response) {
                             if (response.status == "success") {
                                 window.location.href = "{{ route('deals.index') }}";
                             }

@@ -74,26 +74,6 @@
                     /> 
                 </div> --}}
 
-                {{-- 🔹 Reports Section --}}
-                @php
-                    $reports = [
-                        'lead-calls' => 'Call Reports',
-                        'lead-calls-report' => 'Call Recordings Report',
-                        'user-performance' => 'User Performance Report',
-                        'call-date' => 'Daily Call Reports',
-                        'user-productivity' => 'Agent Productivity Reports',
-                    ];
-                @endphp
-
-                @foreach ($reports as $type => $title)
-                    <div class="accordionItemContent">
-                        <x-sub-menu-item 
-                            :link="route('call.reports', $type)" 
-                            :text="$title" 
-                        /> 
-                    </div>
-                @endforeach
-
 
         </x-menu-item>
     @endif
@@ -345,10 +325,14 @@
                     </div>
                     <style>
                         .finance-reports-header.active{
-                            color: #fff !important;
-                            i{
-                                transform: rotate(180deg);
-                            }
+                            @if($appTheme->sidebar_theme == "dark")
+                                color: var(--light) !important;
+                            @else
+                                color: var(--header_color) !important;
+                            @endif
+                        }
+                        i{
+                            transform: rotate(180deg);
                         }
                     </style>
                     <!-- JavaScript to toggle the finance reports submenu -->
@@ -617,6 +601,25 @@
                         in_array('invoices', user_modules()))
                     <x-sub-menu-item :link="route('sales-report.index')" :text="__('app.menu.salesReport')" />
                 @endif
+                {{-- 🔹 Reports Section --}}
+                @php
+                    $reports = [
+                        'lead-calls' => 'Call Reports',
+                        'lead-calls-report' => 'Call Recordings Report',
+                        'user-performance' => 'User Performance Report',
+                        'call-date' => 'Daily Call Reports',
+                        'user-productivity' => 'Agent Productivity Reports',
+                    ];
+                @endphp
+
+                @foreach ($reports as $type => $title)
+                    <div class="accordionItemContent">
+                        <x-sub-menu-item 
+                            :link="route('call.reports', $type)" 
+                            :text="$title" 
+                        /> 
+                    </div>
+                @endforeach
             </div>
         </x-menu-item>
     @endif

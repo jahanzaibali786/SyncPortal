@@ -10,11 +10,13 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::table('deal_histories', function (Blueprint $table) {
-            //
-            $table->unsignedBigInteger('call_id')->nullable()->after('label_id');
-            $table->foreign('call_id')->references('id')->on('lead_calls')->onDelete('cascade');
-        });
+        // if (!Schema::hasTable('deal_histories')) {
+            Schema::table('deal_histories', function (Blueprint $table) {
+                //
+                $table->unsignedBigInteger('call_id')->nullable()->after('label_id');
+                $table->foreign('call_id')->references('id')->on('lead_calls')->onDelete('cascade');
+            });
+        // }
     }
 
     /**

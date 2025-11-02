@@ -356,26 +356,78 @@
                         <!-- DROPDOWN - INFORMATION -->
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink"
                             tabindex="0">
-                            @if ($addCompanyPermission == 'all')
-                                <a class="dropdown-item f-14 text-dark openRightModal"
-                                    href="{{ route('superadmin.companies.create') }}">
-                                    <i class="fa fa-plus f-w-500 mr-2 f-11"></i>
-                                    @lang('superadmin.addCompany')
-                                </a>
-                            @endif
-                            @if ($addPackagePermission == 'all')
-                                <a class="dropdown-item f-14 text-dark openRightModal"
-                                    href="{{ route('superadmin.packages.create') }}">
-                                    <i class="fa fa-plus f-w-500 mr-2 f-11"></i>
-                                    @lang('superadmin.addPackage')
-                                </a>
-                            @endif
-                            @if ($addSuperadminPermission == 'all')
-                                <a class="dropdown-item f-14 text-dark openRightModal"
-                                    href="{{ route('superadmin.superadmin.create') }}">
-                                    <i class="fa fa-plus f-w-500 mr-2 f-11"></i>
-                                    @lang('superadmin.addSuperAdmin')
-                                </a>
+                            @if (user()->is_superadmin)
+                                @if ($addCompanyPermission == 'all')
+                                    <a class="dropdown-item f-14 text-dark openRightModal"
+                                        href="{{ route('superadmin.companies.create') }}">
+                                        <i class="fa fa-plus f-w-500 mr-2 f-11"></i>
+                                        @lang('superadmin.addCompany')
+                                    </a>
+                                @endif
+                                @if ($addPackagePermission == 'all')
+                                    <a class="dropdown-item f-14 text-dark openRightModal"
+                                        href="{{ route('superadmin.packages.create') }}">
+                                        <i class="fa fa-plus f-w-500 mr-2 f-11"></i>
+                                        @lang('superadmin.addPackage')
+                                    </a>
+                                @endif
+                                @if ($addSuperadminPermission == 'all')
+                                    <a class="dropdown-item f-14 text-dark openRightModal"
+                                        href="{{ route('superadmin.superadmin.create') }}">
+                                        <i class="fa fa-plus f-w-500 mr-2 f-11"></i>
+                                        @lang('superadmin.addSuperAdmin')
+                                    </a>
+                                @endif
+                            @else
+                                @if (in_array('projects', user_modules()) && (add_project_permission() == 'all' || add_project_permission() == 'added'))
+                                    <a class="dropdown-item f-14 text-dark openRightModal"
+                                        href="{{ route('projects.create') }}">
+                                        <i class="fa fa-plus f-w-500 mr-2 f-11"></i>
+                                        @lang('app.addProject')
+                                    </a>
+                                @endif
+
+                                @if (in_array('tasks', user_modules()) && (add_tasks_permission() == 'all' || add_tasks_permission() == 'added'))
+                                    <a class="dropdown-item f-14 text-dark openRightModal"
+                                        href="{{ route('tasks.create') }}">
+                                        <i class="fa fa-plus f-w-500 mr-2 f-11"></i>
+                                        @lang('app.addTask')
+                                    </a>
+                                @endif
+
+                                @if (in_array('clients', user_modules()) && (add_clients_permission() == 'all' || add_clients_permission() == 'added'))
+                                    <a class="dropdown-item f-14 text-dark openRightModal"
+                                        href="{{ route('clients.create') }}">
+                                        <i class="fa fa-plus f-w-500 mr-2 f-11"></i>
+                                        @lang('app.addClient')
+                                    </a>
+                                @endif
+
+                                @if (in_array('employees', user_modules()) &&
+                                        (add_employees_permission() == 'all' || add_employees_permission() == 'added'))
+                                    <a class="dropdown-item f-14 text-dark openRightModal"
+                                        href="{{ route('employees.create') }}">
+                                        <i class="fa fa-plus f-w-500 mr-2 f-11"></i>
+                                        @lang('app.addEmployee')
+                                    </a>
+                                @endif
+
+                                @if (in_array('payments', user_modules()) &&
+                                        (add_payments_permission() == 'all' || add_payments_permission() == 'added'))
+                                    <a class="dropdown-item f-14 text-dark openRightModal"
+                                        href="{{ route('payments.create') }}">
+                                        <i class="fa fa-plus f-w-500 mr-2 f-11"></i>
+                                        @lang('modules.payments.addPayment')
+                                    </a>
+                                @endif
+
+                                @if (in_array('tickets', user_modules()) && (add_tickets_permission() == 'all' || add_tickets_permission() == 'added'))
+                                    <a class="dropdown-item f-14 text-dark openRightModal"
+                                        href="{{ route('tickets.create') }}">
+                                        <i class="fa fa-plus f-w-500 mr-2 f-11"></i>
+                                        @lang('modules.tickets.addTicket')
+                                    </a>
+                                @endif
                             @endif
                         </div>
 
@@ -422,8 +474,8 @@
                         <div class="d-flex justify-content-between align-items-center profile-box">
                             <a
                                 @if (in_array('client', user_roles())) href="{{ route('profile-settings.index') }}"
-             @elseif (user()->is_superadmin) href="{{ route('superadmin.settings.super-admin-profile.index') }}"
-             @else href="{{ route('employees.show', user()->id) }}" @endif>
+                                @elseif (user()->is_superadmin) href="{{ route('superadmin.settings.super-admin-profile.index') }}"
+                                @else href="{{ route('employees.show', user()->id) }}" @endif>
                                 <div class="profileInfo d-flex align-items-center mr-1 flex-wrap">
                                     <div class="profileImg mr-2">
                                         <img class="h-100" src="{{ user()->image_url }}"
@@ -465,7 +517,7 @@
                             @endif
                         @endif
 
-                        <a class="dropdown-item d-flex justify-content-between align-items-center f-15 text-dark"
+                        {{-- <a class="dropdown-item d-flex justify-content-between align-items-center f-15 text-dark"
                             href="javascript:;">
                             <label for="dark-theme-toggle" class="mb-0">@lang('app.darkTheme')</label>
                             <div class="custom-control custom-switch">
@@ -473,7 +525,7 @@
                                     @if (user()->dark_theme) checked @endif>
                                 <label class="custom-control-label f-14" for="dark-theme-toggle"></label>
                             </div>
-                        </a>
+                        </a> --}}
 
                         <a class="dropdown-item d-flex justify-content-between align-items-center f-15 text-dark"
                             href="{{ route('logout') }}"
