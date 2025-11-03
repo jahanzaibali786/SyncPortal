@@ -1,0 +1,261 @@
+@extends('layouts.app')
+
+@section('filter-section')
+    @php
+        // Safe defaults so this partial can be re-used
+        $employees = $employees ?? collect();
+        $departments = $departments ?? collect();
+        $designations = $designations ?? collect();
+        $roles = $roles ?? collect();
+    @endphp
+    <x-filters.filter-box>
+        <!-- EMPLOYEE START -->
+        <div class="select-box py-2 d-flex pr-2 border-right-grey border-right-grey-sm-0">
+            <p class="mb-0 pr-2 f-14 text-dark-grey d-flex align-items-center">@lang('app.employee')</p>
+            <div class="select-status">
+                <select class="form-control select-picker" name="employee" id="employee" data-live-search="true" data-size="8">
+                    @if ($employees->count() > 1 || in_array('admin', user_roles()))
+                        <option value="all">@lang('app.all')</option>
+                    @endif
+                    @foreach ($employees as $employee)
+                        <x-user-option :user="$employee" />
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <!-- EMPLOYEE END -->
+
+        <!-- DESIGNATION START -->
+        <div class="select-box d-flex py-2 px-lg-2 px-md-2 px-0 border-right-grey border-right-grey-sm-0">
+            <p class="mb-0 pr-2 f-14 text-dark-grey d-flex align-items-center">@lang('app.designation')</p>
+            <div class="select-status">
+                <select class="form-control select-picker" name="designation" id="designation">
+                    <option value="all">@lang('app.all')</option>
+                    @foreach ($designations as $designation)
+                        <option value="{{ $designation->id }}">{{ $designation->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        <!-- DESIGNATION END -->
+
+        <!-- SEARCH START -->
+        <div class="task-search d-flex py-1 px-lg-3 px-0 border-right-grey align-items-center">
+            <form class="w-100 mr-1 mr-lg-0 mr-md-1 ml-md-1 ml-0 ml-lg-0">
+                <div class="input-group bg-grey rounded">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text border-0 bg-additional-grey">
+                            <i class="fa fa-search f-13 text-dark-grey"></i>
+                        </span>
+                    </div>
+                    <input type="text" class="form-control f-14 p-1 border-additional-grey" id="search-text-field"
+                        placeholder="@lang('app.startTyping')">
+                </div>
+            </form>
+        </div>
+        <!-- SEARCH END -->
+
+        <!-- RESET START -->
+        <div class="select-box d-flex py-1 px-lg-2 px-md-2 px-0">
+            <x-forms.button-secondary class="btn-xs d-none" id="reset-filters" icon="times-circle">
+                @lang('app.clearFilters')
+            </x-forms.button-secondary>
+        </div>
+        <!-- RESET END -->
+
+        <!-- MORE FILTERS START -->
+        <x-filters.more-filter-box>
+
+            <div class="more-filter-items">
+                <label class="f-14 text-dark-grey mb-12">@lang('app.department')</label>
+                <div class="select-filter mb-4">
+                    <div class="select-others">
+                        <select class="form-control select-picker" name="department" data-container="body" id="department">
+                            <option value="all">@lang('app.all')</option>
+                            @foreach ($departments as $department)
+                                <option value="{{ $department->id }}">{{ $department->team_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="more-filter-items">
+                <label class="f-14 text-dark-grey mb-12">@lang('modules.employees.reportingTo')</label>
+                <div class="select-filter mb-4">
+                    <div class="select-others">
+                        <select class="form-control select-picker" name="reporting_employee" id="reporting_employee"
+                            data-live-search="true" data-size="8">
+                            @if ($employees->count() > 1 || in_array('admin', user_roles()))
+                                <option value="all">@lang('app.all')</option>
+                            @endif
+                            @foreach ($employees as $employee)
+                                <x-user-option :user="$employee" />
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="more-filter-items">
+                <label class="f-14 text-dark-grey mb-12">@lang('modules.employees.role')</label>
+                <div class="select-filter mb-4">
+                    <div class="select-others">
+                        <select class="form-control select-picker" name="role" id="role" data-container="body">
+                            <option value="all">@lang('app.all')</option>
+                            @foreach ($roles as $role)
+                                <option value="{{ $role->id }}">{{ $role->display_name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="more-filter-items">
+                <label class="f-14 text-dark-grey mb-12">@lang('app.status')</label>
+                <div class="select-filter mb-4">
+                    <div class="select-others">
+                        <select class="form-control select-picker" name="status" id="status" data-container="body">
+                            <option value="all">@lang('app.all')</option>
+                            <option selected value="active">@lang('app.active')</option>
+                            <option value="deactive">@lang('app.inactive')</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="more-filter-items">
+                <label class="f-14 text-dark-grey mb-12">@lang('modules.employees.gender')</label>
+                <div class="select-filter mb-4">
+                    <div class="select-others">
+                        <select class="form-control select-picker" name="gender" id="gender" data-container="body">
+                            <option value="all">@lang('app.all')</option>
+                            <option value="male">@lang('app.male')</option>
+                            <option value="female">@lang('app.female')</option>
+                            <option value="others">@lang('app.others')</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="more-filter-items">
+                <label class="f-14 text-dark-grey mb-12">@lang('modules.employees.employmentType')</label>
+                <div class="select-filter mb-4">
+                    <div class="select-others">
+                        <select class="form-control select-picker" name="employmentType" id="employmentType"
+                            data-container="body">
+                            <option value="all">@lang('app.all')</option>
+                            <option value="probation">@lang('app.onProbation')</option>
+                            <option value="internship">@lang('app.onInternship')</option>
+                            <option value="notice_period">@lang('app.onNoticePeriod')</option>
+                            <option value="new_hires">@lang('app.newHires')</option>
+                            <option value="long_standing">@lang('app.longStanding')</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+        </x-filters.more-filter-box>
+        <!-- MORE FILTERS END -->
+    </x-filters.filter-box>
+@endsection
+
+@push('datatable-styles')
+    @include('sections.datatable_css')
+@endpush
+@section('content')
+    <div class="content-wrapper">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <x-forms.link-primary class="openRightModal" link="{{ route('trips.create') }}">
+                <i class="fa fa-plus mr-2"></i>@lang('app.add')
+            </x-forms.link-primary>
+        </div>
+        <div class="w-tables rounded mt-3 bg-white table-responsive">
+            {!! $dataTable->table(['id' => 'trips-table', 'class' => 'table table-bordered table-hover w-100']) !!}
+        </div>
+    </div>
+@endsection
+
+@push('scripts')
+    @include('sections.datatable_js')
+    {!! $dataTable->scripts() !!}
+
+    <script>
+        (function() {
+            const tableId = 'trips-table';
+            const DT = () => window.LaravelDataTables?.[tableId];
+
+            // Send filters with every request
+            $('#' + tableId).on('preXhr.dt', function(e, settings, data) {
+                data['employee'] = $('#employee').val();
+                data['searchText'] = $('#search-text-field').val();
+                // The rest only work if you add backend logic later:
+                data['designation'] = $('#designation').val();
+                data['department'] = $('#department').val();
+                data['reporting_employee'] = $('#reporting_employee').val();
+                data['role'] = $('#role').val();
+                data['status'] = $('#status').val();
+                data['gender'] = $('#gender').val();
+                data['employmentType'] = $('#employmentType').val();
+            });
+
+            const redraw = () => DT()?.draw(true);
+
+            // Change handlers
+            $('#employee, #designation, #department, #reporting_employee, #role, #status, #gender, #employmentType')
+                .on('change', redraw);
+            $('#search-text-field').on('keyup', redraw);
+
+            // Reset
+            $('#reset-filters').removeClass('d-none').on('click', function() {
+                $('#employee').val('all');
+                $('#designation').val('all');
+                $('#department').val('all');
+                $('#reporting_employee').val('all');
+                $('#role').val('all');
+                $('#status').val('all');
+                $('#gender').val('all');
+                $('#employmentType').val('all');
+                $('#search-text-field').val('');
+                $('.select-picker').selectpicker('refresh');
+                redraw();
+            });
+
+            // Delete (delegated so it survives redraws)
+            $(document).off('click', '.delete-trip').on('click', '.delete-trip', function() {
+                const url = $(this).data('url');
+                Swal.fire({
+                    title: "@lang('messages.sweetAlertTitle')",
+                    text: "@lang('messages.recoverRecord')",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: "@lang('messages.confirmDelete')",
+                    cancelButtonText: "@lang('app.cancel')",
+                    customClass: {
+                        confirmButton: 'btn btn-primary mr-3',
+                        cancelButton: 'btn btn-secondary'
+                    },
+                    buttonsStyling: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.easyAjax({
+                            type: 'POST',
+                            url: url,
+                            data: {
+                                _method: 'DELETE',
+                                _token: "{{ csrf_token() }}"
+                            },
+                            blockUI: true,
+                            success: function(response) {
+                                if (response.status === 'success') {
+                                    DT()?.draw(false);
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+        })();
+    </script>
+@endpush

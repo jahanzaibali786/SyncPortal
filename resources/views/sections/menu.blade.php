@@ -67,32 +67,29 @@
                     <x-sub-menu-item :link="route('leadboards.index')" :text="__('app.deal')" />
                 </div>
             @endif
-                {{-- <div class="accordionItemContent">
+            {{-- <div class="accordionItemContent">
                     <x-sub-menu-item 
                         :link="route('call.reports', 'lead-calls-report')" 
                         :text="'Call Recordings Report'" 
                     /> 
                 </div> --}}
 
-                {{-- 🔹 Reports Section --}}
-                @php
-                    $reports = [
-                        'lead-calls' => 'Call Reports',
-                        'lead-calls-report' => 'Call Recordings Report',
-                        'user-performance' => 'User Performance Report',
-                        'call-date' => 'Daily Call Reports',
-                        'user-productivity' => 'Agent Productivity Reports',
-                    ];
-                @endphp
+            {{-- 🔹 Reports Section --}}
+            @php
+                $reports = [
+                    'lead-calls' => 'Call Reports',
+                    'lead-calls-report' => 'Call Recordings Report',
+                    'user-performance' => 'User Performance Report',
+                    'call-date' => 'Daily Call Reports',
+                    'user-productivity' => 'Agent Productivity Reports',
+                ];
+            @endphp
 
-                @foreach ($reports as $type => $title)
-                    <div class="accordionItemContent">
-                        <x-sub-menu-item 
-                            :link="route('call.reports', $type)" 
-                            :text="$title" 
-                        /> 
-                    </div>
-                @endforeach
+            @foreach ($reports as $type => $title)
+                <div class="accordionItemContent">
+                    <x-sub-menu-item :link="route('call.reports', $type)" :text="$title" />
+                </div>
+            @endforeach
 
 
         </x-menu-item>
@@ -141,6 +138,43 @@
                         $sidebarUserPermissions['view_employees'] != 'none')
                     <x-sub-menu-item :link="route('employees.index')" :text="__('app.menu.employees')" />
                 @endif
+                @php
+                    $termText = __('app.menu.termination');
+                    if ($termText === 'app.menu.termination') {
+                        $termText = 'Terminations';
+                    }
+                @endphp
+                <x-sub-menu-item :link="route('terminations.index')" :text="$termText" />
+                @php
+                    $resText = __('app.menu.resignation');
+                    if ($resText === 'app.menu.resignation') {
+                        $resText = 'Resignations';
+                    }
+                @endphp
+                <x-sub-menu-item :link="route('resignations.index')" :text="$resText" />
+                @php
+                    $transText = __('app.menu.transfer');
+                    if ($transText === 'app.menu.transfer') {
+                        $transText = 'Transfers';
+                    }
+                @endphp
+                <x-sub-menu-item :link="route('transfers.index')" :text="$transText" />
+                {{-- Trips and Travels --}}
+                @php
+                   $tripsText = __('app.menu.trips');
+                   if ($tripsText === 'app.menu.trips') {
+                    $tripsText = 'Trips';
+                   }
+                @endphp
+                <x-sub-menu-item :link="route('trips.index')" :text="$tripsText" />
+                {{-- Complaints --}}
+                @php
+                   $complaintsText = __('app.menu.complaints');
+                   if ($complaintsText === 'app.menu.complaints') {
+                    $complaintsText = 'Complaints';
+                   }
+                @endphp
+                <x-sub-menu-item :link="route('complaints.index')" :text="$complaintsText" />
                 @if (in_array('leaves', user_modules()) &&
                         $sidebarUserPermissions['view_leave'] != 5 &&
                         $sidebarUserPermissions['view_leave'] != 'none')
@@ -303,72 +337,70 @@
                 @endforeach
                 <!-- Inside the Finance accordionItemContent div, before the custom modules comment -->
 
-                {{-- @if (in_array('reports', user_modules()) &&
-                        ($sidebarUserPermissions['view_finance_report'] != 5 ||
-                            $sidebarUserPermissions['view_income_expense_report'] == 4 ||
-                            $sidebarUserPermissions['view_sales_report'] == 4)) --}}
+                {{-- @if (in_array('reports', user_modules()) && ($sidebarUserPermissions['view_finance_report'] != 5 || $sidebarUserPermissions['view_income_expense_report'] == 4 || $sidebarUserPermissions['view_sales_report'] == 4)) --}}
 
-                    <!-- Parent Finance Report Menu Item -->
-                    <div class="finance-reports-section">
-                        <div class="finance-reports-header text-lightest py-2 cursor-pointer" style="margin-left:24%;" >
-                            <span class="f-14">{{ __('app.menu.financeReports') }}</span>
-                            <i class="bi bi-chevron-down mr-3 ml-3"></i>
-                        </div>
-
-                        <!-- Submenu Items (initially hidden) -->
-                        <div class="finance-reports-content" style="display: none;">
-                            {{-- @if ($sidebarUserPermissions['view_finance_report'] != 5 && $sidebarUserPermissions['view_finance_report'] != 'none') --}}
-                                <x-sub-menu-item :link="route('ledger.index')" :text="__('app.menu.ledgerReport')" />
-                            {{-- @endif --}}
-
-                            @if (
-                                $sidebarUserPermissions['view_income_expense_report'] == 4 &&
-                                    $sidebarUserPermissions['view_income_expense_report'] != 'none')
-                                <x-sub-menu-item :link="route('trial-balance.index')" :text="__('app.menu.trialBalanceReport')" />
-                            @endif
-                            @if (
-                                $sidebarUserPermissions['view_income_expense_report'] == 4 &&
-                                    $sidebarUserPermissions['view_income_expense_report'] != 'none')
-                                <x-sub-menu-item :link="route('reports.profit_loss')" :text="__('app.menu.profit_loss')" />
-                            @endif
-
-                            @if ($sidebarUserPermissions['view_sales_report'] == 4 && $sidebarUserPermissions['view_sales_report'] != 'none')
-                                <x-sub-menu-item :link="route('balance-sheet.index')" :text="__('app.menu.balanceSheetReport')" />
-                            @endif
-                            @if ($sidebarUserPermissions['view_sales_report'] == 4 && $sidebarUserPermissions['view_sales_report'] != 'none')
-                                <x-sub-menu-item :link="route('balance-sheet-detail.index')" :text="__('app.menu.balanceSheetDetailReport')" />
-                            @endif
-                            @if ($sidebarUserPermissions['view_sales_report'] == 4 && $sidebarUserPermissions['view_sales_report'] != 'none')
-                                <x-sub-menu-item :link="route('balance-sheet-standard.index')" :text="__('app.menu.balanceSheetStandardReport')" />
-                            @endif
-                        </div>
+                <!-- Parent Finance Report Menu Item -->
+                <div class="finance-reports-section">
+                    <div class="finance-reports-header text-lightest py-2 cursor-pointer" style="margin-left:24%;">
+                        <span class="f-14">{{ __('app.menu.financeReports') }}</span>
+                        <i class="bi bi-chevron-down mr-3 ml-3"></i>
                     </div>
-                    <style>
-                        .finance-reports-header.active{
-                            color: #fff !important;
-                            i{
-                                transform: rotate(180deg);
-                            }
+
+                    <!-- Submenu Items (initially hidden) -->
+                    <div class="finance-reports-content" style="display: none;">
+                        {{-- @if ($sidebarUserPermissions['view_finance_report'] != 5 && $sidebarUserPermissions['view_finance_report'] != 'none') --}}
+                        <x-sub-menu-item :link="route('ledger.index')" :text="__('app.menu.ledgerReport')" />
+                        {{-- @endif --}}
+
+                        @if (
+                            $sidebarUserPermissions['view_income_expense_report'] == 4 &&
+                                $sidebarUserPermissions['view_income_expense_report'] != 'none')
+                            <x-sub-menu-item :link="route('trial-balance.index')" :text="__('app.menu.trialBalanceReport')" />
+                        @endif
+                        @if (
+                            $sidebarUserPermissions['view_income_expense_report'] == 4 &&
+                                $sidebarUserPermissions['view_income_expense_report'] != 'none')
+                            <x-sub-menu-item :link="route('reports.profit_loss')" :text="__('app.menu.profit_loss')" />
+                        @endif
+
+                        @if ($sidebarUserPermissions['view_sales_report'] == 4 && $sidebarUserPermissions['view_sales_report'] != 'none')
+                            <x-sub-menu-item :link="route('balance-sheet.index')" :text="__('app.menu.balanceSheetReport')" />
+                        @endif
+                        @if ($sidebarUserPermissions['view_sales_report'] == 4 && $sidebarUserPermissions['view_sales_report'] != 'none')
+                            <x-sub-menu-item :link="route('balance-sheet-detail.index')" :text="__('app.menu.balanceSheetDetailReport')" />
+                        @endif
+                        @if ($sidebarUserPermissions['view_sales_report'] == 4 && $sidebarUserPermissions['view_sales_report'] != 'none')
+                            <x-sub-menu-item :link="route('balance-sheet-standard.index')" :text="__('app.menu.balanceSheetStandardReport')" />
+                        @endif
+                    </div>
+                </div>
+                <style>
+                    .finance-reports-header.active {
+                        color: #fff !important;
+
+                        i {
+                            transform: rotate(180deg);
                         }
-                    </style>
-                    <!-- JavaScript to toggle the finance reports submenu -->
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            const header = document.querySelector('.finance-reports-header');
-                            const content = document.querySelector('.finance-reports-content');
-                            if (header && content) {
-                                header.addEventListener('click', function() {
-                                    if (content.style.display == 'none') {
-                                        header.classList.toggle('active');
-                                        content.style.display = 'block';
-                                    } else {
-                                        header.classList.toggle('active');
-                                        content.style.display = 'none';
-                                    }
-                                });
-                            }
-                        });
-                    </script>
+                    }
+                </style>
+                <!-- JavaScript to toggle the finance reports submenu -->
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const header = document.querySelector('.finance-reports-header');
+                        const content = document.querySelector('.finance-reports-content');
+                        if (header && content) {
+                            header.addEventListener('click', function() {
+                                if (content.style.display == 'none') {
+                                    header.classList.toggle('active');
+                                    content.style.display = 'block';
+                                } else {
+                                    header.classList.toggle('active');
+                                    content.style.display = 'none';
+                                }
+                            });
+                        }
+                    });
+                </script>
                 {{-- @endif --}}
 
             </div>
