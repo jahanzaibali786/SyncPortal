@@ -6,42 +6,19 @@ use App\Helper\Files;
 use Illuminate\Support\Facades\Bus;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Session;
 use Maatwebsite\Excel\HeadingRowImport;
 use Maatwebsite\Excel\Imports\HeadingRowFormatter;
-use ReflectionClass;
 
 trait ImportExcel
 {
 
     public function importFileProcess($request, $importClass)
     {
-        // dd( $importClass);
         // get class name from $importClass
-        $this->importClassName = (new ReflectionClass($importClass))->getShortName();
+        $this->importClassName = (new \ReflectionClass($importClass))->getShortName();
 
         $this->file = Files::upload($request->import_file, Files::IMPORT_FOLDER);
-
-        $importInstance = new $importClass;
-        Excel::import($importInstance, public_path(Files::UPLOAD_FOLDER . '/' . Files::IMPORT_FOLDER . '/' . $this->file));
-        $excelData = $importInstance->getProcessedData();
-        if ($request->has('heading')) {
-            array_shift($excelData);
-        }
-
-        $isDataNull = true;
-
-        foreach ($excelData as $rowitem) {
-            if (array_filter($rowitem)) {
-                $isDataNull = false;
-                break;
-            }
-        }
-
-        if ($isDataNull) {
-            return 'abort';
-        }
-
+        $excelData = Excel::toArray(new $importClass, public_path(Files::UPLOAD_FOLDER . '/' . Files::IMPORT_FOLDER . '/' . $this->file))[0];
         $this->hasHeading = $request->has('heading');
         $this->heading = array();
         $this->fileHeading = array();
@@ -75,27 +52,23 @@ trait ImportExcel
     public function importJobProcess($request, $importClass, $importJobClass)
     {
         // get class name from $importClass
-        $importClassName = (new ReflectionClass($importClass))->getShortName();
+        $importClassName = (new \ReflectionClass($importClass))->getShortName();
 
         // clear previous import
-        Artisan::call('queue:clear database --queue=' . $importClassName);
-        Artisan::call('queue:flush');
+        // Artisan::call('queue:clear database --queue=' . $importClassName);
+        // Artisan::call('queue:flush');
         // Get index of an array not null value with key
         $columns = array_filter($request->columns, function ($value) {
             return $value !== null;
         });
 
-        $importInstance = new $importClass;
-        Excel::import($importInstance, public_path(Files::UPLOAD_FOLDER . '/' . Files::IMPORT_FOLDER . '/' . $request->file));
-        $excelData = $importInstance->getProcessedData();
+        $excelData = Excel::toArray(new $importClass, public_path(Files::UPLOAD_FOLDER . '/' . Files::IMPORT_FOLDER . '/' . $request->file))[0];
 
         if ($request->has_heading) {
             array_shift($excelData);
         }
 
         $jobs = [];
-
-        Session::put('leads_count', count($excelData));
 
         foreach ($excelData as $row) {
 

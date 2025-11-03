@@ -916,7 +916,14 @@ class DealController extends AccountBaseController
             session()->forget('is_deal');
         }
     }
-
+    public function updateLeadNote(Request $request)
+    {
+        $deal = Deal::findOrFail($request->deal_id);
+        $lead = Lead::findOrFail($deal->lead_id);
+        $lead->note = $request->note;
+        $lead->save();
+        return Reply::success(__('messages.updateSuccess'));
+    }
     public function notes()
     {
         $dataTable = new DealNotesDataTable();
@@ -1252,7 +1259,7 @@ class DealController extends AccountBaseController
         $dealIds = array_filter($request->deal_ids ?? []);
         $agentIds = array_filter(array_unique($request->agent_ids ?? []));
         $actionType = $request->action_type;
-
+        // dd($request->all());
         if (empty($dealIds) || empty($agentIds)) {
             return response()->json(['status' => 'error', 'message' => 'Please select deals and agents.']);
         }
@@ -1310,7 +1317,6 @@ class DealController extends AccountBaseController
             ->filter(fn($agent) => $agent->user->status !== 'deactive');
 
         $data = [];
-
         foreach ($enabledAgents as $agent) {
             $data[] = view('components.user-option', [
                 'user' => $agent->user,
@@ -1472,6 +1478,43 @@ class DealController extends AccountBaseController
         return $dataTable->render('leads.reports.lead_calls', $this->data);
     }
 
+    public function updateCell(Request $request, $id)
+    {
+        $lead = Lead::findOrFail($id);
+
+        $request->validate([
+            'name' => 'nullable|string|max:255',
+            'number' => ['required', 'regex:/^[0-9]+$/', 'max:50'],
+        ], [
+            'number.regex' => 'The number field must contain only digits.',
+        ]);
+
+        $name = trim($request->input('name'));
+        $number = trim($request->input('number'));
+
+        $existing = $lead->cell;
+        $decoded = json_decode($existing, true);
+
+        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+            $decoded[$name] = $number;
+            $lead->cell = json_encode($decoded);
+        } else {
+            $numbers = array_filter(array_map('trim', explode(',', $existing)));
+            $assoc = [];
+            foreach ($numbers as $num) {
+                $assoc[""] = isset($assoc[""]) ? $assoc[""] . ',' . $num : $num;
+            }
+            $assoc[$name] = $number;
+            $lead->cell = json_encode($assoc);
+        }
+
+        $lead->save();
+
+        return response()->json([
+            'success' => true,
+            'cell' => $lead->cell,
+        ]);
+    }
 
 
 

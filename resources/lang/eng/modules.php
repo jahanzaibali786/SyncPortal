@@ -878,6 +878,11 @@ return array(
         'productimage' => 'Product Image',
         'twitterId' => 'X (Twitter) ID',
     ),
+    'notifications' => array(
+        'roleNotifications' => 'Role Notifications',
+        'addModule' => 'Add Module',
+        'availableNotifications' => 'Available Notifications',
+    ),
     'emailSettings' => array(
         'notificationTitle' => 'Email Notification Settings',
         'notificationSubtitle' => 'Select the events for which an email should be sent to user.',
@@ -1539,6 +1544,7 @@ return array(
         'roleName' => 'Role Name',
         'deselectAll' => 'Deselect All',
         'permissions' => 'Permissions',
+        'notifications-permissions' => 'Set Notifiy Permissions',
         'importFromRole' => 'Import from Role',
     ),
     'leaves' => array(
@@ -2431,6 +2437,8 @@ return array(
         'labelColor' => 'Label Color',
         'addLabel' => 'Add Label',
         'editLabel' => 'Edit Label',
+        'phoneNumber' => 'Phone Number',
+        'designation' => 'Designation',
     ),
     'estimateRequest' => array(
         'estimateRequest' => 'Estimate Request',
