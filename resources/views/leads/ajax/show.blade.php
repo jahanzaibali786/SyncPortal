@@ -27,9 +27,9 @@
                                     || ($deleteLeadPermission == 'owned' && ((!is_null($deal->agent_id) && user()->id == $deal->leadAgent->user->id) || (!is_null($deal->deal_watcher) && user()->id == $deal->deal_watcher)))
                                     || ($deleteLeadPermission == 'both' && (((!is_null($deal->agent_id) && user()->id == $deal->leadAgent->user->id) || (!is_null($deal->deal_watcher) && user()->id == $deal->deal_watcher)) || user()->id == $deal->added_by))
                                 )
-                                                                                                                                                                                                    <a class="dropdown-item delete-table-row" href="javascript:;" data-id="{{ $deal->id }}">
-                                                                                                                                                                                                        @lang('app.delete')
-                                                                                                                                                                                                    </a>
+                                                                                                                                                                                                        <a class="dropdown-item delete-table-row" href="javascript:;" data-id="{{ $deal->id }}">
+                                                                                                                                                                                                            @lang('app.delete')
+                                                                                                                                                                                                        </a>
                             @endif
                         </div>
                     </div>
@@ -265,7 +265,7 @@
                     <div class="d-flex align-items-center">
                         <span>{{ $deal->contact->mobile ?? '--' }}</span>
                         @if(!empty($deal->contact->mobile))
-                            <button type="button" class="btn btn-sm">
+                            <button type="button" class="btn btn-sm call">
                                 <i class="fa fa-phone text-primary"></i>
                             </button>
                         @endif
@@ -290,7 +290,7 @@
                         >
                             <div class="d-flex align-items-center">
                                 <span>{{ $number }}</span>
-                                <button type="button" class="btn btn-sm">
+                                <button type="button" class="btn btn-sm call">
                                     <i class="fa fa-phone text-primary"></i>
                                 </button>
                             </div>
@@ -471,42 +471,6 @@
             // if (typeof quillImageLoad === 'function') {
             //     try { quillImageLoad('#lead-note-quill'); } catch (e) { /* ignore */ }
             // }
-
-            // Guarded call-button listener (if present)
-            const callBtn = document.getElementById('callButton');
-            if (callBtn) {
-                callBtn.addEventListener('click', async function () {
-                    const currentUserId = "{{ user()->id }}";
-                    const dealId = "{{ $deal->id }}";
-                    const payload = {
-                        number: '+923001234567',
-                        user_id: currentUserId ,
-                        deal_id: dealId
-                    };
-
-                    try {
-                        const res = await fetch('{{ route('call.trigger') }}', {
-                            method: 'POST',
-                            headers: {  
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                            },
-                            body: JSON.stringify(payload)
-                        });
-
-                        const data = await res.json();
-                        if (res.ok) {
-                            alert('📞 Call triggered successfully!');
-                            console.log(data);
-                        } else {
-                            alert('Error: ' + (data.error || 'Failed to trigger call'));
-                        }
-                    } catch (err) {
-                        alert('Request failed: ' + err.message);
-                    }
-                });
-            }
-
             // Submit handler: sends HTML to the server via easyAjax (keeps consistency)
             $(document).off('submit', '#updateLeadNoteForm').on('submit', '#updateLeadNoteForm', function (e) {
                 e.preventDefault();
@@ -594,70 +558,88 @@
                 });
             });
             function safeUnblockUI() {
-    // If blockUI plugin present
-    if (typeof $.unblockUI === 'function') {
-        try { $.unblockUI(); } catch(e){ /* ignore */ }
-    }
-    // Common overlay class names used by custom wrappers
-    $('.blockUI, .block-ui, .blockOverlay, .block-ui-overlay, .overlay').remove();
-    // remove any inline overflow hidden if applied
-    $('body').css('overflow', '');
-}
+                    // If blockUI plugin present
+                    if (typeof $.unblockUI === 'function') {
+                        try { $.unblockUI(); } catch(e){ /* ignore */ }
+                    }
+                    // Common overlay class names used by custom wrappers
+                    $('.blockUI, .block-ui, .blockOverlay, .block-ui-overlay, .overlay').remove();
+                    // remove any inline overflow hidden if applied
+                    $('body').css('overflow', '');
+                }
 
-            // existing handlers (tabs, file actions, call actions etc.) remain as-is below...
-            // (I kept the rest of your JS intact in other script blocks; if you want them merged here I can do that.)
+                // existing handlers (tabs, file actions, call actions etc.) remain as-is below...
+                // (I kept the rest of your JS intact in other script blocks; if you want them merged here I can do that.)
 
-        })();
+            })();
 
     </script>
 
     <script>
-        // Other page JS that you had below (kept largely intact)
-        document.querySelectorAll(".call").forEach(function(button) {
-            button.addEventListener("click", function() {
-                let dealId = "{{ $deal->id }}";
-                let userId = "{{ user()->id }}";
-                let contactId = "{{ $deal->contact->id }}";
-                let number = "{{ $deal->contact->mobile ?? '' }}";
+        (function () {
+            // Fixed: Handle all call buttons with proper async/await
+            document.querySelectorAll(".call").forEach(function(button) {
+                button.addEventListener("click", async function(e) {
+                    e.preventDefault();
+                    
+                    let dealId = "{{ $deal->id }}";
+                    let userId = "{{ user()->id }}";
+                    let contactId = "{{ $deal->contact->id }}";
+                    let number = this.closest('.d-flex')?.querySelector('span')?.textContent || "{{ $deal->contact->mobile ?? '' }}";
 
-                number = number.replace(/\s+/g, '');
-                console.log('Calling number:', number, contactId, userId, dealId);
+                    number = number.replace(/\s+/g, '');
+                    
+                    const payload = {
+                        number: number,
+                        user_id: userId,
+                        deal_id: dealId
+                    };
 
-                fetch("http://localhost:5000/call", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Accept": "application/json"
-                        },
-                        body: JSON.stringify({
-                            extension: number,
-                            deal_id: dealId,
-                            contact_id: contactId,
-                            user_id: userId
-                        })
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.json().then(err => {
-                                throw new Error(err.error ||
-                                    `HTTP error! Status: ${response.status}`);
+                    try {
+                        const res = await fetch('{{ route('call.trigger') }}', {
+                            method: 'POST',
+                            headers: {  
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify(payload)
+                        });
+
+                        const data = await res.json(); // <-- your actual JSON response
+
+                        if (res.ok) {
+                            Swal.fire({
+                                icon: 'success',
+                                text: 'Call triggered successfully!',
+                                toast: true,
+                                position: 'top-end',
+                                timer: 1400,
+                                showConfirmButton: false
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'Failed to trigger call: ' + (data?.error || data?.message || 'Unknown error'),
+                                toast: true,
+                                position: 'top-end',
+                                timer: 3000,
+                                showConfirmButton: false
                             });
                         }
-                        return response.json();
-                    })
-                    .catch(error => {
-                        console.error("Fetch Error:", error.message);
+                    } catch (err) {
                         Swal.fire({
                             icon: 'error',
-                            text: 'Failed to initiate call: ' + error.message,
+                            text: 'Request failed: ' + err.message,
                             toast: true,
                             position: 'top-end',
                             timer: 3000,
                             showConfirmButton: false
                         });
-                    });
+                    }
+
+                });
             });
-        });
+        })();
     </script>
 
     <script>
@@ -1072,7 +1054,7 @@
 
                                 innerDiv.innerHTML = `
                                     <span>${number}</span>
-                                    <button type="button" class="btn btn-sm">
+                                    <button type="button" class="btn btn-sm call">
                                         <svg class="svg-inline--fa fa-phone fa-w-16 text-primary" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="phone" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                             <path fill="currentColor" d="M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 13.9l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C3.9 366.5-2 378.1.6 389.4l24 104C27.1 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.7-20.9-18.6-23.4z"></path>
                                         </svg>

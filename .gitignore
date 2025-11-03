@@ -15,7 +15,6 @@ npm-debug.log
 yarn-error.log
 .php-cs-fixer.cache
 /.idea
-/.vscode
 /.vagrant
 *.zip
 .DS_Store
@@ -41,3 +40,7 @@ public/css/theme-custom.css
 public/css/custom-css/theme-custom.css
 Modules\LanguagePack
 .envold
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore

@@ -258,7 +258,7 @@ class DealController extends AccountBaseController
                 $lead = Lead::findOrFail($deal->lead_id);
 
                 // dd($id,$lead);
-                $this->dealCalls = LeadCall::where('lead_id', $lead->lead_id)
+                $this->dealCalls = LeadCall::where('lead_id', $lead->id)
                     ->with('user')
                     ->orderByDesc('created_at')
                     ->get();
@@ -876,8 +876,8 @@ class DealController extends AccountBaseController
 
     public function importStore(ImportRequest $request)
     {
+        // dd($request->all());
         $rvalue = $this->importFileProcess($request, DealImport::class);
-
         if ($rvalue == 'abort') {
             return Reply::error(__('messages.abortAction'));
         }
@@ -888,6 +888,7 @@ class DealController extends AccountBaseController
 
     public function importProcess(ImportProcessRequest $request)
     {
+        // dd($request->all());
         $batch = $this->importJobProcess($request, DealImport::class, ImportDealJob::class);
 
         return Reply::successWithData(__('messages.importProcessStart'), ['batch' => $batch]);

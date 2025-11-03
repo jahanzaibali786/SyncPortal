@@ -51,6 +51,7 @@ class CallPushController extends Controller
      */
     public function sendCall(Request $request)
     {
+        // dd($request->all());
         $payload = $request->validate([
             'number' => 'required|string',
             'deal_id' => 'required|string',
@@ -112,7 +113,7 @@ class CallPushController extends Controller
                 'deal_id' => 'required|string',
                 'to_number' => 'required|string',
                 'subject' => 'nullable|string',
-                'call_type' => 'required|string|in:incoming,outgoing,missed',
+                'call_type' => 'required|string',
                 'duration' => 'required|string',
                 'start' => 'required|string',
                 'end' => 'required|string',
