@@ -99,7 +99,8 @@ class EmployeeDetails extends BaseModel
         'marital_status' => MaritalStatus::class,
     ];
 
-    protected $with = ['company:id'];
+    // protected $with = ['company:id'];
+    
 
     protected $appends = ['upcoming_birthday'];
 

@@ -87,7 +87,7 @@ $viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
     <script>
         const activeTab = "{{ $activeTab }}";
         $('.project-menu .' + activeTab).addClass('active');
-
+        
         $('body').on('click', '#add-files', function() {
             const url = "{{ route('deal-files.create') }}";
             $(MODAL_LG + ' ' + MODAL_HEADING).html('...');

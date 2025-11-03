@@ -17,14 +17,13 @@
         .b-p-tasks {
             min-height: 90%;
         }
-
     </style>
 
 @endpush
 
 @php
-$addLeadPermission = user()->permission('add_deals');
-$viewLeadPermission = user()->permission('view_deals');
+    $addLeadPermission = user()->permission('add_deals');
+    $viewLeadPermission = user()->permission('view_deals');
 @endphp
 
 @section('filter-section')
@@ -50,9 +49,9 @@ $viewLeadPermission = user()->permission('view_deals');
                     </x-forms.link-primary>
                 @endif
 
-                    <x-forms.button-secondary icon="plus" id="add-column">
-                        @lang('modules.deal.addStages')
-                    </x-forms.button-secondary>
+                <x-forms.button-secondary icon="plus" id="add-column">
+                    @lang('modules.deal.addStages')
+                </x-forms.button-secondary>
 
             </div>
 
@@ -70,8 +69,6 @@ $viewLeadPermission = user()->permission('view_deals');
 
         </div>
     </div>
-    <!-- CONTENT WRAPPER END -->
-
 @endsection
 
 @push('scripts')
@@ -108,14 +105,14 @@ $viewLeadPermission = user()->permission('view_deals');
 
             var url = "{{ route('leadboards.index') }}?startDate=" + encodeURIComponent(startDate) + '&endDate=' +
                 encodeURIComponent(endDate) + '&type=' + type + '&followUp=' + followUp + '&agent=' +
-                agent + '&category_id=' + category_id + '&source_id=' + source_id +' &deal_watcher_id=' + deal_watcher_id + '&lead_agent_id=' + lead_agent_id +
-                '&searchText=' + searchText  + '&min=' + min + '&max=' + max + '&date_filter_on=' + date_filter_on + '&status_id=' + status_id + '&pipeline=' + pipeline+ '&product=' + product;
+                agent + '&category_id=' + category_id + '&source_id=' + source_id + ' &deal_watcher_id=' + deal_watcher_id + '&lead_agent_id=' + lead_agent_id +
+                '&searchText=' + searchText + '&min=' + min + '&max=' + max + '&date_filter_on=' + date_filter_on + '&status_id=' + status_id + '&pipeline=' + pipeline + '&product=' + product;
 
             $.easyAjax({
                 url: url,
                 container: '#taskboard-columns',
                 type: "GET",
-                success: function(response) {
+                success: function (response) {
                     $('#taskboard-columns').html(response.view);
                     $("body").tooltip({
                         selector: '[data-toggle="tooltip"]'
@@ -124,7 +121,7 @@ $viewLeadPermission = user()->permission('view_deals');
             });
         }
 
-        $('body').on('click', '.load-more-tasks', function() {
+        $('body').on('click', '.load-more-tasks', function () {
             var columnId = $(this).data('column-id');
             var totalTasks = $(this).data('total-tasks');
             var currentTotalTasks = $('#drag-container-' + columnId + ' .task-card').length;
@@ -155,14 +152,14 @@ $viewLeadPermission = user()->permission('view_deals');
                 encodeURIComponent(endDate) + '&type=' + type + '&followUp=' + followUp + '&agent=' +
                 agent + '&category_id=' + category_id + '&source_id=' + source_id +
                 '&searchText=' + searchText + '&columnId=' + columnId + '&currentTotalTasks=' + currentTotalTasks +
-                '&totalTasks=' + totalTasks + '&min=' + min + '&max=' + max + '&date_filter_on=' + date_filter_on + '&pipeline=' + pipeline+ '&product=' + product;
+                '&totalTasks=' + totalTasks + '&min=' + min + '&max=' + max + '&date_filter_on=' + date_filter_on + '&pipeline=' + pipeline + '&product=' + product;
 
             $.easyAjax({
                 url: url,
                 container: '#drag-container-' + columnId,
                 blockUI: true,
                 type: "GET",
-                success: function(response) {
+                success: function (response) {
                     $('#drag-container-' + columnId).append(response.view);
                     if (response.load_more == 'show') {
                         $('#drag-container-' + columnId).closest('.b-p-body').find('.load-more-tasks');
@@ -198,13 +195,13 @@ $viewLeadPermission = user()->permission('view_deals');
             }
         }
 
-        $('#add-column').click(function() {
+        $('#add-column').click(function () {
             const url = "{{ route('lead-stage-setting.create') }}";
             $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
             $.ajaxModal(MODAL_LG, url);
         });
 
-        $('body').on('click', '.edit-column', function() {
+        $('body').on('click', '.edit-column', function () {
             var statusId = $(this).data('column-id');
             var url = "{{ route('lead-stage-setting.edit', ':id ') }}";
             url = url.replace(':id', statusId);
@@ -213,7 +210,7 @@ $viewLeadPermission = user()->permission('view_deals');
             $.ajaxModal(MODAL_LG, url);
         });
 
-        $('body').on('click', '.delete-column', function() {
+        $('body').on('click', '.delete-column', function () {
             var id = $(this).data('column-id');
             var url = "{{ route('lead-stage-setting.destroy', ':id') }}";
             url = url.replace(':id', id);
@@ -244,7 +241,7 @@ $viewLeadPermission = user()->permission('view_deals');
                             '_token': '{{ csrf_token() }}',
                             '_method': 'DELETE'
                         },
-                        success: function(response) {
+                        success: function (response) {
                             if (response.status == 'success') {
                                 window.location.reload();
                             }
@@ -256,7 +253,7 @@ $viewLeadPermission = user()->permission('view_deals');
         });
 
 
-        $('body').on('click', '.collapse-column', function() {
+        $('body').on('click', '.collapse-column', function () {
             var boardColumnId = $(this).data('column-id');
             var type = $(this).data('type');
 
@@ -270,7 +267,7 @@ $viewLeadPermission = user()->permission('view_deals');
                     type: type,
                     '_token': '{{ csrf_token() }}'
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response.status == 'success') {
                         showTable();
                     }
@@ -278,7 +275,7 @@ $viewLeadPermission = user()->permission('view_deals');
             });
         });
 
-        $('body').on('click', '.delete-table-row', function() {
+        $('body').on('click', '.delete-table-row', function () {
             var id = $(this).data('id');
             Swal.fire({
                 title: "@lang('messages.sweetAlertTitle')",
@@ -311,7 +308,7 @@ $viewLeadPermission = user()->permission('view_deals');
                             '_token': token,
                             '_method': 'DELETE'
                         },
-                        success: function(response) {
+                        success: function (response) {
                             if (response.status == "success") {
                                 window.location.href = "{{ route('leadboards.index')}}";
                             }
@@ -323,4 +320,64 @@ $viewLeadPermission = user()->permission('view_deals');
 
         showTable();
     </script>
+
+    <!-- CONTENT WRAPPER END -->
+    <div class="modal fade" id="bulkAssignAgentsModal" tabindex="-1" role="dialog"
+        aria-labelledby="bulkAssignAgentsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-top" role="document">
+            <div class="modal-content">
+                <form id="bulkAssignAgentsForm">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="bulkAssignAgentsModalLabel">Assign / Unassign Agents</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        <!-- Agent selection -->
+                        <div class="form-group">
+                            <label for="bulkAgentsSelect">Select Agents</label>
+                            <select id="bulkAgentsSelect" class="form-control select-picker" data-live-search="true"
+                                multiple>
+                                <option value="">--</option>
+                            </select>
+                        </div>
+
+                        <!-- Action type -->
+                        <div class="form-group d-flex" style="gap: 1.2rem;">
+                            {{-- <label>Action Type</label> --}}
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="bulkActionType" id="bulkActionAssign"
+                                    value="assign" checked>
+                                <label class="form-check-label ml-1 mt-1" for="bulkActionAssign">
+                                    Assign Agents
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="bulkActionType" id="bulkActionUnassign"
+                                    value="unassign">
+                                <label class="form-check-label ml-1 mt-1" for="bulkActionUnassign">
+                                    Unassign Agents
+                                </label>
+                            </div>
+                        </div>
+
+                        <small class="text-muted">
+                            - Assign: Adds selected agents (ignores existing ones).<br>
+                            - Unassign: Removes selected agents from selected deals.
+                        </small>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
 @endpush

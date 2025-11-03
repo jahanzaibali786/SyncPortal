@@ -35,7 +35,7 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="{{ companyOrGlobalSetting()->favicon_url }}">
     <meta name="theme-color" content="#ffffff">
-    <meta name="csrf-token" content="{{ csrf_token() }}"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     @isset($activeSettingMenu)
         <style>
             .preloader-container {
@@ -52,6 +52,7 @@
                 transition: filter .2s ease-out;
                 margin-right: 4px;
             }
+
             .ql-editor {
                 text-align: left;
                 white-space: unset;
@@ -104,7 +105,8 @@
         p {
             word-break: break-word;
         }
-        .inactive{
+
+        .inactive {
             opacity: 0.7;
         }
     </style>
@@ -138,642 +140,642 @@
         const checkMiniSidebar = localStorage.getItem("mini-sidebar");
     </script>
 
-<script>
-    (() => {
-      const SEL = '.icon-box-content.gradientHover';
-    
-      function enter(el) {
-        // remember original bg once, then make it transparent
-        if (el.dataset.origBg === undefined) el.dataset.origBg = el.style.backgroundColor || '';
-        el.style.backgroundColor = 'transparent';
-    
-        // flip all stroked SVG elements to white, remembering originals
-        el.querySelectorAll('svg [stroke]').forEach(node => {
-          if (node.dataset.origStroke === undefined) {
-            node.dataset.origStroke = node.getAttribute('stroke') ?? '';
-          }
-          node.setAttribute('stroke', 'white');
-        });
-      }
-    
-      function leave(el) {
-        // restore bg
-        el.style.backgroundColor = el.dataset.origBg || '';
-    
-        // restore original strokes
-        el.querySelectorAll('svg [stroke]').forEach(node => {
-          const orig = node.dataset.origStroke;
-          if (orig !== undefined) {
-            if (orig === '') node.removeAttribute('stroke');
-            else node.setAttribute('stroke', orig);
-            delete node.dataset.origStroke;
-          }
-        });
-      }
-    
-      // event delegation so this works globally (including dynamically added nodes)
-      document.addEventListener('mouseover', (e) => {
-        const el = e.target.closest(SEL);
-        if (el && !el.contains(e.relatedTarget)) enter(el);
-      });
-    
-      document.addEventListener('mouseout', (e) => {
-        const el = e.target.closest(SEL);
-        if (el && !el.contains(e.relatedTarget)) leave(el);
-      });
-    })();
+    <script>
+        (() => {
+            const SEL = '.icon-box-content.gradientHover';
+
+            function enter(el) {
+                // remember original bg once, then make it transparent
+                if (el.dataset.origBg === undefined) el.dataset.origBg = el.style.backgroundColor || '';
+                el.style.backgroundColor = 'transparent';
+
+                // flip all stroked SVG elements to white, remembering originals
+                el.querySelectorAll('svg [stroke]').forEach(node => {
+                    if (node.dataset.origStroke === undefined) {
+                        node.dataset.origStroke = node.getAttribute('stroke') ?? '';
+                    }
+                    node.setAttribute('stroke', 'white');
+                });
+            }
+
+            function leave(el) {
+                // restore bg
+                el.style.backgroundColor = el.dataset.origBg || '';
+
+                // restore original strokes
+                el.querySelectorAll('svg [stroke]').forEach(node => {
+                    const orig = node.dataset.origStroke;
+                    if (orig !== undefined) {
+                        if (orig === '') node.removeAttribute('stroke');
+                        else node.setAttribute('stroke', orig);
+                        delete node.dataset.origStroke;
+                    }
+                });
+            }
+
+            // event delegation so this works globally (including dynamically added nodes)
+            document.addEventListener('mouseover', (e) => {
+                const el = e.target.closest(SEL);
+                if (el && !el.contains(e.relatedTarget)) enter(el);
+            });
+
+            document.addEventListener('mouseout', (e) => {
+                const el = e.target.closest(SEL);
+                if (el && !el.contains(e.relatedTarget)) leave(el);
+            });
+        })();
     </script>
-    
+
 
 </head>
 
 
 <body id="body" class="{{ user()->dark_theme ? 'dark-theme' : '' }} {{ isRtl('rtl') }}">
-<script>
-    if (checkMiniSidebar == "yes" || checkMiniSidebar == "") {
-        $('body').addClass('sidebar-toggled');
-    }
-</script>
-{{-- include topbar --}}
-@if(user()->is_superadmin)
-    @includeIf('super-admin.sections.topbar')
-@else
-    @includeif('super-admin.sections.topbar')
-@endif
+    <script>
+        if (checkMiniSidebar == "yes" || checkMiniSidebar == "") {
+            $('body').addClass('sidebar-toggled');
+        }
+    </script>
+    {{-- include topbar --}}
+    @if(user()->is_superadmin)
+        @includeIf('super-admin.sections.topbar')
+    @else
+        @includeif('super-admin.sections.topbar')
+    @endif
 
-{{-- include sidebar menu --}}
-@include('sections.sidebar')
+    {{-- include sidebar menu --}}
+    @include('sections.sidebar')
 
-<!-- BODY WRAPPER START -->
-<div class="clearfix body-wrapper">
-
-
-    <!-- MAIN CONTAINER START -->
-    <section class="mb-5 main-container bg-additional-grey mb-sm-0" id="fullscreen">
-
-        <div class="preloader-container d-flex justify-content-center align-items-center">
-            <div class="spinner-border" role="status" aria-hidden="true"></div>
-        </div>
+    <!-- BODY WRAPPER START -->
+    <div class="clearfix body-wrapper">
 
 
-        @yield('filter-section')
+        <!-- MAIN CONTAINER START -->
+        <section class="mb-5 main-container bg-additional-grey mb-sm-0" id="fullscreen">
 
-        <x-app-title class="d-block d-lg-none" :pageTitle="$pageTitle"></x-app-title>
+            <div class="preloader-container d-flex justify-content-center align-items-center">
+                <div class="spinner-border" role="status" aria-hidden="true"></div>
+            </div>
 
-        @yield('content')
+
+            @yield('filter-section')
+
+            <x-app-title class="d-block d-lg-none" :pageTitle="$pageTitle"></x-app-title>
+
+            @yield('content')
 
 
-    </section>
-    <!-- MAIN CONTAINER END -->
-</div>
-<!-- BODY WRAPPER END -->
-@include('sections.modals')
+        </section>
+        <!-- MAIN CONTAINER END -->
+    </div>
+    <!-- BODY WRAPPER END -->
+    @include('sections.modals')
 
-<!-- Global Required Javascript -->
-<script src="{{ asset('js/main.js') }}"></script>
-<script>
-    // Translation of default values for the select picker box.
-    $.fn.selectpicker.Constructor.DEFAULTS.noneSelectedText = "@lang('placeholders.noneSelectedText')";
-    $.fn.selectpicker.Constructor.DEFAULTS.noneResultsText = "@lang('placeholders.noneResultsText')";
-    $.fn.selectpicker.Constructor.DEFAULTS.selectAllText = "@lang('placeholders.selectAllText')";
-    $.fn.selectpicker.Constructor.DEFAULTS.deselectAllText = "@lang('placeholders.deselectAllText')";
+    <!-- Global Required Javascript -->
+    <script src="{{ asset('js/main.js') }}"></script>
+    <script>
+        // Translation of default values for the select picker box.
+        $.fn.selectpicker.Constructor.DEFAULTS.noneSelectedText = "@lang('placeholders.noneSelectedText')";
+        $.fn.selectpicker.Constructor.DEFAULTS.noneResultsText = "@lang('placeholders.noneResultsText')";
+        $.fn.selectpicker.Constructor.DEFAULTS.selectAllText = "@lang('placeholders.selectAllText')";
+        $.fn.selectpicker.Constructor.DEFAULTS.deselectAllText = "@lang('placeholders.deselectAllText')";
 
-    const MODAL_DEFAULT = '#myModalDefault';
-    const MODAL_LG = '#myModal';
-    const MODAL_XL = '#myModalXl';
-    const MODAL_HEADING = '#modelHeading';
-    const RIGHT_MODAL = '#task-detail-1';
-    const RIGHT_MODAL_CONTENT = '#right-modal-content';
-    const RIGHT_MODAL_TITLE = '#right-modal-title';
-    const company = @json(companyOrGlobalSetting());
-    const pusher_setting = @json(pusher_settings());
-    const message_setting = @json(message_setting());
-    const SEARCH_KEYWORD = "{{ request('search_keyword') }}";
-    const MOMENTJS_TIME_FORMAT = "{{ (companyOrGlobalSetting()->time_format == 'h:i A') ? 'hh:mm A' : ( (companyOrGlobalSetting()->time_format == 'h:i a') ? 'hh:mm a' : 'H:mm') }}";
+        const MODAL_DEFAULT = '#myModalDefault';
+        const MODAL_LG = '#myModal';
+        const MODAL_XL = '#myModalXl';
+        const MODAL_HEADING = '#modelHeading';
+        const RIGHT_MODAL = '#task-detail-1';
+        const RIGHT_MODAL_CONTENT = '#right-modal-content';
+        const RIGHT_MODAL_TITLE = '#right-modal-title';
+        const company = @json(companyOrGlobalSetting());
+        const pusher_setting = @json(pusher_settings());
+        const message_setting = @json(message_setting());
+        const SEARCH_KEYWORD = "{{ request('search_keyword') }}";
+        const MOMENTJS_TIME_FORMAT = "{{ (companyOrGlobalSetting()->time_format == 'h:i A') ? 'hh:mm A' : ((companyOrGlobalSetting()->time_format == 'h:i a') ? 'hh:mm a' : 'H:mm') }}";
 
-    const datepickerConfig = {
-        formatter: (input, date, instance) => {
-            input.value = moment(date).format('{{ companyOrGlobalSetting()->moment_date_format }}')
-        },
-        showAllDates: true,
-        customDays: {!!  json_encode(\App\Models\GlobalSetting::getDaysOfWeek())!!},
-        customMonths: {!!  json_encode(\App\Models\GlobalSetting::getMonthsOfYear())!!},
-        customOverlayMonths: {!!  json_encode(\App\Models\GlobalSetting::getMonthsOfYear())!!},
-        overlayButton: "@lang('app.submit')",
-        overlayPlaceholder: "@lang('app.enterYear')",
-        startDay: parseInt("{{ attendance_setting()?->week_start_from }}")
-    };
+        const datepickerConfig = {
+            formatter: (input, date, instance) => {
+                input.value = moment(date).format('{{ companyOrGlobalSetting()->moment_date_format }}')
+            },
+            showAllDates: true,
+            customDays: {!!  json_encode(\App\Models\GlobalSetting::getDaysOfWeek())!!},
+            customMonths: {!!  json_encode(\App\Models\GlobalSetting::getMonthsOfYear())!!},
+            customOverlayMonths: {!!  json_encode(\App\Models\GlobalSetting::getMonthsOfYear())!!},
+            overlayButton: "@lang('app.submit')",
+            overlayPlaceholder: "@lang('app.enterYear')",
+            startDay: parseInt("{{ attendance_setting()?->week_start_from }}")
+        };
 
-    const daterangeConfig = {
-        "@lang('app.today')": [moment(), moment()],
-        "@lang('app.last30Days')": [moment().subtract(29, 'days'), moment()],
-        "@lang('app.thisMonth')": [moment().startOf('month'), moment().endOf('month')],
-        "@lang('app.lastMonth')": [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-        "@lang('app.last90Days')": [moment().subtract(89, 'days'), moment()],
-        "@lang('app.last6Months')": [moment().subtract(6, 'months'), moment()],
-        "@lang('app.last1Year')": [moment().subtract(1, 'years'), moment()]
-    };
+        const daterangeConfig = {
+            "@lang('app.today')": [moment(), moment()],
+            "@lang('app.last30Days')": [moment().subtract(29, 'days'), moment()],
+            "@lang('app.thisMonth')": [moment().startOf('month'), moment().endOf('month')],
+            "@lang('app.lastMonth')": [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+            "@lang('app.last90Days')": [moment().subtract(89, 'days'), moment()],
+            "@lang('app.last6Months')": [moment().subtract(6, 'months'), moment()],
+            "@lang('app.last1Year')": [moment().subtract(1, 'years'), moment()]
+        };
 
-    const daterangeLocale = {
-        "format": "{{ companyOrGlobalSetting()->moment_date_format }}",
-        "customRangeLabel": "@lang('app.customRange')",
-        "separator": " @lang('app.to') ",
-        "applyLabel": "@lang('app.apply')",
-        "cancelLabel": "@lang('app.cancel')",
-        "monthNames": {!!  json_encode(\App\Models\GlobalSetting::getMonthsOfYear())!!},
-        "daysOfWeek": {!!  json_encode(\App\Models\GlobalSetting::getDaysOfWeek())!!},
-        "firstDay": parseInt("{{ attendance_setting()?->week_start_from }}")
-    };
+        const daterangeLocale = {
+            "format": "{{ companyOrGlobalSetting()->moment_date_format }}",
+            "customRangeLabel": "@lang('app.customRange')",
+            "separator": " @lang('app.to') ",
+            "applyLabel": "@lang('app.apply')",
+            "cancelLabel": "@lang('app.cancel')",
+            "monthNames": {!!  json_encode(\App\Models\GlobalSetting::getMonthsOfYear())!!},
+            "daysOfWeek": {!!  json_encode(\App\Models\GlobalSetting::getDaysOfWeek())!!},
+            "firstDay": parseInt("{{ attendance_setting()?->week_start_from }}")
+        };
 
-    const dropifyMessages = {
-        default: "@lang('app.dragDrop')",
-        replace: "@lang('app.dragDropReplace')",
-        remove: "@lang('app.remove')",
-        error: "@lang('messages.errorOccured')",
-    };
+        const dropifyMessages = {
+            default: "@lang('app.dragDrop')",
+            replace: "@lang('app.dragDropReplace')",
+            remove: "@lang('app.remove')",
+            error: "@lang('messages.errorOccured')",
+        };
 
-    const DROPZONE_FILE_ALLOW = "{{ global_setting()->allowed_file_types }}";
-    const DROPZONE_MAX_FILESIZE = "{{ global_setting()->allowed_file_size }}";
-    const DROPZONE_MAX_FILES = "{{ global_setting()->allow_max_no_of_files }}";
+        const DROPZONE_FILE_ALLOW = "{{ global_setting()->allowed_file_types }}";
+        const DROPZONE_MAX_FILESIZE = "{{ global_setting()->allowed_file_size }}";
+        const DROPZONE_MAX_FILES = "{{ global_setting()->allow_max_no_of_files }}";
 
-    Dropzone.prototype.defaultOptions.dictFallbackMessage = "{{ __('modules.projectTemplate.dropFallbackMessage') }}";
-    Dropzone.prototype.defaultOptions.dictFallbackText = "{{ __('modules.projectTemplate.dropFallbackText') }}";
-    Dropzone.prototype.defaultOptions.dictFileTooBig = "{{ __('modules.projectTemplate.dropFileTooBig') }}";
-    Dropzone.prototype.defaultOptions.dictInvalidFileType = "{{ __('modules.projectTemplate.dropInvalidFileType') }}";
-    Dropzone.prototype.defaultOptions.dictResponseError = "{{ __('modules.projectTemplate.dropResponseError') }}";
-    Dropzone.prototype.defaultOptions.dictCancelUpload = "{{ __('modules.projectTemplate.dropCancelUpload') }}";
-    Dropzone.prototype.defaultOptions.dictCancelUploadConfirmation = "{{ __('modules.projectTemplate.dropCancelUploadConfirmation') }}";
-    Dropzone.prototype.defaultOptions.dictRemoveFile = "{{ __('modules.projectTemplate.dropRemoveFile') }}";
-    Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "{{ __('modules.projectTemplate.dropMaxFilesExceeded') }}";
-    Dropzone.prototype.defaultOptions.dictDefaultMessage = "{{ __('modules.projectTemplate.dropFile') }}";
-    Dropzone.prototype.defaultOptions.timeout = 0;
+        Dropzone.prototype.defaultOptions.dictFallbackMessage = "{{ __('modules.projectTemplate.dropFallbackMessage') }}";
+        Dropzone.prototype.defaultOptions.dictFallbackText = "{{ __('modules.projectTemplate.dropFallbackText') }}";
+        Dropzone.prototype.defaultOptions.dictFileTooBig = "{{ __('modules.projectTemplate.dropFileTooBig') }}";
+        Dropzone.prototype.defaultOptions.dictInvalidFileType = "{{ __('modules.projectTemplate.dropInvalidFileType') }}";
+        Dropzone.prototype.defaultOptions.dictResponseError = "{{ __('modules.projectTemplate.dropResponseError') }}";
+        Dropzone.prototype.defaultOptions.dictCancelUpload = "{{ __('modules.projectTemplate.dropCancelUpload') }}";
+        Dropzone.prototype.defaultOptions.dictCancelUploadConfirmation = "{{ __('modules.projectTemplate.dropCancelUploadConfirmation') }}";
+        Dropzone.prototype.defaultOptions.dictRemoveFile = "{{ __('modules.projectTemplate.dropRemoveFile') }}";
+        Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "{{ __('modules.projectTemplate.dropMaxFilesExceeded') }}";
+        Dropzone.prototype.defaultOptions.dictDefaultMessage = "{{ __('modules.projectTemplate.dropFile') }}";
+        Dropzone.prototype.defaultOptions.timeout = 0;
 
-    $('#datatableRange').on('apply.daterangepicker', (event, picker) => {
-        cb(picker.startDate, picker.endDate);
-        const startDate = picker.startDate.format('{{ companyOrGlobalSetting()->moment_date_format }}');
-        const endDate = picker.endDate.format('{{ companyOrGlobalSetting()->moment_date_format }}');
-        $('#datatableRange').val(`${startDate} @lang("app.to") ${endDate}`);
-    });
+        $('#datatableRange').on('apply.daterangepicker', (event, picker) => {
+            cb(picker.startDate, picker.endDate);
+            const startDate = picker.startDate.format('{{ companyOrGlobalSetting()->moment_date_format }}');
+            const endDate = picker.endDate.format('{{ companyOrGlobalSetting()->moment_date_format }}');
+            $('#datatableRange').val(`${startDate} @lang("app.to") ${endDate}`);
+        });
 
-    $('#datatableRange2').on('apply.daterangepicker', (event, picker) => {
-        cb(picker.startDate, picker.endDate);
-        $('#datatableRange2').val(picker.startDate.format('{{ companyOrGlobalSetting()->moment_date_format }}') +
-            ' @lang("app.to") ' + picker.endDate.format(
-                '{{ companyOrGlobalSetting()->moment_date_format }}'));
-    });
+        $('#datatableRange2').on('apply.daterangepicker', (event, picker) => {
+            cb(picker.startDate, picker.endDate);
+            $('#datatableRange2').val(picker.startDate.format('{{ companyOrGlobalSetting()->moment_date_format }}') +
+                ' @lang("app.to") ' + picker.endDate.format(
+                    '{{ companyOrGlobalSetting()->moment_date_format }}'));
+        });
 
-    function cb(start, end) {
-        $('#datatableRange, #datatableRange2').val(start.format('{{ companyOrGlobalSetting()->moment_date_format }}') +
-            ' @lang("app.to") ' + end.format(
-                '{{ companyOrGlobalSetting()->moment_date_format }}'));
-        $('#reset-filters, #reset-filters-2').removeClass('d-none');
+        function cb(start, end) {
+            $('#datatableRange, #datatableRange2').val(start.format('{{ companyOrGlobalSetting()->moment_date_format }}') +
+                ' @lang("app.to") ' + end.format(
+                    '{{ companyOrGlobalSetting()->moment_date_format }}'));
+            $('#reset-filters, #reset-filters-2').removeClass('d-none');
 
-    }
+        }
 
-</script>
+    </script>
 
-<!-- Scripts -->
-<script>
-    window.Laravel = {!! json_encode([
+    <!-- Scripts -->
+    <script>
+        window.Laravel = {!! json_encode([
     'csrfToken' => csrf_token(),
     'user' => user(),
 ]) !!};
-</script>
+    </script>
 
-@stack('scripts')
+    @stack('scripts')
 
-<script>
-    $(window).on('load', function () {
-        // Animate loader off screen
-        init();
-        $(".preloader-container").fadeOut("slow", function () {
-            $(this).removeClass("d-flex");
+    <script>
+        $(window).on('load', function () {
+            // Animate loader off screen
+            init();
+            $(".preloader-container").fadeOut("slow", function () {
+                $(this).removeClass("d-flex");
+            });
         });
-    });
 
-    $('body').on('click', '.view-notification', function (event) {
-        event.preventDefault();
-        const id = $(this).data('notification-id');
-        const href = $(this).attr('href');
+        $('body').on('click', '.view-notification', function (event) {
+            event.preventDefault();
+            const id = $(this).data('notification-id');
+            const href = $(this).attr('href');
 
-        $.easyAjax({
-            url: "{{ route('mark_single_notification_read') }}",
-            type: "POST",
-            data: {
-                '_token': "{{ csrf_token() }}",
-                'id': id
-            },
-            success: function () {
-                if (typeof href !== 'undefined') {
-                    window.location = href;
+            $.easyAjax({
+                url: "{{ route('mark_single_notification_read') }}",
+                type: "POST",
+                data: {
+                    '_token': "{{ csrf_token() }}",
+                    'id': id
+                },
+                success: function () {
+                    if (typeof href !== 'undefined') {
+                        window.location = href;
+                    }
                 }
-            }
-        });
-    });
-
-    $('body').on('click', '.img-lightbox', function () {
-        const imageUrl = $(this).data('image-url');
-        const url = "{{ route('front.public.show_image').'?image_url=' }}" + encodeURIComponent(imageUrl);
-        $(MODAL_XL + ' ' + MODAL_HEADING).html('...');
-        $.ajaxModal(MODAL_XL, url);
-    });
-
-    $('body').on('click', '.piechart-full-screen', function () {
-        const chartData = JSON.stringify($(this).data('chart-data'));
-        const chartId = $(this).data('chart-id');
-        const url = "{{ route('front.public.show_piechart').'?chart_data=' }}" + encodeURIComponent(chartData) + "&chart_id=" + chartId;
-        $(MODAL_XL + ' ' + MODAL_HEADING).html('...');
-        $.ajaxModal(MODAL_XL, url);
-    });
-
-    function updateOnesignalPlayerId(userId) {
-        $.easyAjax({
-            url: '{{ route('profile.update_onesignal_id') }}',
-            type: 'POST',
-            data: {
-                'userId': userId,
-                '_token': '{{ csrf_token() }}'
-            }
-        })
-    }
-
-    if (SEARCH_KEYWORD !== '' && $('#search-text-field').length > 0) {
-        $('#search-text-field').val(SEARCH_KEYWORD);
-        $('#reset-filters').removeClass('d-none');
-    }
-
-    $('body').on('click', '.show-hide-purchase-code', function () {
-        $('> .icon', this).toggleClass('fa-eye-slash fa-eye');
-        $(this).siblings('span').toggleClass('blur-code ');
-    });
-
-</script>
-
-<script>
-    let quillArray = {};
-
-    function quillImageLoad(ID) {
-        const quillContainer = document.querySelector(ID);
-        quillArray[ID] = new Quill(ID, {
-            modules: {
-                toolbar: [
-                    [{
-                        header: [1, 2, 3, 4, 5, false]
-                    }],
-                    [{
-                        'list': 'ordered'
-                    }, {
-                        'list': 'bullet'
-                    }],
-                    [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    ['image', 'link', 'video'],
-                    [{ color: [] }, { background: [] }],
-                    [{
-                        'direction': 'rtl'
-                    }],
-                    ['clean']
-                ],
-                clipboard: {
-                    matchVisual: false
-                },
-                "emoji-toolbar": true,
-                "emoji-textarea": true,
-                "emoji-shortname": true,
-            },
-            theme: 'snow',
-            bounds: quillContainer
-        });
-        $.each(quillArray, function (key, quill) {
-            quill.getModule('toolbar').addHandler('image', selectLocalImage);
-        });
-
-
-    }
-
-    function destory_editor(selector) {
-        if ($(selector)[0]) {
-            var content = $(selector).find('.ql-editor').html();
-            $(selector).html(content);
-
-            $(selector).siblings('.ql-toolbar').remove();
-            $(selector + " *[class*='ql-']").removeClass(function (index, class_name) {
-                return (class_name.match(/(^|\s)ql-\S+/g) || []).join(' ');
             });
+        });
 
-            $(selector + "[class*='ql-']").removeClass(function (index, class_name) {
-                return (class_name.match(/(^|\s)ql-\S+/g) || []).join(' ');
-            });
-        } else {
-            console.error('editor not exists');
+        $('body').on('click', '.img-lightbox', function () {
+            const imageUrl = $(this).data('image-url');
+            const url = "{{ route('front.public.show_image') . '?image_url=' }}" + encodeURIComponent(imageUrl);
+            $(MODAL_XL + ' ' + MODAL_HEADING).html('...');
+            $.ajaxModal(MODAL_XL, url);
+        });
+
+        $('body').on('click', '.piechart-full-screen', function () {
+            const chartData = JSON.stringify($(this).data('chart-data'));
+            const chartId = $(this).data('chart-id');
+            const url = "{{ route('front.public.show_piechart') . '?chart_data=' }}" + encodeURIComponent(chartData) + "&chart_id=" + chartId;
+            $(MODAL_XL + ' ' + MODAL_HEADING).html('...');
+            $.ajaxModal(MODAL_XL, url);
+        });
+
+        function updateOnesignalPlayerId(userId) {
+            $.easyAjax({
+                url: '{{ route('profile.update_onesignal_id') }}',
+                type: 'POST',
+                data: {
+                    'userId': userId,
+                    '_token': '{{ csrf_token() }}'
+                }
+            })
         }
-    }
 
-    function quillMention(atValues, ID) {
-        const mentionItemTemplate = '<div class="mention-item"> <img src="{image}" class="mr-3 rounded align-self-start taskEmployeeImg">{name}</div>';
-
-        const customRenderItem = function (item, searchTerm) {
-            const html = mentionItemTemplate.replace('{image}', item.image).replace('{name}', item.value);
-            return html;
-        }
-        let placeholder;
-        if (ID === '#submitTexts') {
-            placeholder = "@lang('placeholders.message')";
-        } else {
-            placeholder = '';
+        if (SEARCH_KEYWORD !== '' && $('#search-text-field').length > 0) {
+            $('#search-text-field').val(SEARCH_KEYWORD);
+            $('#reset-filters').removeClass('d-none');
         }
 
-        const quillContainer = document.querySelector(ID);
+        $('body').on('click', '.show-hide-purchase-code', function () {
+            $('> .icon', this).toggleClass('fa-eye-slash fa-eye');
+            $(this).siblings('span').toggleClass('blur-code ');
+        });
 
-        quillArray[ID] = new Quill(ID, {
-            placeholder: placeholder,
-            modules: {
-                magicUrl: {
-                    urlRegularExpression: /(https?:\/\/[\S]+)|(www.[\S]+)|(tel:[\S]+)/g,
-                    globalRegularExpression: /(https?:\/\/|www\.|tel:)[\S]+/g,
-                },
-                toolbar: [
-                    [{
-                        header: [1, 2, 3, 4, 5, false]
-                    }],
-                    [{
-                        'list': 'ordered'
-                    }, {
-                        'list': 'bullet'
-                    }],
-                    [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }],
-                    ['bold', 'italic', 'underline', 'strike'],
-                    ['image', 'link', 'video'],
-                    [{ color: [] }, { background: [] }],
-                    [{
-                        'direction': 'rtl'
-                    }],
-                    ['clean']
-                ],
-                mention: {
-                    allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
-                    mentionDenotationChars: ["@", "#"],
-                    source: function (searchTerm, renderList, mentionChar) {
-                        let values;
-                        if (mentionChar === "@") {
-                            values = atValues;
-                        } else {
-                            values = hashValues;
-                        }
+    </script>
 
-                        if (searchTerm.length === 0) {
-                            renderList(values, searchTerm);
+    <script>
+        let quillArray = {};
 
-                        } else {
-                            const matches = [];
-                            for (i = 0; i < values.length; i++)
-                                if (
-                                    ~values[i].value
-                                        .toLowerCase()
-                                        .indexOf(searchTerm.toLowerCase())
-                                )
-                                    matches.push(values[i]);
-                            renderList(matches, searchTerm);
-                        }
+        function quillImageLoad(ID) {
+            const quillContainer = document.querySelector(ID);
+            quillArray[ID] = new Quill(ID, {
+                modules: {
+                    toolbar: [
+                        [{
+                            header: [1, 2, 3, 4, 5, false]
+                        }],
+                        [{
+                            'list': 'ordered'
+                        }, {
+                            'list': 'bullet'
+                        }],
+                        [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        ['image', 'link', 'video'],
+                        [{ color: [] }, { background: [] }],
+                        [{
+                            'direction': 'rtl'
+                        }],
+                        ['clean']
+                    ],
+                    clipboard: {
+                        matchVisual: false
                     },
-                    renderItem: customRenderItem,
-
+                    "emoji-toolbar": true,
+                    "emoji-textarea": true,
+                    "emoji-shortname": true,
                 },
-                clipboard: {
-                    matchVisual: false
-                },
-                "emoji-toolbar": true,
-                "emoji-textarea": true,
-                "emoji-shortname": true,
-            },
-            theme: 'snow',
-            bounds: quillContainer
-        });
+                theme: 'snow',
+                bounds: quillContainer
+            });
+            $.each(quillArray, function (key, quill) {
+                quill.getModule('toolbar').addHandler('image', selectLocalImage);
+            });
 
-        quillArray[ID].getModule('toolbar').addHandler('image', selectLocalImage);
-    }
 
-    /**
-     * click to open user profile
-     *
-     */
-    window.addEventListener('mention-clicked', function ({value}) {
-        if (value?.link) {
-            window.open(value.link, value?.target ?? '_blank');
         }
-    });
 
-    /**
-     * Step1. select local image
-     *
-     */
-    function selectLocalImage() {
-        const input = document.createElement('input');
-        input.setAttribute('type', 'file');
-        input.click();
+        function destory_editor(selector) {
+            if ($(selector)[0]) {
+                var content = $(selector).find('.ql-editor').html();
+                $(selector).html(content);
 
-        // Listen upload local image and save to server
-        input.onchange = () => {
-            const file = input.files[0];
+                $(selector).siblings('.ql-toolbar').remove();
+                $(selector + " *[class*='ql-']").removeClass(function (index, class_name) {
+                    return (class_name.match(/(^|\s)ql-\S+/g) || []).join(' ');
+                });
 
-            // file type is only image.
-            if (/^image\//.test(file.type)) {
-                saveToServer(file);
+                $(selector + "[class*='ql-']").removeClass(function (index, class_name) {
+                    return (class_name.match(/(^|\s)ql-\S+/g) || []).join(' ');
+                });
             } else {
-                console.warn('You could only upload images.');
+                console.error('editor not exists');
             }
-        };
-    }
+        }
 
-    /**
-     * Step2. save to server
-     *
-     * @param {File} file
-     */
-    function saveToServer(file) {
-        const fd = new FormData();
-        fd.append('image', file);
-        $.ajax({
-            type: 'POST',
-            url: "{{ route('image.store') }}",
-            dataType: "json",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: fd,
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                insertToEditor(response)
-            },
-        });
-    }
+        function quillMention(atValues, ID) {
+            const mentionItemTemplate = '<div class="mention-item"> <img src="{image}" class="mr-3 rounded align-self-start taskEmployeeImg">{name}</div>';
 
-    function insertToEditor(url) {
-        // push image url to rich editor.
-        $.each(quillArray, function (key, quill) {
-            try {
-                let range = quill.getSelection();
-                quill.insertEmbed(range.index, 'image', url);
-            } catch (err) {
+            const customRenderItem = function (item, searchTerm) {
+                const html = mentionItemTemplate.replace('{image}', item.image).replace('{name}', item.value);
+                return html;
+            }
+            let placeholder;
+            if (ID === '#submitTexts') {
+                placeholder = "@lang('placeholders.message')";
+            } else {
+                placeholder = '';
+            }
+
+            const quillContainer = document.querySelector(ID);
+
+            quillArray[ID] = new Quill(ID, {
+                placeholder: placeholder,
+                modules: {
+                    magicUrl: {
+                        urlRegularExpression: /(https?:\/\/[\S]+)|(www.[\S]+)|(tel:[\S]+)/g,
+                        globalRegularExpression: /(https?:\/\/|www\.|tel:)[\S]+/g,
+                    },
+                    toolbar: [
+                        [{
+                            header: [1, 2, 3, 4, 5, false]
+                        }],
+                        [{
+                            'list': 'ordered'
+                        }, {
+                            'list': 'bullet'
+                        }],
+                        [{ align: '' }, { align: 'center' }, { align: 'right' }, { align: 'justify' }],
+                        ['bold', 'italic', 'underline', 'strike'],
+                        ['image', 'link', 'video'],
+                        [{ color: [] }, { background: [] }],
+                        [{
+                            'direction': 'rtl'
+                        }],
+                        ['clean']
+                    ],
+                    mention: {
+                        allowedChars: /^[A-Za-z\sÅÄÖåäö]*$/,
+                        mentionDenotationChars: ["@", "#"],
+                        source: function (searchTerm, renderList, mentionChar) {
+                            let values;
+                            if (mentionChar === "@") {
+                                values = atValues;
+                            } else {
+                                values = hashValues;
+                            }
+
+                            if (searchTerm.length === 0) {
+                                renderList(values, searchTerm);
+
+                            } else {
+                                const matches = [];
+                                for (i = 0; i < values.length; i++)
+                                    if (
+                                        ~values[i].value
+                                            .toLowerCase()
+                                            .indexOf(searchTerm.toLowerCase())
+                                    )
+                                        matches.push(values[i]);
+                                renderList(matches, searchTerm);
+                            }
+                        },
+                        renderItem: customRenderItem,
+
+                    },
+                    clipboard: {
+                        matchVisual: false
+                    },
+                    "emoji-toolbar": true,
+                    "emoji-textarea": true,
+                    "emoji-shortname": true,
+                },
+                theme: 'snow',
+                bounds: quillContainer
+            });
+
+            quillArray[ID].getModule('toolbar').addHandler('image', selectLocalImage);
+        }
+
+        /**
+         * click to open user profile
+         *
+         */
+        window.addEventListener('mention-clicked', function ({ value }) {
+            if (value?.link) {
+                window.open(value.link, value?.target ?? '_blank');
             }
         });
-    }
 
-    function checkboxChange(parentClass, id) {
-        var checkedData = '';
-        $('.' + parentClass).find("input[type='checkbox']:checked").each(function() {
-            checkedData = (checkedData !== '') ? checkedData + ', ' + $(this).val() : $(this).val();
-        });
-        $('#' + id).val(checkedData);
-    }
-</script>
+        /**
+         * Step1. select local image
+         *
+         */
+        function selectLocalImage() {
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.click();
 
-<script>
-    $('body').on('click', '#pause-timer-btn, .pause-active-timer', function () {
-        const id = $(this).data('time-id');
-        let url = "{{ route('timelogs.pause_timer', ':id') }}";
-        url = url.replace(':id', id);
-        const token = '{{ csrf_token() }}';
+            // Listen upload local image and save to server
+            input.onchange = () => {
+                const file = input.files[0];
 
-        let currentUrl = $(this).data('url');
+                // file type is only image.
+                if (/^image\//.test(file.type)) {
+                    saveToServer(file);
+                } else {
+                    console.warn('You could only upload images.');
+                }
+            };
+        }
 
-        $.easyAjax({
-            url: url,
-            blockUI: true,
-            type: "POST",
-            disableButton: true,
-            buttonSelector: "#pause-timer-btn",
-            data: {
-                timeId: id,
-                currentUrl: currentUrl,
-                _token: token
-            },
-            success: function (response) {
-                if (response.status === 'success') {
-                    if ($('#myActiveTimer').length > 0) {
-                        $(MODAL_XL + ' .modal-content').html(response.html);
+        /**
+         * Step2. save to server
+         *
+         * @param {File} file
+         */
+        function saveToServer(file) {
+            const fd = new FormData();
+            fd.append('image', file);
+            $.ajax({
+                type: 'POST',
+                url: "{{ route('image.store') }}",
+                dataType: "json",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: fd,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    insertToEditor(response)
+                },
+            });
+        }
+
+        function insertToEditor(url) {
+            // push image url to rich editor.
+            $.each(quillArray, function (key, quill) {
+                try {
+                    let range = quill.getSelection();
+                    quill.insertEmbed(range.index, 'image', url);
+                } catch (err) {
+                }
+            });
+        }
+
+        function checkboxChange(parentClass, id) {
+            var checkedData = '';
+            $('.' + parentClass).find("input[type='checkbox']:checked").each(function () {
+                checkedData = (checkedData !== '') ? checkedData + ', ' + $(this).val() : $(this).val();
+            });
+            $('#' + id).val(checkedData);
+        }
+    </script>
+
+    <script>
+        $('body').on('click', '#pause-timer-btn, .pause-active-timer', function () {
+            const id = $(this).data('time-id');
+            let url = "{{ route('timelogs.pause_timer', ':id') }}";
+            url = url.replace(':id', id);
+            const token = '{{ csrf_token() }}';
+
+            let currentUrl = $(this).data('url');
+
+            $.easyAjax({
+                url: url,
+                blockUI: true,
+                type: "POST",
+                disableButton: true,
+                buttonSelector: "#pause-timer-btn",
+                data: {
+                    timeId: id,
+                    currentUrl: currentUrl,
+                    _token: token
+                },
+                success: function (response) {
+                    if (response.status === 'success') {
+                        if ($('#myActiveTimer').length > 0) {
+                            $(MODAL_XL + ' .modal-content').html(response.html);
+
+                            if ($('#allTasks-table').length) {
+                                window.LaravelDataTables["allTasks-table"].draw(true);
+                            }
+                        }
 
                         if ($('#allTasks-table').length) {
                             window.LaravelDataTables["allTasks-table"].draw(true);
                         }
-                    }
 
-                    if ($('#allTasks-table').length) {
-                        window.LaravelDataTables["allTasks-table"].draw(true);
+                        if (response.reload === 'yes') {
+                            window.location.reload();
+                        } else {
+                            $('#timer-clock').html(response.clockHtml);
+                        }
                     }
+                }
+            })
+        });
 
-                    if (response.reload === 'yes') {
-                        window.location.reload();
-                    } else {
+        $('body').on('click', '#resume-timer-btn, .resume-active-timer', function () {
+            const id = $(this).data('time-id');
+            let url = "{{ route('timelogs.resume_timer', ':id') }}";
+            url = url.replace(':id', id);
+            const token = '{{ csrf_token() }}';
+
+            let currentUrl = $(this).data('url');
+
+            $.easyAjax({
+                url: url,
+                blockUI: true,
+                type: "POST",
+                disableButton: true,
+                buttonSelector: "#resume-timer-btn",
+                data: {
+                    timeId: id,
+                    currentUrl: currentUrl,
+                    _token: token
+                },
+                success: function (response) {
+
+                    if (response.status === 'success') {
+                        if ($('#myActiveTimer').length > 0) {
+                            $(MODAL_XL + ' .modal-content').html(response.html);
+                        }
+
                         $('#timer-clock').html(response.clockHtml);
+                        if ($('#allTasks-table').length) {
+                            window.LaravelDataTables["allTasks-table"].draw(true);
+                        }
+
+                        if (response.reload === 'yes') {
+                            window.location.reload();
+                        }
                     }
                 }
-            }
-        })
-    });
+            })
+        });
 
-    $('body').on('click', '#resume-timer-btn, .resume-active-timer', function () {
-        const id = $(this).data('time-id');
-        let url = "{{ route('timelogs.resume_timer', ':id') }}";
-        url = url.replace(':id', id);
-        const token = '{{ csrf_token() }}';
-
-        let currentUrl = $(this).data('url');
-
-        $.easyAjax({
-            url: url,
-            blockUI: true,
-            type: "POST",
-            disableButton: true,
-            buttonSelector: "#resume-timer-btn",
-            data: {
-                timeId: id,
-                currentUrl: currentUrl,
-                _token: token
-            },
-            success: function (response) {
-
-                if (response.status === 'success') {
-                    if ($('#myActiveTimer').length > 0) {
-                        $(MODAL_XL + ' .modal-content').html(response.html);
-                    }
-
-                    $('#timer-clock').html(response.clockHtml);
-                    if ($('#allTasks-table').length) {
-                        window.LaravelDataTables["allTasks-table"].draw(true);
-                    }
-
-                    if (response.reload === 'yes') {
-                        window.location.reload();
-                    }
-                }
-            }
-        })
-    });
-
-    $('body').on('click', '.stop-active-timer', function() {
+        $('body').on('click', '.stop-active-timer', function () {
             var url = "{{ route('timelogs.stopper_alert', ':id') }}?via=timelog";
             var id = $(this).data('time-id');
             url = url.replace(':id', id);
             $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
             $.ajaxModal(MODAL_LG, url);
-    });
-</script>
-
-@if (in_array('messages', user_modules()))
-    <script>
-        function newMessageNotificationPlay() {
-            var audio = new Audio("{{ asset('message-notification.mp3') }}");
-            audio.play();
-        }
-
-        function checkNewMessage() {
-            var url = "{{ route('messages.check_new_message') }}";
-            var token = "{{ csrf_token() }}";
-
-            $.easyAjax({
-                url: url,
-                type: "POST",
-                data: {
-                    '_token': token,
-                },
-                success: function (response) {
-                    if (response.new_message_count > 0) {
-                        newMessageNotificationPlay();
-                        Swal.fire({
-                            icon: 'info',
-                            text: 'New message received.',
-
-                            toast: true,
-                            position: "top-end",
-                            timer: 3000,
-                            timerProgressBar: true,
-                            showConfirmButton: false,
-
-                            customClass: {
-                                confirmButton: "btn btn-primary",
-                            },
-                            showClass: {
-                                popup: "swal2-noanimation",
-                                backdrop: "swal2-noanimation",
-                            },
-                        });
-                    }
-                }
-            });
-        }
-
-    @if(!user()->is_superadmin)
-        // if (message_setting.send_sound_notification == 1 && !(pusher_setting.status === 1 && pusher_setting.messages === 1)) {
-        //     window.setInterval(function () {
-        //         checkNewMessage()
-        //     }, 10000); // Check messages every 10 seconds
-        // }
-    @endif
-
+        });
     </script>
-@endif
+
+    @if (in_array('messages', user_modules()))
+        <script>
+            function newMessageNotificationPlay() {
+                var audio = new Audio("{{ asset('message-notification.mp3') }}");
+                audio.play();
+            }
+
+            function checkNewMessage() {
+                var url = "{{ route('messages.check_new_message') }}";
+                var token = "{{ csrf_token() }}";
+
+                $.easyAjax({
+                    url: url,
+                    type: "POST",
+                    data: {
+                        '_token': token,
+                    },
+                    success: function (response) {
+                        if (response.new_message_count > 0) {
+                            newMessageNotificationPlay();
+                            Swal.fire({
+                                icon: 'info',
+                                text: 'New message received.',
+
+                                toast: true,
+                                position: "top-end",
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: false,
+
+                                customClass: {
+                                    confirmButton: "btn btn-primary",
+                                },
+                                showClass: {
+                                    popup: "swal2-noanimation",
+                                    backdrop: "swal2-noanimation",
+                                },
+                            });
+                        }
+                    }
+                });
+            }
+
+            @if(!user()->is_superadmin)
+                // if (message_setting.send_sound_notification == 1 && !(pusher_setting.status === 1 && pusher_setting.messages === 1)) {
+                //     window.setInterval(function () {
+                //         checkNewMessage()
+                //     }, 10000); // Check messages every 10 seconds
+                // }
+            @endif
+
+        </script>
+    @endif
 
 </body>
 

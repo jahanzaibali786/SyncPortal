@@ -1,6 +1,7 @@
 <!-- SIDEBAR START -->
 
 <aside class="{{ !user()->dark_theme ? 'sidebar-' . $appTheme->sidebar_theme : '' }}">
+                            {{-- @dd(companyOrGlobalSetting()->logo_url, companyOrGlobalSetting()->dark_logo_url, $appTheme->sidebar_theme, $appTheme->sidebar_theme == "dark" && companyOrGlobalSetting()->dark_logo_url) --}}
 
     <!-- MOBILE CLOSE SIDEBAR PANEL START -->
 
@@ -23,60 +24,59 @@
         <div class="sidebar-brand-box dropdown cursor-pointer {{ user()->dark_theme ? 'bg-dark' : 'bg-light' }}">
 
             <div class="dropdown-toggle sidebar-brand d-flex align-items-center justify-content-between  w-100"
-
                 type="link" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
 
 
                 @if (companyOrGlobalSetting()->sidebar_logo_style !== 'full')
 
-                    <!-- SIDEBAR BRAND NAME START FOR LIGHT THEME-->
+                            <!-- SIDEBAR BRAND NAME START FOR LIGHT THEME-->
 
-                    {{-- <div class="sidebar-brand-name">
+                            {{-- <div class="sidebar-brand-name">
 
-                        <h1 class="mb-0 f-16 f-w-500 text-white-shade mt-0" data-placement="bottom" data-toggle="tooltip"
+                                <h1 class="mb-0 f-16 f-w-500 text-white-shade mt-0" data-placement="bottom" data-toggle="tooltip"
+                                    data-original-title="{{ $appName }}">{{ $appName }}
 
-                            data-original-title="{{ $appName }}">{{ $appName }}
+                                    <i class="icon-arrow-down icons pl-2"></i>
 
-                            <i class="icon-arrow-down icons pl-2"></i>
+                                </h1>
 
-                        </h1>
+                                <div class="mb-0 position-relative pro-name">
 
-                        <div class="mb-0 position-relative pro-name">
+                                    <span class="bg-light-green rounded-circle"></span>
 
-                            <span class="bg-light-green rounded-circle"></span>
+                                    <p class="f-13 text-lightest mb-0" data-placement="bottom" data-toggle="tooltip"
+                                        data-original-title="{{ $userName }}">{{ $userName }}</p>
 
-                            <p class="f-13 text-lightest mb-0" data-placement="bottom" data-toggle="tooltip"
+                                </div>
 
-                                data-original-title="{{ $userName }}">{{ $userName }}</p>
+                            </div> --}}
 
-                        </div>
+                            <!-- SIDEBAR BRAND NAME END -->
 
-                    </div> --}}
+                            <!-- SIDEBAR BRAND LOGO START FOR LIGHT THEME-->
 
-                    <!-- SIDEBAR BRAND NAME END -->
+                            {{-- <div class="sidebar-brand-logo">
 
-                    <!-- SIDEBAR BRAND LOGO START FOR LIGHT THEME-->
+                                <img src="{{ companyOrGlobalSetting()->logo_url }}">
 
-                    {{-- <div class="sidebar-brand-logo">
+                            </div> --}}
 
-                        <img src="{{ companyOrGlobalSetting()->logo_url }}">
 
-                    </div> --}}
+                            <div class="sidebar-brand-name mx-auto">
 
-                    <div class="sidebar-brand-name mx-auto">
+                                <h1 class="mb-0 f-16 f-w-500 text-white-shade mt-0 d-flex justify-content-center mx-auto"
+                                    data-placement="bottom" data-toggle="tooltip" data-original-title="{{ $appName }}">
 
-                        <h1 class="mb-0 f-16 f-w-500 text-white-shade mt-0 d-flex justify-content-center mx-auto" data-placement="bottom"
+                                    <img src="{{ $appTheme->sidebar_theme == "dark" && companyOrGlobalSetting()->dark_logo_url
+                                        ? companyOrGlobalSetting()->dark_logo_url
+                                        : companyOrGlobalSetting()->logo_url }}">
 
-                            data-toggle="tooltip" data-original-title="{{ $appName }}">
+                                </h1>
 
-                            <img src="{{ companyOrGlobalSetting()->logo_url }}">
+                            </div>
 
-                        </h1>
-
-                    </div>
-
-                    <!-- SIDEBAR BRAND LOGO END -->
+                            <!-- SIDEBAR BRAND LOGO END -->
 
                 @else
 
@@ -84,9 +84,8 @@
 
                     <div class="sidebar-brand-name mx-auto">
 
-                        <h1 class="mb-0 f-16 f-w-500 text-white-shade mt-0 d-flex justify-content-center mx-auto" data-placement="bottom"
-
-                            data-toggle="tooltip" data-original-title="{{ $appName }}">
+                        <h1 class="mb-0 f-16 f-w-500 text-white-shade mt-0 d-flex justify-content-center mx-auto"
+                            data-placement="bottom" data-toggle="tooltip" data-original-title="{{ $appName }}">
 
                             <img src="{{ companyOrGlobalSetting()->logo_url }}">
 
@@ -112,7 +111,7 @@
 
             <!-- DROPDOWN - INFORMATION -->
 
-         <!--   <div class="dropdown-menu dropdown-menu-right sidebar-brand-dropdown ml-3"
+            <!--   <div class="dropdown-menu dropdown-menu-right sidebar-brand-dropdown ml-3"
 
                 aria-labelledby="dropdownMenuLink" tabindex="0">
 
@@ -266,7 +265,7 @@
 
         <!--UPGRADE BUTTON -->
 
-        
+
 
         <!--UPGRADE BUTTON -->
 
@@ -279,8 +278,8 @@
     <!-- Sidebar Toggler -->
 
     {{-- <div
-
-        class="text-center d-flex justify-content-between align-items-center position-fixed sidebarTogglerBox {{ user()->dark_theme ? 'bg-dark' : '' }}"> --}}
+        class="text-center d-flex justify-content-between align-items-center position-fixed sidebarTogglerBox {{ user()->dark_theme ? 'bg-dark' : '' }}">
+        --}}
 
         {{-- <button class="border-0 d-lg-block d-none text-lightest font-weight-bold" id="sidebarToggle"></button> --}}
 
@@ -290,29 +289,35 @@
 
             @if(isWorksuite() || user()->is_superadmin)
 
-                <button  type="button" class="btn px-2 py-1 btn-primary btn-sm f-10 pull-left" data-toggle="modal" data-target="#raiseSupportTicketModal">
+            <button type="button" class="btn px-2 py-1 btn-primary btn-sm f-10 pull-left" data-toggle="modal"
+                data-target="#raiseSupportTicketModal">
 
-                    Raise Support Ticket
+                Raise Support Ticket
 
-                </button>
+            </button>
 
-                <p class="mb-0 text-dark-grey px-1 py-0 rounded f-10">v{{ \Illuminate\Support\Facades\File::get('version.txt') }}</p>
+            <p class="mb-0 text-dark-grey px-1 py-0 rounded f-10">v{{
+                \Illuminate\Support\Facades\File::get('version.txt') }}</p>
 
             @endif
 
             @if(isWorksuiteSaas())
 
-                @if (in_array('admin', user_roles()) )
+            @if (in_array('admin', user_roles()) )
 
-                    <p class="mb-0"><a href="{{ route('superadmin.faqs.index') }}" class="text-secondary ml-2 f-15" data-toggle="tooltip" data-original-title="{{__('superadmin.contactSupport')}}"><i class="fa fa-question-circle"></i></a></p>
+            <p class="mb-0"><a href="{{ route('superadmin.faqs.index') }}" class="text-secondary ml-2 f-15"
+                    data-toggle="tooltip" data-original-title="{{__('superadmin.contactSupport')}}"><i
+                        class="fa fa-question-circle"></i></a></p>
 
-                @elseif(user()->is_superadmin && !global_setting()->frontend_disable)
+            @elseif(user()->is_superadmin && !global_setting()->frontend_disable)
 
-                    <p class="mb-0"><a target="_blank" data-toggle="tooltip" data-original-title="{{__('superadmin.VisitFrontWebsite')}}" href="{{ route('front.home') }}" class="text-secondary ml-2 f-15"><i class="fa fa-external-link-alt"></i></a></p>
+            <p class="mb-0"><a target="_blank" data-toggle="tooltip"
+                    data-original-title="{{__('superadmin.VisitFrontWebsite')}}" href="{{ route('front.home') }}"
+                    class="text-secondary ml-2 f-15"><i class="fa fa-external-link-alt"></i></a></p>
 
-                 @endif
+            @endif
 
-             @endif
+            @endif
 
 
 
@@ -322,39 +327,39 @@
 
             {{-- <div class="py-3 border-top border-2 mt-4 border-bottom UpgradeBtnContainer"> --}}
 
-            {{-- <div class="py-2 mt-2 UpgradeBtnContainer">
+                {{-- <div class="py-2 mt-2 UpgradeBtnContainer">
 
-                <button class="text-white">Upgrade Plan</button>
+                    <button class="text-white">Upgrade Plan</button>
 
-            </div> --}}
+                </div> --}}
 
-            {{-- <div class="py-2 px-4 userinfo">
+                {{-- <div class="py-2 px-4 userinfo">
 
-                <div class="d-flex mx-auto align-items-center">
+                    <div class="d-flex mx-auto align-items-center">
 
-                    <img src="https://avatar.iran.liara.run/public/29" alt="user" class="rounded-circle avatar" />
+                        <img src="https://avatar.iran.liara.run/public/29" alt="user" class="rounded-circle avatar" />
 
-                    <div class=" fw-bold pl-2">
+                        <div class=" fw-bold pl-2">
 
-                        <div class="welcome fs-xs">Welcome back 👋</div>
+                            <div class="welcome fs-xs">Welcome back 👋</div>
 
-                        <div class="fw-bold username">{{ user()->name }}</div>
+                            <div class="fw-bold username">{{ user()->name }}</div>
+
+                        </div>
 
                     </div>
 
-                </div>
+                </div> --}}
 
-            </div> --}}
+                {{-- </div> --}}
 
-        {{-- </div> --}}
+            {{-- </div> --}}
 
-    {{-- </div> --}}
-
-    <!-- Sidebar Toggler -->
+        <!-- Sidebar Toggler -->
 
 
 
-    @include('sections.raise-support-ticket-modal')
+        @include('sections.raise-support-ticket-modal')
 
 </aside>
 
@@ -364,11 +369,11 @@
 
 <script>
 
-    $(document).ready(function() {
+    $(document).ready(function () {
 
 
 
-        $('.invite-member').click(function() {
+        $('.invite-member').click(function () {
 
             const url = "{{ route('employees.invite_member') }}";
 
@@ -380,7 +385,7 @@
 
 
 
-        $('#dark-theme-toggle').change(function() {
+        $('#dark-theme-toggle').change(function () {
 
             const darkTheme = ($(this).is(':checked')) ? '1' : '0'
 
@@ -402,7 +407,7 @@
 
                 },
 
-                success: function(response) {
+                success: function (response) {
 
                     if (response.status === 'success') {
 
@@ -423,4 +428,3 @@
     });
 
 </script>
-

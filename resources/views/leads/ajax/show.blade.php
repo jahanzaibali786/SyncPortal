@@ -1,8 +1,8 @@
 @php
-$viewClientNote = user()->permission('view_deal_note');
-$viewProposalPermission = user()->permission('view_lead_proposals');
-$viewLeadFilePermission = user()->permission('view_lead_files');
-$viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
+    $viewClientNote = user()->permission('view_deal_note');
+    $viewProposalPermission = user()->permission('view_lead_proposals');
+    $viewLeadFilePermission = user()->permission('view_lead_files');
+    $viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
 @endphp
 
 <div id="task-detail-section">
@@ -20,16 +20,16 @@ $viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
                         <div class="dropdown-menu dropdown-menu-right border-grey rounded b-shadow-4 p-0"
                                 aria-labelledby="dropdownMenuLink" tabindex="0">
                             <a class="dropdown-item openRightModal"
-                                href="{{ route('deals.edit', $deal->id).'?tab=overview' }}">@lang('app.edit')</a>
+                                href="{{ route('deals.edit', $deal->id) . '?tab=overview' }}">@lang('app.edit')</a>
                             @if (
-                                $deleteLeadPermission == 'all'
-                                || ($deleteLeadPermission == 'added' && user()->id == $deal->added_by)
-                                || ($deleteLeadPermission == 'owned' && ((!is_null($deal->agent_id) && user()->id == $deal->leadAgent->user->id) || (!is_null($deal->deal_watcher) && user()->id == $deal->deal_watcher)))
-                                || ($deleteLeadPermission == 'both' &&  (((!is_null($deal->agent_id) && user()->id == $deal->leadAgent->user->id) || (!is_null($deal->deal_watcher) && user()->id == $deal->deal_watcher)) || user()->id == $deal->added_by))
-                            )
-                                <a class="dropdown-item delete-table-row" href="javascript:;" data-id="{{ $deal->id }}">
-                                    @lang('app.delete')
-                                </a>
+                                    $deleteLeadPermission == 'all'
+                                    || ($deleteLeadPermission == 'added' && user()->id == $deal->added_by)
+                                    || ($deleteLeadPermission == 'owned' && ((!is_null($deal->agent_id) && user()->id == $deal->leadAgent->user->id) || (!is_null($deal->deal_watcher) && user()->id == $deal->deal_watcher)))
+                                    || ($deleteLeadPermission == 'both' && (((!is_null($deal->agent_id) && user()->id == $deal->leadAgent->user->id) || (!is_null($deal->deal_watcher) && user()->id == $deal->deal_watcher)) || user()->id == $deal->added_by))
+                                )
+                                                                                                                                                                                                        <a class="dropdown-item delete-table-row" href="javascript:;" data-id="{{ $deal->id }}">
+                                                                                                                                                                                                            @lang('app.delete')
+                                                                                                                                                                                                        </a>
                             @endif
                         </div>
                     </div>
@@ -113,7 +113,7 @@ $viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
                         <p class="mb-0 text-lightest f-14 w-30 d-inline-block">@lang('app.status')</p>
                         <p class="mb-0 text-dark-grey f-14">
                             <x-status :value="$deal->leadStatus->type"
-                                        :style="'color:'.$deal->leadStatus->label_color"/>
+                                        :style="'color:' . $deal->leadStatus->label_color"/>
                         </p>
                     </div>
                 @endif
@@ -123,8 +123,7 @@ $viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
                 <x-cards.data-row :label="__('modules.deal.dealValue')"
                                     :value="($deal->value) ? currency_format($deal->value, $deal->currency_id) : '--'"/>
                 <x-cards.data-row :label="__('modules.lead.products')"
-                                    :value="($productNames) ? implode(', ' , $productNames) : '--'"/>
-
+                                    :value="($productNames) ? implode(', ', $productNames) : '--'"/>
                 {{-- Custom fields data --}}
                 <x-forms.custom-field-show :fields="$fields" :model="$deal"></x-forms.custom-field-show>
             </x-cards.data>
@@ -135,34 +134,34 @@ $viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
                     <x-tab-section class="deal-tabs">
                         @if($viewLeadFilePermission != 'none')
                             <x-tab-item class="ajax-tab files" :active="(request('tab') === 'files' || !request('tab'))"
-                                            :link="route('deals.show', $deal->id).'?tab=files'">@lang('modules.lead.file')</x-tab-item>
+                                            :link="route('deals.show', $deal->id) . '?tab=files'">@lang('modules.lead.file')</x-tab-item>
                         @endif
                         @if($viewLeadFollowupPermission != 'none')
                             <x-tab-item class="ajax-tab follow-up" :active="request('tab') === 'follow-up'"
-                                            :link="route('deals.show', $deal->id).'?tab=follow-up'">@lang('modules.lead.followUp')</x-tab-item>
+                                            :link="route('deals.show', $deal->id) . '?tab=follow-up'">@lang('modules.lead.followUp')</x-tab-item>
                         @endif
                         @if($viewProposalPermission != 'none')
                             <x-tab-item class="ajax-tab proposals" :active="request('tab') === 'proposals'"
-                                            :link="route('deals.show', $deal->id).'?tab=proposals'">@lang('modules.lead.proposal')</x-tab-item>
+                                            :link="route('deals.show', $deal->id) . '?tab=proposals'">@lang('modules.lead.proposal')</x-tab-item>
                         @endif
                         @if ($viewClientNote != 'none')
                             <x-tab-item class="ajax-tab notes" :active="request('tab') === 'notes'"
-                                            :link="route('deals.show', $deal->id).'?tab=notes'">@lang('app.notes')</x-tab-item>
+                                            :link="route('deals.show', $deal->id) . '?tab=notes'">@lang('app.notes')</x-tab-item>
                         @endif
                         @if ($gdpr->enable_gdpr)
                             <x-tab-item class="ajax-tab gdpr" :active="request('tab') === 'gdpr'"
-                                        :link="route('deals.show', $deal->id).'?tab=gdpr'">@lang('app.menu.gdpr')</x-tab-item>
+                                        :link="route('deals.show', $deal->id) . '?tab=gdpr'">@lang('app.menu.gdpr')</x-tab-item>
                         @endif
                         <x-tab-item class="ajax-tab history" :active="request('tab') === 'history'"
-                                    :link="route('deals.show', $deal->id).'?tab=history'">@lang('modules.tasks.history')</x-tab-item>
+                                    :link="route('deals.show', $deal->id) . '?tab=history'">@lang('modules.tasks.history')</x-tab-item>
                         <x-tab-item class="ajax-tab meeting-tab"  
                             :active="request('tab') == 'meeting'"  
-                            :link="route('deals.show', $deal->id).'?tab=meeting'">
+                            :link="route('deals.show', $deal->id) . '?tab=meeting'">
                             @lang('modules.meeting.meeting')
                         </x-tab-item>
                         <x-tab-item class="ajax-tab call-tab"
                             :active="request('tab') === 'call'"
-                            :link="route('deals.show', $deal->id).'?tab=call'">
+                            :link="route('deals.show', $deal->id) . '?tab=call'">
                             @lang('modules.call.call')
                         </x-tab-item>
                     </x-tab-section>
@@ -195,12 +194,133 @@ $viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
                     labelClasses="f-13 text-muted"
                 />
                 
-                <x-cards.data-row 
+                {{-- <x-cards.data-row 
                     :label="__('modules.lead.mobile')" 
                     :value="$deal->contact->mobile ?? '--'" 
                     otherClasses="mb-3" 
                     labelClasses="f-13 text-muted"
                 />
+
+                @php
+                    // Split comma-separated values and clean up spaces
+                    $cellNumbers = $deal->contact->cell ? array_map('trim', explode(',', $deal->contact->cell)) : [];
+                @endphp
+                            
+                @if(count($cellNumbers))
+                    <div class="ml-4">
+                        @foreach($cellNumbers as $number)
+                            <div class="d-flex align-items-center mb-1">
+                                <span class="mr-2">{{ $number }}</span>
+                                <button type="button" class="btn btn-sm btn-light border">
+                                    <i class="fa fa-phone text-success"></i>
+                                </button>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="ml-4 text-muted">--</div>
+                @endif --}}
+
+                @php
+                    $cellRaw = $deal->contact->cell;
+                    $cellNumbers = [];
+
+                    if ($cellRaw) {
+                        $decoded = json_decode($cellRaw, true);
+                        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                            $cellNumbers = $decoded;
+                        } else {
+                            $split = array_filter(array_map('trim', explode(',', $cellRaw)));
+                            foreach ($split as $num) {
+                                $cellNumbers[""] = isset($cellNumbers[""]) ? $cellNumbers[""] . ',' . $num : $num;
+                            }
+                        }
+                    }
+                @endphp
+
+                @php
+                    $cellRaw = $deal->contact->cell;
+                    $cellNumbers = [];
+
+                    if ($cellRaw) {
+                        $decoded = json_decode($cellRaw, true);
+                        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                            $cellNumbers = $decoded;
+                        } else {
+                            $split = array_filter(array_map('trim', explode(',', $cellRaw)));
+                            foreach ($split as $num) {
+                                $cellNumbers[""] = isset($cellNumbers[""]) ? $cellNumbers[""] . ',' . $num : $num;
+                            }
+                        }
+                    }
+                @endphp
+
+
+                {{-- PRIMARY MOBILE ROW --}}
+                <x-cards.data-row 
+                    :label="__('modules.lead.mobile')" 
+                    otherClasses="" 
+                    labelClasses="f-13 text-muted"
+                >
+                    <div class="d-flex align-items-center">
+                        <span>{{ $deal->contact->mobile ?? '--' }}</span>
+                        @if(!empty($deal->contact->mobile))
+                            <button type="button" class="btn btn-sm call">
+                                <i class="fa fa-phone text-primary"></i>
+                            </button>
+                        @endif
+
+                        {{-- ➕ Add new button --}}
+                        <button type="button" class="btn btn-sm ml-2 text-success" id="add-cell-btn">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                </x-cards.data-row>
+
+
+
+                {{-- EXISTING CELL NUMBERS --}}
+                <div id="cell-container">
+                @foreach($cellNumbers as $name => $numbers)
+                    @foreach(explode(',', $numbers) as $number)
+                        <x-cards.data-row 
+                            :label="$name ? strtoupper($name) . ':' : ''" 
+                            otherClasses="mb-2" 
+                            labelClasses="f-13 text-muted"
+                        >
+                            <div class="d-flex align-items-center">
+                                <span>{{ $number }}</span>
+                                <button type="button" class="btn btn-sm call">
+                                    <i class="fa fa-phone text-primary"></i>
+                                </button>
+                            </div>
+                        </x-cards.data-row>
+                    @endforeach
+                @endforeach
+                </div>
+
+
+
+                {{-- ADD NEW CONTACT FORM --}}
+                <div id="new-cell-form" class="mt-2" style="display:none;">
+
+                    <div class="col-12 px-0 pb-2 d-lg-flex d-md-flex d-block">
+        <input type="text" id="new-cell-name" class="form-control form-control-sm mr-2 w-25 f-13 mt-1" style="height: 23.1px;" placeholder="Name">
+        <div class="mb-0 text-dark-grey f-13 w-70 text-wrap mb-2">
+            <div class="d-flex align-items-center mb-1">
+                            
+                            <input type="text" id="new-cell-number" class="form-control form-control-sm mr-2 w-50" placeholder="Number">
+                            <button type="button" class="btn btn-sm text-success" id="save-cell-btn">
+                                <i class="fa fa-check"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm text-danger" id="cancel-cell-btn">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+        </div>
+    </div>
+                </div>
+
 
                 <x-cards.data-row 
                     :label="__('modules.lead.companyName')"
@@ -234,20 +354,20 @@ $viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
                     @endif
                 </div>
             </x-cards.data>
+
+            <!-- Description (Quill) -->
             <x-cards.data :title="__('modules.leadContact.description')" class="description-card">
                 <form id="updateLeadNoteForm" class="mb-0">
                     @csrf
                     <input type="hidden" name="deal_id" value="{{ $deal->id }}">
 
                     <div class="form-group mb-3">
-                        <textarea 
-                            name="note" 
-                            id="lead-note-editor" 
-                            rows="8" 
-                            class="form-control border-grey"
-                            placeholder="@lang('placeholders.description')"
-                            style="resize: vertical; min-height: 120px;"
-                        >{!! $deal->lead->note ?? '' !!}</textarea>
+                        {{-- Quill editor container --}}
+                        <div id="lead-note-quill" style="min-height: 150px;background:#fff;">
+                        </div>
+
+                        {{-- Hidden textarea to keep form compatibility / fallback --}}
+                        <textarea name="note" id="lead-note-html" class="d-none"></textarea>
                     </div>
 
                     <div class="d-flex justify-content-end">
@@ -267,18 +387,19 @@ $viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
             padding: 1.5rem;
         }
         
-        .description-card textarea {
-            border-radius: 8px;
+        /* keep Quill area visually similar to previous textarea */
+        .ql-container {
             border: 1px solid #e9ecef;
             font-size: 14px;
             line-height: 1.5;
+            min-height: 120px;
         }
-        
-        .description-card textarea:focus {
-            border-color: #80bdff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        .ql-editor{
+            min-height: 120px !important;
         }
-        
+        .ql-toolbar.ql-snow{
+            background: #ECF0F5
+        }
         .gap-2 > * {
             margin-right: 0.5rem;
         }
@@ -307,239 +428,218 @@ $viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
         }
     </style>
 
-    <!-- Scripts remain the same -->
-    <script>
-    (function () {
-        const TEXTAREA_ID = 'lead-note-editor';
-        const MAX_RETRIES = 25;
-        const RETRY_DELAY = 200;
-
-        function loadCkeditorIfNeeded(callback) {
-            if (window.CKEDITOR) {
-                return callback();
-            }
-
-            const existing = document.querySelector('script[data-ckeditor-loader]');
-            if (!existing) {
-                const s = document.createElement('script');
-                s.src = 'https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js';
-                s.async = true;
-                s.setAttribute('data-ckeditor-loader', '1');
-                s.onload = function () {
-                    callback();
-                };
-                s.onerror = function () {
-                    console.error('Failed to load CKEditor script.');
-                    callback();
-                };
-                document.head.appendChild(s);
-            } else {
-                let waitCount = 0;
-                const wait = setInterval(function () {
-                    if (window.CKEDITOR || ++waitCount > 50) {
-                        clearInterval(wait);
-                        callback();
-                    }
-                }, 100);
-            }
-        }
-
-        function initCKEditorWithRetry(attempt = 0) {
-            const textarea = document.getElementById(TEXTAREA_ID);
-            if (!textarea) {
-                if (attempt < MAX_RETRIES) {
-                    setTimeout(() => initCKEditorWithRetry(attempt + 1), RETRY_DELAY);
-                }
-                return;
-            }
-
-            if (!window.CKEDITOR) {
-                if (attempt < MAX_RETRIES) {
-                    setTimeout(() => initCKEditorWithRetry(attempt + 1), RETRY_DELAY);
-                } else {
-                    console.warn('CKEditor not available after retries, using fallback textarea.');
-                }
-                return;
-            }
-
-            try {
-                if (CKEDITOR.instances[TEXTAREA_ID]) {
-                    CKEDITOR.instances[TEXTAREA_ID].destroy(true);
-                }
-            } catch (err) {
-                console.warn('Error destroying CKEditor instance:', err);
-            }
-
-            try {
-                CKEDITOR.replace(TEXTAREA_ID, {
-                    height: 150,
-                    removePlugins: 'elementspath',
-                    toolbarGroups: [
-                        { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
-                        { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align'] },
-                        { name: 'styles' },
-                        { name: 'colors' },
-                        { name: 'tools' }
-                    ],
-                });
-
-                const inst = CKEDITOR.instances[TEXTAREA_ID];
-                if (inst) {
-                    inst.on('instanceReady', function () {
-                        // Editor ready
-                    });
-                }
-            } catch (err) {
-                if (attempt < MAX_RETRIES) {
-                    setTimeout(() => initCKEditorWithRetry(attempt + 1), RETRY_DELAY);
-                } else {
-                    console.error('Failed to initialize CKEditor after retries:', err);
-                }
-            }
-        }
-
-        loadCkeditorIfNeeded(function () {
-            initCKEditorWithRetry();
-        });
-
-        $(document).off('submit', '#updateLeadNoteForm').on('submit', '#updateLeadNoteForm', function (e) {
-            e.preventDefault();
-
-            const $btn = $('#update-lead-note-btn');
-            $btn.prop('disabled', true);
-
-            let noteContent = '';
-
-            if (window.CKEDITOR && CKEDITOR.instances && CKEDITOR.instances[TEXTAREA_ID]) {
-                try {
-                    noteContent = CKEDITOR.instances[TEXTAREA_ID].getData();
-                } catch (err) {
-                    console.warn('Error reading CKEditor data, falling back to textarea:', err);
-                    noteContent = $('#'+TEXTAREA_ID).val();
-                }
-            } else {
-                noteContent = $('#'+TEXTAREA_ID).val();
-            }
-
-            $.ajax({
-                url: "{{ route('deals.update-lead-note') }}",
-                method: 'POST',
-                dataType: 'json',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    deal_id: '{{ $deal->id }}',
-                    note: noteContent
-                },
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                success: function (response) {
-                    if (response && response.status === 'success') {
-                        //toast sawl
-                        Swal.fire({
-                            icon: 'success',
-                            text: response.message || '@lang("messages.updatedSuccessfully")',
-                            toast: true,
-                            position: 'top-end',
-                            timer: 1400,
-                            showConfirmButton: false
-                        });
-
-                        if (window.CKEDITOR && CKEDITOR.instances && CKEDITOR.instances[TEXTAREA_ID]) {
-                            try {
-                                CKEDITOR.instances[TEXTAREA_ID].setData(noteContent);
-                            } catch (err) {
-                                console.warn('Error setting CKEditor data after save:', err);
-                            }
-                        } else {
-                            $('#'+TEXTAREA_ID).val(noteContent);
-                        }
-                    } else {
-                        const message = (response && response.message) ? response.message : 'Failed to update note';
-                        Swal.fire({
-                            icon: 'error',
-                            text: message,
-                            toast: true,
-                            position: 'top-end',
-                            timer: 3000,
-                            showConfirmButton: false
-                        });
-                    }
-                },
-                error: function (xhr) {
-                    let msg = 'Server error';
-                    if (xhr && xhr.responseJSON) {
-                        if (xhr.responseJSON.message) msg = xhr.responseJSON.message;
-                        else if (xhr.responseJSON.errors) {
-                            const firstKey = Object.keys(xhr.responseJSON.errors)[0];
-                            if (firstKey) msg = xhr.responseJSON.errors[firstKey][0];
-                        }
-                    }
-                    Swal.fire({
-                            icon: 'error',
-                            text:msg,
-                            toast: true,
-                            position: 'top-end',
-                            timer: 3000,
-                            showConfirmButton: false
-                        });
-                },
-                complete: function () {
-                    $btn.prop('disabled', false);
-                }
-            });
-        });
-    })();
-    </script>
+    {{-- Quill CSS & JS (CDN). Remove and use local assets if you prefer. --}}
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
     <script src="{{ asset('vendor/jquery/clipboard.min.js') }}"></script>
 
     <script>
-        document.querySelectorAll(".call").forEach(function(button) {
-            button.addEventListener("click", function() {
-                let dealId = "{{ $deal->id }}";
-                let userId = "{{ user()->id }}";
-                let contactId = "{{ $deal->contact->id }}";
-                let number = "{{ $deal->contact->mobile }}";
-                
-                number = number.replace(/\s+/g, '');
-                console.log('Calling number:', number, contactId, userId, dealId);
-                
-                fetch("http://localhost:5000/call", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "Accept": "application/json"
-                        },
-                        body: JSON.stringify({
-                            extension: number,
-                            deal_id: dealId,
-                            contact_id: contactId,
-                            user_id: userId
-                        })
-                    })
-                    .then(response => {
-                        if (!response.ok) {
-                            return response.json().then(err => {
-                                throw new Error(err.error ||
-                                    `HTTP error! Status: ${response.status}`);
+        (function () {
+            // Ensure single source of truth for initial note HTML
+            const initialNoteHtml = {!! json_encode($deal->lead->note ?? '') !!};
+
+            // Initialize Quill
+            const quillToolbarOptions = [
+                [{ header: [1, 2, 3, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                [{ indent: '-1' }, { indent: '+1' }],
+                [{ align: [] }],
+                ['link', 'image'],
+                ['clean']
+            ];
+
+            const quill = new Quill('#lead-note-quill', {
+                modules: {
+                    toolbar: quillToolbarOptions
+                },
+                placeholder: "@lang('placeholders.description')",
+                theme: 'snow'
+            });
+
+            // Load initial content safely
+            if (initialNoteHtml && initialNoteHtml.trim().length) {
+                // dangerouslyPasteHTML is ok here because content came from DB and was previously rendered
+                quill.clipboard.dangerouslyPasteHTML(initialNoteHtml);
+            } else {
+                // If no content, ensure editor empty
+                quill.setText('');
+            }
+
+            // Optional: if you have an image-handler helper, call it
+            // if (typeof quillImageLoad === 'function') {
+            //     try { quillImageLoad('#lead-note-quill'); } catch (e) { /* ignore */ }
+            // }
+            // Submit handler: sends HTML to the server via easyAjax (keeps consistency)
+            $(document).off('submit', '#updateLeadNoteForm').on('submit', '#updateLeadNoteForm', function (e) {
+                e.preventDefault();
+
+                const $btn = $('#update-lead-note-btn');
+                $btn.prop('disabled', true);
+
+                // Get HTML from Quill
+                let noteContent = quill.root.innerHTML || '';
+                // Quill produces "<p><br></p>" for empty content; normalize to empty string
+                if (noteContent === '<p><br></p>' || noteContent.trim() === '') {
+                    noteContent = '';
+                }
+
+                // put into hidden textarea for compatibility/backups (optional)
+                $('#lead-note-html').val(noteContent);
+
+                $.easyAjax({
+                    url: "{{ route('deals.update-lead-note') }}",
+                    type: "POST",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        deal_id: '{{ $deal->id }}',
+                        note: noteContent
+                    },
+                    blockUI: true,
+                    success: function (response) {
+                        safeUnblockUI();
+                        if (response && response.status === 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                text: response.message || '@lang("messages.updatedSuccessfully")',
+                                toast: true,
+                                position: 'top-end',
+                                timer: 1400,
+                                showConfirmButton: false
+                            });
+
+                            // Update quill with saved content (in case server modified)
+                            if (response.note_html) {
+                                try {
+                                    quill.clipboard.dangerouslyPasteHTML(response.note_html);
+                                    $('#lead-note-html').val(response.note_html);
+                                } catch (err) {
+                                    // fallback
+                                    console.warn('Failed to set updated note from response:', err);
+                                }
+                            }
+                        } else {
+                            safeUnblockUI();
+                            const message = (response && response.message) ? response.message : 'Failed to update note';
+                            Swal.fire({
+                                icon: 'error',
+                                text: message,
+                                toast: true,
+                                position: 'top-end',
+                                timer: 3000,
+                                showConfirmButton: false
                             });
                         }
-                        return response.json();
-                    })
-                    .catch(error => {
-                        console.error("Fetch Error:", error.message);
+                    },
+                    error: function (xhr) {
+                        safeUnblockUI();
+                        let msg = 'Server error';
+                        if (xhr && xhr.responseJSON) {
+                            if (xhr.responseJSON.message) msg = xhr.responseJSON.message;
+                            else if (xhr.responseJSON.errors) {
+                                const firstKey = Object.keys(xhr.responseJSON.errors)[0];
+                                if (firstKey) msg = xhr.responseJSON.errors[firstKey][0];
+                            }
+                        }
                         Swal.fire({
                             icon: 'error',
-                            text: 'Failed to initiate call: ' + error.message,
+                            text: msg,
                             toast: true,
                             position: 'top-end',
                             timer: 3000,
                             showConfirmButton: false
                         });
-                    });
+                    },
+                    complete: function () {
+                        $btn.prop('disabled', false);
+                        safeUnblockUI();
+                    }
+                });
             });
-        });
+            function safeUnblockUI() {
+                    // If blockUI plugin present
+                    if (typeof $.unblockUI === 'function') {
+                        try { $.unblockUI(); } catch(e){ /* ignore */ }
+                    }
+                    // Common overlay class names used by custom wrappers
+                    $('.blockUI, .block-ui, .blockOverlay, .block-ui-overlay, .overlay').remove();
+                    // remove any inline overflow hidden if applied
+                    $('body').css('overflow', '');
+                }
+
+                // existing handlers (tabs, file actions, call actions etc.) remain as-is below...
+                // (I kept the rest of your JS intact in other script blocks; if you want them merged here I can do that.)
+
+            })();
+
+    </script>
+
+    <script>
+        (function () {
+            // Fixed: Handle all call buttons with proper async/await
+            document.querySelectorAll(".call").forEach(function(button) {
+                button.addEventListener("click", async function(e) {
+                    e.preventDefault();
+                    
+                    let dealId = "{{ $deal->id }}";
+                    let userId = "{{ user()->id }}";
+                    let contactId = "{{ $deal->contact->id }}";
+                    let number = this.closest('.d-flex')?.querySelector('span')?.textContent || "{{ $deal->contact->mobile ?? '' }}";
+
+                    number = number.replace(/\s+/g, '');
+                    
+                    const payload = {
+                        number: number,
+                        user_id: userId,
+                        deal_id: dealId
+                    };
+
+                    try {
+                        const res = await fetch('{{ route('call.trigger') }}', {
+                            method: 'POST',
+                            headers: {  
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify(payload)
+                        });
+
+                        const data = await res.json(); // <-- your actual JSON response
+
+                        if (res.ok) {
+                            Swal.fire({
+                                icon: 'success',
+                                text: 'Call triggered successfully!',
+                                toast: true,
+                                position: 'top-end',
+                                timer: 1400,
+                                showConfirmButton: false
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'Failed to trigger call: ' + (data?.error || data?.message || 'Unknown error'),
+                                toast: true,
+                                position: 'top-end',
+                                timer: 3000,
+                                showConfirmButton: false
+                            });
+                        }
+                    } catch (err) {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Request failed: ' + err.message,
+                            toast: true,
+                            position: 'top-end',
+                            timer: 3000,
+                            showConfirmButton: false
+                        });
+                    }
+
+                });
+            });
+        })();
     </script>
 
     <script>
@@ -598,6 +698,7 @@ $viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
             });
         }
 
+
         // File tab scripts
         $('body').on('click', '.delete-lead-file', function() {
             var id = $(this).data('file-id');
@@ -641,6 +742,115 @@ $viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
                 }
             });
         });
+
+        $('body').on('click', '#add-files', function() {
+            const url = "{{ route('deal-files.create') }}";
+            $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+            $.ajaxModal(MODAL_LG, url);
+        });
+
+        // FIle tab scripts end
+
+        // Follow up tab script start
+        $('body').on('click', '#add-lead-followup', function() {
+            const url = "{{ route('deals.follow_up', $deal->id) }}";
+            $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+            $.ajaxModal(MODAL_LG, url);
+        })
+
+        $('body').on('click', '.edit-table-row-lead', function() {
+            var id = $(this).data('followup-id');
+            var url = "{{ route('deals.follow_up_edit', ':id') }}";
+            url = url.replace(':id', id);
+            $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+            $.ajaxModal(MODAL_LG, url);
+        });
+
+        $('body').on('click', '.delete-table-row-lead', function() {
+            var id = $(this).data('followup-id');
+            Swal.fire({
+                title: "@lang('messages.sweetAlertTitle')",
+                text: "@lang('messages.recoverRecord')",
+                icon: 'warning',
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText: "@lang('messages.confirmDelete')",
+                cancelButtonText: "@lang('app.cancel')",
+                customClass: {
+                    confirmButton: 'btn btn-primary mr-3',
+                    cancelButton: 'btn btn-secondary'
+                },
+                showClass: {
+                    popup: 'swal2-noanimation',
+                    backdrop: 'swal2-noanimation'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var url = "{{ route('deals.follow_up_delete', ':id') }}";
+                    url = url.replace(':id', id);
+
+                    var token = "{{ csrf_token() }}";
+
+                    $.easyAjax({
+                        type: 'POST',
+                        url: url,
+                        data: {
+                            '_token': token,
+                        },
+                        success: function(response) {
+                            if (response.status == "success") {
+                                location.reload();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        $('body').on('click', '.delete-table-row', function() {
+            var id = $(this).data('id');
+            Swal.fire({
+                title: "@lang('messages.sweetAlertTitle')",
+                text: "@lang('messages.recoverRecord')",
+                icon: 'warning',
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText: "@lang('messages.confirmDelete')",
+                cancelButtonText: "@lang('app.cancel')",
+                customClass: {
+                    confirmButton: 'btn btn-primary mr-3',
+                    cancelButton: 'btn btn-secondary'
+                },
+                showClass: {
+                    popup: 'swal2-noanimation',
+                    backdrop: 'swal2-noanimation'
+                },
+                buttonsStyling: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var url = "{{ route('deals.destroy', ':id') }}";
+                    url = url.replace(':id', id);
+                    var token = "{{ csrf_token() }}";
+                    $.easyAjax({
+                        type: 'POST',
+                        url: url,
+                        data: {
+                            '_token': token,
+                            '_method': 'DELETE'
+                        },
+                        success: function(response) {
+                            if (response.status == "success") {
+                                let dealsIndexUrl = "{{ route('deals.index') }}";
+                                window.location.href = dealsIndexUrl;
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        // Follow up tab script end
 
         // Notes tab scripts
         $('body').on('click', '.delete-note-lead', function() {
@@ -749,5 +959,130 @@ $viewLeadFollowupPermission = user()->permission('view_lead_follow_up');
                 }
             });
         });
+
+        $(document).on('click', '#add-lead-calls', function () {
+            console.log('clicked');
+            const leadId = "{{ $lead->id ?? $deal->id ?? '' }}"; // fallback safety
+            const url = "{{ route('lead-calls.create-modal') }}" + "?lead_id=" + leadId;
+
+            $(MODAL_LG + ' ' + MODAL_HEADING).html("@lang('modules.call.addCalls')");
+            $.ajaxModal(MODAL_LG, url);
+        });
+
+        // $('body').on('click', '#add-files', function() {
+        //     console.log('clicked');
+        //     const url = "{{ route('deal-files.create') }}";
+        //     $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+        //     $.ajaxModal(MODAL_LG, url);
+        // });
+        // $('body').on('click', '#add-lead-followup', function() {
+        //     console.log('clicked');
+            
+        //     $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+        //     $.ajaxModal(MODAL_LG, url);
+        // });
     </script>
+
+
+                                                                                                    <script>
+                                                                                                        const addBtn = document.getElementById('add-cell-btn');
+                                                                                                        const form = document.getElementById('new-cell-form');
+                                                                                                        const saveBtn = document.getElementById('save-cell-btn');
+                                                                                                        const cancelBtn = document.getElementById('cancel-cell-btn');
+                                                                                                        const nameInput = document.getElementById('new-cell-name');
+                                                                                                        const numberInput = document.getElementById('new-cell-number');
+
+                                                                                                        // Show add form
+                                                                                                        addBtn.addEventListener('click', () => {
+                                                                                                            form.style.display = 'block';
+                                                                                                            nameInput.focus();
+                                                                                                        });
+
+                                                                                                        // Hide form + reset fields
+                                                                                                        cancelBtn.addEventListener('click', () => {
+                                                                                                            form.style.display = 'none';
+                                                                                                            nameInput.value = '';
+                                                                                                            numberInput.value = '';
+                                                                                                        });
+
+                                                                                                        // Allow only numbers in number field
+                                                                                                        numberInput.addEventListener('input', function() {
+                                                                                                            this.value = this.value.replace(/\D/g, '');
+                                                                                                        });
+                                                                                                    </script>
+
+                                                                                                    <script>
+
+                                                                                                     saveBtn.addEventListener('click', () => {
+                        const name = nameInput.value.trim();
+                        const number = numberInput.value.trim();
+
+                        if (!number) {
+                            alert('Please enter a number.');
+                            return;
+                        }
+
+                        fetch(`{{ route('leads.updateCell', $deal->contact->id) }}`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ name, number })
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                const parentContainer = document.getElementById('cell-container');
+
+                                // create the wrapper div
+                                const wrapper = document.createElement('div');
+                                wrapper.className = "col-12 px-0 pb-2 d-lg-flex d-md-flex d-block";
+
+                                // label <p>
+                                const labelP = document.createElement('p');
+                                labelP.className = "mb-0 text-lightest f-13 w-30 f-13 text-muted";
+                                labelP.textContent = name ? name.toUpperCase() + ':' : '';
+                                wrapper.appendChild(labelP);
+
+                                // value container
+                                const valueDiv = document.createElement('div');
+                                valueDiv.className = "mb-0 text-dark-grey f-13 w-70 text-wrap mb-2";
+
+                                const innerDiv = document.createElement('div');
+                                innerDiv.className = "d-flex align-items-center";
+
+                                innerDiv.innerHTML = `
+                                    <span>${number}</span>
+                                    <button type="button" class="btn btn-sm call">
+                                        <svg class="svg-inline--fa fa-phone fa-w-16 text-primary" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="phone" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                                            <path fill="currentColor" d="M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 13.9l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C3.9 366.5-2 378.1.6 389.4l24 104C27.1 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.7-20.9-18.6-23.4z"></path>
+                                        </svg>
+                                    </button>
+                                `;
+
+                                valueDiv.appendChild(innerDiv);
+                                wrapper.appendChild(valueDiv);
+
+                                // append new number at the end
+                                parentContainer.appendChild(wrapper);
+
+                                // reset form
+                                form.style.display = 'none';
+                                nameInput.value = '';
+                                numberInput.value = '';
+                            } else {
+                                alert('Something went wrong while saving.');
+                            }
+                        })
+                        .catch(err => {
+                            console.error('Fetch error:', err);
+                            alert('Error saving number.');
+                        });
+                    });
+
+
+
+
+                                                                                                    </script>
 </div>

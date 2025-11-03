@@ -6,6 +6,15 @@ use App\Models\Meeting;
 use App\Models\LeadMeeting;
 use App\Models\Deal;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\View;
+use Symfony\Component\Mime\Part\TextPart;
+use Illuminate\Mail\MailManager;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
+use Symfony\Component\Mailer\Mailer as SymfonyMailer;
+use Symfony\Component\Mime\Email;
+use App\Models\EmailSetting;
+use App\Models\SmtpSetting;
 
 class MeetingController extends Controller
 {
@@ -16,128 +25,149 @@ class MeetingController extends Controller
     }
     public function create(Request $request)
     {
-        // dd($request->all());
         $leadId = $request->get('lead_id');
 
         $start = new \DateTime();
-        // dd($start,date_default_timezone_get());
-        $bookedMeetings = Meeting::whereDate('date', $start->format('Y-m-d'))->get(['time', 'end_time']);
-        $deal = Deal::where('lead_id',$leadId)->first();
-        $pipline = $deal->lead_pipeline_id;
-        $end = new \DateTime('24:00');
+        $end = (clone $start)->setTime(23, 59); // end of day safely
 
-        // Calculate the nearest 15-minute interval to the start time
-        $minutes = (int)$start->format('i');
+        // Get all booked meetings for today
+        $bookedMeetings = Meeting::whereDate('date', $start->format('Y-m-d'))
+            ->get(['time', 'end_time']);
+
+        $deal = Deal::where('lead_id', $leadId)->first();
+        $pipeline = $deal?->lead_pipeline_id;
+
+        // Round start time to next 15-minute slot
+        $minutes = (int) $start->format('i');
         $offset = (15 - ($minutes % 15)) % 15;
         $start->modify("+{$offset} minutes");
 
-        // Generate available time slots
+        $intervalMinutes = 15;
         $slots = [];
-        // dd($start,$end);
-        $fime = (int)15;
+
         while ($start < $end) {
+            $slotStart = clone $start;
+            $slotEnd = (clone $start)->add(new \DateInterval("PT{$intervalMinutes}M"));
 
-            $isBooked =  $bookedMeetings->filter(function ($meeting) use ($start, $fime) {
-                $slotStart = clone $start;
-                $slotEnd = clone $start;
-                $slotEnd->add(new \DateInterval("PT{$fime}M"));
+            $isBooked = $bookedMeetings->contains(function ($meeting) use ($slotStart, $slotEnd) {
+                // Parse meeting times safely (try multiple formats)
+                $meetingStart = \DateTime::createFromFormat('H:i', $meeting->time)
+                    ?: \DateTime::createFromFormat('H:i:s', $meeting->time)
+                    ?: \DateTime::createFromFormat('Y-m-d H:i:s', $meeting->time);
 
-                $meetingStart = \DateTime::createFromFormat('H:i', $meeting->time);
-                $meetingEnd = \DateTime::createFromFormat('H:i', $meeting->end_time);
+                $meetingEnd = \DateTime::createFromFormat('H:i', $meeting->end_time)
+                    ?: \DateTime::createFromFormat('H:i:s', $meeting->end_time)
+                    ?: \DateTime::createFromFormat('Y-m-d H:i:s', $meeting->end_time);
 
-                // Calculate overlap duration
-                $overlapStart = max($slotStart, $meetingStart);
-                $overlapEnd = min($slotEnd, $meetingEnd);
-                $overlapDuration = $overlapEnd->getTimestamp() - $overlapStart->getTimestamp();
-                // Check if there is at least a 1-minute overlap
-                return $overlapDuration >= 60;
+                // If parsing fails, skip this meeting
+                if (!$meetingStart || !$meetingEnd) {
+                    return false;
+                }
+
+                // Overlap check
+                $latestStart = $slotStart > $meetingStart ? $slotStart : $meetingStart;
+                $earliestEnd = $slotEnd < $meetingEnd ? $slotEnd : $meetingEnd;
+
+                $overlap = $earliestEnd->getTimestamp() - $latestStart->getTimestamp();
+
+                // At least 1 minute overlap means slot is taken
+                return $overlap >= 60;
             });
 
-
-            if (!$isBooked->isNotEmpty()) {
-
-                $slots[] = $start->format('h:i A'); // Format time as 12-hour with AM/PM
-            }else{
-                $meetingEndTimes = $isBooked->map(function ($meeting) {
-                    return $meeting->end_time;
-                });
-                $firstOverlappingMeetingEndTime = $meetingEndTimes->first();
-                $start = \DateTime::createFromFormat('H:i', $firstOverlappingMeetingEndTime);
+            if (!$isBooked) {
                 $slots[] = $start->format('h:i A');
             }
 
-            $start->modify('+' . $fime . ' minutes');
+            $start->modify("+{$intervalMinutes} minutes");
         }
 
-        return view('leads.ajax.meeting_create', compact('leadId','slots'));
+        return view('leads.ajax.meeting_create', compact('leadId', 'slots'));
     }
+
     public function availabletime(Request $request)
     {
-        // dd($request->all());
-        $fime = (int)$request->time;
-        $providedDateTime = \DateTime::createFromFormat('d-m-Y', $request->date);
+        $slotDuration = (int) $request->time ?? 15; // in minutes
 
-        $bookedMeetings = Meeting::whereDate('date', $providedDateTime->format('Y-m-d'))
-            ->get(['time', 'end_time']); // Get start and end times
+        // $providedDate = \DateTime::createFromFormat('d-m-Y', $request->date);
+        $providedDate = \DateTime::createFromFormat('d-m-Y', $request->date, new \DateTimeZone('Asia/Karachi'));
 
-        $currentDate = new \DateTime();
-        if ($providedDateTime->format('Y-m-d') === $currentDate->format('Y-m-d')) {
-            $start = new \DateTime();
-        } else {
-            $start = new \DateTime('00:00');
+
+        if (!$providedDate) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Invalid date format. Expected d-m-Y.',
+            ], 422);
         }
-        $end = new \DateTime('24:00');
 
-        // Calculate the nearest 15-minute interval to the start time
-        $minutes = (int)$start->format('i');
-        $offset = ($fime - ($minutes % $fime)) % $fime;
+        // Fetch booked meetings for that date
+        $bookedMeetings = Meeting::whereDate('date', $providedDate->format('Y-m-d'))
+            ->get(['time', 'end_time']);
+
+        // $now = new \DateTime();
+        $now = new \DateTime('now', new \DateTimeZone('Asia/Karachi'));
+
+        $providedDate->setTimezone(new \DateTimeZone('Asia/Karachi'));
+        $start = ($providedDate->format('Y-m-d') === $now->format('Y-m-d'))
+            ? clone $now
+            : (clone $providedDate)->setTime(0, 0);
+
+        $end = (clone $providedDate)->setTime(23, 59);
+
+        // Round start time up to nearest slot interval
+        $minutes = (int) $start->format('i');
+        $offset = ($slotDuration - ($minutes % $slotDuration)) % $slotDuration;
         $start->modify("+{$offset} minutes");
 
-        // Generate available time slots
         $slots = [];
-        
+
         while ($start < $end) {
+            $slotStart = clone $start;
+            $slotEnd = (clone $slotStart)->add(new \DateInterval("PT{$slotDuration}M"));
 
-            $isBooked =  $bookedMeetings->filter(function ($meeting) use ($start, $fime) {
-                $slotStart = clone $start;
-                $slotEnd = clone $start;
-                $slotEnd->add(new \DateInterval("PT{$fime}M")); // Add duration to get slot end time
-
-                $meetingStart = \DateTime::createFromFormat('H:i', $meeting->time);
-                $meetingEnd = \DateTime::createFromFormat('H:i', $meeting->end_time);
-
-                // Calculate overlap duration
-                $overlapStart = max($slotStart, $meetingStart);
-                $overlapEnd = min($slotEnd, $meetingEnd);
-                $overlapDuration = $overlapEnd->getTimestamp() - $overlapStart->getTimestamp();
-
-                // Check if there is at least a 1-minute overlap
-                return $overlapDuration >= 60;
-            });
-
-
-            if (!$isBooked->isNotEmpty()) {
-
-                $slots[] = $start->format('h:i A'); // Format time as 12-hour with AM/PM
-            }else{
-                $meetingEndTimes = $isBooked->map(function ($meeting) {
-                    return $meeting->end_time;
-                });
-                $firstOverlappingMeetingEndTime = $meetingEndTimes->first();
-                $start = \DateTime::createFromFormat('H:i', $firstOverlappingMeetingEndTime);
-                $slots[] = $start->format('h:i A');
+            // Skip past times (only for current day)
+            if ($providedDate->format('Y-m-d') === $now->format('Y-m-d') && $slotStart < $now) {
+                $start->modify("+{$slotDuration} minutes");
+                continue;
             }
 
-            $start->modify('+' . $fime . ' minutes');
+            // Check if slot overlaps any booked meeting
+            $isBooked = $bookedMeetings->contains(function ($meeting) use ($slotStart, $slotEnd) {
+                $meetingStart = \DateTime::createFromFormat('H:i', $meeting->time)
+                    ?: \DateTime::createFromFormat('H:i:s', $meeting->time)
+                    ?: \DateTime::createFromFormat('Y-m-d H:i:s', $meeting->time);
+
+                $meetingEnd = \DateTime::createFromFormat('H:i', $meeting->end_time)
+                    ?: \DateTime::createFromFormat('H:i:s', $meeting->end_time)
+                    ?: \DateTime::createFromFormat('Y-m-d H:i:s', $meeting->end_time);
+
+                // Skip invalid entries
+                if (!$meetingStart || !$meetingEnd) {
+                    return false;
+                }
+
+                // Overlap detection
+                $latestStart = $slotStart > $meetingStart ? $slotStart : $meetingStart;
+                $earliestEnd = $slotEnd < $meetingEnd ? $slotEnd : $meetingEnd;
+
+                $overlap = $earliestEnd->getTimestamp() - $latestStart->getTimestamp();
+
+                // At least 1-minute overlap => booked
+                return $overlap >= 60;
+            });
+
+            if (!$isBooked) {
+                $slots[] = $slotStart->format('h:i A');
+            }
+
+            $start->modify("+{$slotDuration} minutes");
         }
 
-            $data = [
-                'status' => 'success',
-                'data' => $slots,
-            ];
-
-            return response()->json($data);
+        return response()->json([
+            'status' => 'success',
+            'data' => $slots,
+        ]);
     }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -176,4 +206,98 @@ class MeetingController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+
+
+    // public function sendInvites(Request $request)
+    // {
+    //     $request->validate([
+    //         'emails' => 'required|string',
+    //         'meeting_id' => 'required|exists:meetings,id',
+    //     ]);
+
+    //     $emails = array_map('trim', explode(',', $request->emails));
+    //     $meeting = Meeting::findOrFail($request->meeting_id);
+
+    //     // --- build Gmail SMTP transport (no .env change) ---
+    //     $transport = new EsmtpTransport(
+    //         'smtp.gmail.com',   // host
+    //         465,                // port
+    //         true                // use SSL
+    //     );
+    //     $transport->setUsername('mabdullahali420@gmail.com');
+    //     $transport->setPassword('hlhk zhbq knia qupr'); // your Gmail App Password
+
+    //     $symfonyMailer = new SymfonyMailer($transport);
+
+    //     // --- loop and send ---
+    //     foreach ($emails as $email) {
+    //         if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+    //             continue;
+
+    //         $html = View::make('leads.mail.invite', compact('meeting'))->render();
+
+    //         $message = (new Email())
+    //             ->from('mabdullahali420@gmail.com')
+    //             ->to($email)
+    //             ->subject('Meeting Invitation: ' . ($meeting->title ?? 'Meeting'))
+    //             ->html($html);
+
+    //         $symfonyMailer->send($message);
+    //     }
+
+    //     return response()->json(['success' => true]);
+    // }
+
+
+    public function sendInvites(Request $request)
+    {
+        $request->validate([
+            'emails' => 'required|string',
+            'meeting_id' => 'required|exists:meetings,id',
+        ]);
+
+        $emails = array_map('trim', explode(',', $request->emails));
+        $meeting = Meeting::findOrFail($request->meeting_id);
+
+        // --- 1️⃣ Load Worksuite Email Settings from DB ---
+        // $emailSetting = EmailSetting::first();
+        $emailSetting = SmtpSetting::first();
+
+        if ($emailSetting) {
+            config([
+                'mail.default' => 'smtp',
+                'mail.mailers.smtp.host' => $emailSetting->mail_host,
+                'mail.mailers.smtp.port' => $emailSetting->mail_port,
+                'mail.mailers.smtp.username' => $emailSetting->mail_username,
+                'mail.mailers.smtp.password' => $emailSetting->mail_password,
+                'mail.mailers.smtp.encryption' => $emailSetting->mail_encryption,
+                'mail.from.address' => $emailSetting->mail_from_email,
+                'mail.from.name' => $emailSetting->mail_from_name,
+            ]);
+        }
+
+        // --- 2️⃣ Prepare your email view as HTML ---
+        $html = View::make('leads.mail.invite', compact('meeting'))->render();
+
+        // --- 3️⃣ Send to multiple recipients ---
+        foreach ($emails as $email) {
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL))
+                continue;
+
+            // Mail::send([], [], function ($message) use ($email, $html, $meeting) {
+            //     $message->to($email)
+            //         // ->subject('Invitation to Join Scheduled Meeting' . ($meeting->title ?? 'Meeting'))
+            //         ->subject('Invitation to Join Scheduled Meeting')
+            //         ->html($html); // ✅ correct modern syntax
+            // });
+
+        }
+
+        return response()->json(['success' => true, 'view' => $html]);
+    }
+
+
+
+
 }

@@ -269,6 +269,23 @@ class Deal extends BaseModel
             ->withTimestamps();
     }
 
+    // public function dealLabels()
+    // {
+    //     return $this->belongsToMany(
+    //         PipelineLabel::class,
+    //         'deal_label',
+    //         'deal_id',
+    //         'label_id'
+    //     )
+    //         ->using(\App\Models\Pivots\DealLabelPivot::class) // custom pivot
+    //         ->withTimestamps();
+    // }
+
+
+
+    // protected $touches = ['updated_at'];
+    
+
     public function getSubAgentsArrayAttribute()
     {
         return $this->sub_agents ? explode(',', $this->sub_agents) : [];
