@@ -124,7 +124,6 @@
                                     :value="($deal->value) ? currency_format($deal->value, $deal->currency_id) : '--'"/>
                 <x-cards.data-row :label="__('modules.lead.products')"
                                     :value="($productNames) ? implode(', ', $productNames) : '--'"/>
-
                 {{-- Custom fields data --}}
                 <x-forms.custom-field-show :fields="$fields" :model="$deal"></x-forms.custom-field-show>
             </x-cards.data>
@@ -355,20 +354,20 @@
                     @endif
                 </div>
             </x-cards.data>
+
+            <!-- Description (Quill) -->
             <x-cards.data :title="__('modules.leadContact.description')" class="description-card">
                 <form id="updateLeadNoteForm" class="mb-0">
                     @csrf
                     <input type="hidden" name="deal_id" value="{{ $deal->id }}">
 
                     <div class="form-group mb-3">
-                        <textarea 
-                            name="note" 
-                            id="lead-note-editor" 
-                            rows="8" 
-                            class="form-control border-grey"
-                            placeholder="@lang('placeholders.description')"
-                            style="resize: vertical; min-height: 120px;"
-                        >{!! $deal->lead->note ?? '' !!}</textarea>
+                        {{-- Quill editor container --}}
+                        <div id="lead-note-quill" style="min-height: 150px;background:#fff;">
+                        </div>
+
+                        {{-- Hidden textarea to keep form compatibility / fallback --}}
+                        <textarea name="note" id="lead-note-html" class="d-none"></textarea>
                     </div>
 
                     <div class="d-flex justify-content-end">
@@ -388,18 +387,19 @@
             padding: 1.5rem;
         }
         
-        .description-card textarea {
-            border-radius: 8px;
+        /* keep Quill area visually similar to previous textarea */
+        .ql-container {
             border: 1px solid #e9ecef;
             font-size: 14px;
             line-height: 1.5;
+            min-height: 120px;
         }
-        
-        .description-card textarea:focus {
-            border-color: #80bdff;
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        .ql-editor{
+            min-height: 120px !important;
         }
-        
+        .ql-toolbar.ql-snow{
+            background: #ECF0F5
+        }
         .gap-2 > * {
             margin-right: 0.5rem;
         }
@@ -428,204 +428,201 @@
         }
     </style>
 
-    <!-- Scripts remain the same -->
-    <script>
-    (function () {
-        const TEXTAREA_ID = 'lead-note-editor';
-        const MAX_RETRIES = 25;
-        const RETRY_DELAY = 200;
-
-        function loadCkeditorIfNeeded(callback) {
-            if (window.CKEDITOR) {
-                return callback();
-            }
-
-            const existing = document.querySelector('script[data-ckeditor-loader]');
-            if (!existing) {
-                const s = document.createElement('script');
-                s.src = 'https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js';
-                s.async = true;
-                s.setAttribute('data-ckeditor-loader', '1');
-                s.onload = function () {
-                    callback();
-                };
-                s.onerror = function () {
-                    console.error('Failed to load CKEditor script.');
-                    callback();
-                };
-                document.head.appendChild(s);
-            } else {
-                let waitCount = 0;
-                const wait = setInterval(function () {
-                    if (window.CKEDITOR || ++waitCount > 50) {
-                        clearInterval(wait);
-                        callback();
-                    }
-                }, 100);
-            }
-        }
-
-        function initCKEditorWithRetry(attempt = 0) {
-            const textarea = document.getElementById(TEXTAREA_ID);
-            if (!textarea) {
-                if (attempt < MAX_RETRIES) {
-                    setTimeout(() => initCKEditorWithRetry(attempt + 1), RETRY_DELAY);
-                }
-                return;
-            }
-
-            if (!window.CKEDITOR) {
-                if (attempt < MAX_RETRIES) {
-                    setTimeout(() => initCKEditorWithRetry(attempt + 1), RETRY_DELAY);
-                } else {
-                    console.warn('CKEditor not available after retries, using fallback textarea.');
-                }
-                return;
-            }
-
-            try {
-                if (CKEDITOR.instances[TEXTAREA_ID]) {
-                    CKEDITOR.instances[TEXTAREA_ID].destroy(true);
-                }
-            } catch (err) {
-                console.warn('Error destroying CKEditor instance:', err);
-            }
-
-            try {
-                CKEDITOR.replace(TEXTAREA_ID, {
-                    height: 150,
-                    removePlugins: 'elementspath',
-                    toolbarGroups: [
-                        { name: 'basicstyles', groups: ['basicstyles', 'cleanup'] },
-                        { name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align'] },
-                        { name: 'styles' },
-                        { name: 'colors' },
-                        { name: 'tools' }
-                    ],
-                });
-
-                const inst = CKEDITOR.instances[TEXTAREA_ID];
-                if (inst) {
-                    inst.on('instanceReady', function () {
-                        // Editor ready
-                    });
-                }
-            } catch (err) {
-                if (attempt < MAX_RETRIES) {
-                    setTimeout(() => initCKEditorWithRetry(attempt + 1), RETRY_DELAY);
-                } else {
-                    console.error('Failed to initialize CKEditor after retries:', err);
-                }
-            }
-        }
-
-        loadCkeditorIfNeeded(function () {
-            initCKEditorWithRetry();
-        });
-
-        $(document).off('submit', '#updateLeadNoteForm').on('submit', '#updateLeadNoteForm', function (e) {
-            e.preventDefault();
-
-            const $btn = $('#update-lead-note-btn');
-            $btn.prop('disabled', true);
-
-            let noteContent = '';
-
-            if (window.CKEDITOR && CKEDITOR.instances && CKEDITOR.instances[TEXTAREA_ID]) {
-                try {
-                    noteContent = CKEDITOR.instances[TEXTAREA_ID].getData();
-                } catch (err) {
-                    console.warn('Error reading CKEditor data, falling back to textarea:', err);
-                    noteContent = $('#'+TEXTAREA_ID).val();
-                }
-            } else {
-                noteContent = $('#'+TEXTAREA_ID).val();
-            }
-
-            $.ajax({
-                url: "{{ route('deals.update-lead-note') }}",
-                method: 'POST',
-                dataType: 'json',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    deal_id: '{{ $deal->id }}',
-                    note: noteContent
-                },
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                },
-                success: function (response) {
-                    if (response && response.status === 'success') {
-                        //toast sawl
-                        Swal.fire({
-                            icon: 'success',
-                            text: response.message || '@lang("messages.updatedSuccessfully")',
-                            toast: true,
-                            position: 'top-end',
-                            timer: 1400,
-                            showConfirmButton: false
-                        });
-
-                        if (window.CKEDITOR && CKEDITOR.instances && CKEDITOR.instances[TEXTAREA_ID]) {
-                            try {
-                                CKEDITOR.instances[TEXTAREA_ID].setData(noteContent);
-                            } catch (err) {
-                                console.warn('Error setting CKEditor data after save:', err);
-                            }
-                        } else {
-                            $('#'+TEXTAREA_ID).val(noteContent);
-                        }
-                    } else {
-                        const message = (response && response.message) ? response.message : 'Failed to update note';
-                        Swal.fire({
-                            icon: 'error',
-                            text: message,
-                            toast: true,
-                            position: 'top-end',
-                            timer: 3000,
-                            showConfirmButton: false
-                        });
-                    }
-                },
-                error: function (xhr) {
-                    let msg = 'Server error';
-                    if (xhr && xhr.responseJSON) {
-                        if (xhr.responseJSON.message) msg = xhr.responseJSON.message;
-                        else if (xhr.responseJSON.errors) {
-                            const firstKey = Object.keys(xhr.responseJSON.errors)[0];
-                            if (firstKey) msg = xhr.responseJSON.errors[firstKey][0];
-                        }
-                    }
-                    Swal.fire({
-                            icon: 'error',
-                            text:msg,
-                            toast: true,
-                            position: 'top-end',
-                            timer: 3000,
-                            showConfirmButton: false
-                        });
-                },
-                complete: function () {
-                    $btn.prop('disabled', false);
-                }
-            });
-        });
-    })();
-    </script>
+    {{-- Quill CSS & JS (CDN). Remove and use local assets if you prefer. --}}
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
     <script src="{{ asset('vendor/jquery/clipboard.min.js') }}"></script>
 
     <script>
+        (function () {
+            // Ensure single source of truth for initial note HTML
+            const initialNoteHtml = {!! json_encode($deal->lead->note ?? '') !!};
+
+            // Initialize Quill
+            const quillToolbarOptions = [
+                [{ header: [1, 2, 3, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                [{ indent: '-1' }, { indent: '+1' }],
+                [{ align: [] }],
+                ['link', 'image'],
+                ['clean']
+            ];
+
+            const quill = new Quill('#lead-note-quill', {
+                modules: {
+                    toolbar: quillToolbarOptions
+                },
+                placeholder: "@lang('placeholders.description')",
+                theme: 'snow'
+            });
+
+            // Load initial content safely
+            if (initialNoteHtml && initialNoteHtml.trim().length) {
+                // dangerouslyPasteHTML is ok here because content came from DB and was previously rendered
+                quill.clipboard.dangerouslyPasteHTML(initialNoteHtml);
+            } else {
+                // If no content, ensure editor empty
+                quill.setText('');
+            }
+
+            // Optional: if you have an image-handler helper, call it
+            // if (typeof quillImageLoad === 'function') {
+            //     try { quillImageLoad('#lead-note-quill'); } catch (e) { /* ignore */ }
+            // }
+
+            // Guarded call-button listener (if present)
+            const callBtn = document.getElementById('callButton');
+            if (callBtn) {
+                callBtn.addEventListener('click', async function () {
+                    const currentUserId = "{{ user()->id }}";
+                    const dealId = "{{ $deal->id }}";
+                    const payload = {
+                        number: '+923001234567',
+                        user_id: currentUserId ,
+                        deal_id: dealId
+                    };
+
+                    try {
+                        const res = await fetch('{{ route('call.trigger') }}', {
+                            method: 'POST',
+                            headers: {  
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            },
+                            body: JSON.stringify(payload)
+                        });
+
+                        const data = await res.json();
+                        if (res.ok) {
+                            alert('📞 Call triggered successfully!');
+                            console.log(data);
+                        } else {
+                            alert('Error: ' + (data.error || 'Failed to trigger call'));
+                        }
+                    } catch (err) {
+                        alert('Request failed: ' + err.message);
+                    }
+                });
+            }
+
+            // Submit handler: sends HTML to the server via easyAjax (keeps consistency)
+            $(document).off('submit', '#updateLeadNoteForm').on('submit', '#updateLeadNoteForm', function (e) {
+                e.preventDefault();
+
+                const $btn = $('#update-lead-note-btn');
+                $btn.prop('disabled', true);
+
+                // Get HTML from Quill
+                let noteContent = quill.root.innerHTML || '';
+                // Quill produces "<p><br></p>" for empty content; normalize to empty string
+                if (noteContent === '<p><br></p>' || noteContent.trim() === '') {
+                    noteContent = '';
+                }
+
+                // put into hidden textarea for compatibility/backups (optional)
+                $('#lead-note-html').val(noteContent);
+
+                $.easyAjax({
+                    url: "{{ route('deals.update-lead-note') }}",
+                    type: "POST",
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        deal_id: '{{ $deal->id }}',
+                        note: noteContent
+                    },
+                    blockUI: true,
+                    success: function (response) {
+                        safeUnblockUI();
+                        if (response && response.status === 'success') {
+                            Swal.fire({
+                                icon: 'success',
+                                text: response.message || '@lang("messages.updatedSuccessfully")',
+                                toast: true,
+                                position: 'top-end',
+                                timer: 1400,
+                                showConfirmButton: false
+                            });
+
+                            // Update quill with saved content (in case server modified)
+                            if (response.note_html) {
+                                try {
+                                    quill.clipboard.dangerouslyPasteHTML(response.note_html);
+                                    $('#lead-note-html').val(response.note_html);
+                                } catch (err) {
+                                    // fallback
+                                    console.warn('Failed to set updated note from response:', err);
+                                }
+                            }
+                        } else {
+                            safeUnblockUI();
+                            const message = (response && response.message) ? response.message : 'Failed to update note';
+                            Swal.fire({
+                                icon: 'error',
+                                text: message,
+                                toast: true,
+                                position: 'top-end',
+                                timer: 3000,
+                                showConfirmButton: false
+                            });
+                        }
+                    },
+                    error: function (xhr) {
+                        safeUnblockUI();
+                        let msg = 'Server error';
+                        if (xhr && xhr.responseJSON) {
+                            if (xhr.responseJSON.message) msg = xhr.responseJSON.message;
+                            else if (xhr.responseJSON.errors) {
+                                const firstKey = Object.keys(xhr.responseJSON.errors)[0];
+                                if (firstKey) msg = xhr.responseJSON.errors[firstKey][0];
+                            }
+                        }
+                        Swal.fire({
+                            icon: 'error',
+                            text: msg,
+                            toast: true,
+                            position: 'top-end',
+                            timer: 3000,
+                            showConfirmButton: false
+                        });
+                    },
+                    complete: function () {
+                        $btn.prop('disabled', false);
+                        safeUnblockUI();
+                    }
+                });
+            });
+            function safeUnblockUI() {
+    // If blockUI plugin present
+    if (typeof $.unblockUI === 'function') {
+        try { $.unblockUI(); } catch(e){ /* ignore */ }
+    }
+    // Common overlay class names used by custom wrappers
+    $('.blockUI, .block-ui, .blockOverlay, .block-ui-overlay, .overlay').remove();
+    // remove any inline overflow hidden if applied
+    $('body').css('overflow', '');
+}
+
+            // existing handlers (tabs, file actions, call actions etc.) remain as-is below...
+            // (I kept the rest of your JS intact in other script blocks; if you want them merged here I can do that.)
+
+        })();
+
+    </script>
+
+    <script>
+        // Other page JS that you had below (kept largely intact)
         document.querySelectorAll(".call").forEach(function(button) {
             button.addEventListener("click", function() {
                 let dealId = "{{ $deal->id }}";
                 let userId = "{{ user()->id }}";
                 let contactId = "{{ $deal->contact->id }}";
-                let number = "{{ $deal->contact->mobile }}";
-                
+                let number = "{{ $deal->contact->mobile ?? '' }}";
+
                 number = number.replace(/\s+/g, '');
                 console.log('Calling number:', number, contactId, userId, dealId);
-                
+
                 fetch("http://localhost:5000/call", {
                         method: "POST",
                         headers: {
@@ -718,6 +715,7 @@
                 }
             });
         }
+
 
         // File tab scripts
         $('body').on('click', '.delete-lead-file', function() {

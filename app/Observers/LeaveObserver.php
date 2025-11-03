@@ -31,7 +31,7 @@ class LeaveObserver
 
 
         $employeeLeaveQuota = EmployeeLeaveQuota::whereUserId($leave->user_id)->whereLeaveTypeId($leave->leave_type_id)->first();
-        $employeeLeaveQuotaRemaining = $employeeLeaveQuota->leaves_remaining;
+        $employeeLeaveQuotaRemaining = $employeeLeaveQuota->leaves_remaining ?? 0;
 
         if ($employeeLeaveQuotaRemaining <= 0 && $leave->type->over_utilization == 'allow_paid') {
             $leave->paid = 1;
@@ -303,7 +303,7 @@ class LeaveObserver
 
         } else {
             $employeeLeaveQuota = EmployeeLeaveQuota::whereUserId($leave->user_id)->whereLeaveTypeId($leave->leave_type_id)->first();
-            $employeeLeaveQuotaRemaining = $employeeLeaveQuota->leaves_remaining;
+            $employeeLeaveQuotaRemaining = $employeeLeaveQuota->leaves_remaining ?? 0;
 
             if ($employeeLeaveQuotaRemaining <= 0) {
                 $lastOverUtilisedLeave = Leave::where('leave_type_id', $leave->leave_type_id)

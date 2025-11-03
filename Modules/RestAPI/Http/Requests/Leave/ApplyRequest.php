@@ -15,10 +15,10 @@ class ApplyRequest extends BaseRequest
     {
         return [
             'leave_type_id' => 'required|exists:leave_types,id',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
+            // 'start_date' => 'required|date',
+            // 'end_date' => 'required|date|after_or_equal:start_date',
             'reason' => 'required|string',
-            'half_day' => 'boolean',
+            // 'half_day' => 'boolean',
             'status' => 'in:pending,approved,rejected'
         ];
     }
