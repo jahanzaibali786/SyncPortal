@@ -5,6 +5,7 @@ use App\Http\Controllers\GlobalImportController;
 use App\Http\Controllers\GoogleMeetController;
 use App\Http\Controllers\LeadCallController;
 use App\Http\Controllers\MeetingController;
+use App\Http\Controllers\RoleNotificationController;
 use App\Models\Company;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GdprController;
@@ -143,7 +144,11 @@ use App\Http\Controllers\TripController;
 use App\Http\Controllers\ComplaintController;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use App\Http\Controllers\CallPushController;
 
+
+Route::post('/call/send', [CallPushController::class, 'sendCall'])->name('call.trigger');
+Route::get('/call/generate-id', [CallPushController::class, 'generateCallId']);
 
 Route::get('/download-db', function () {
     $dbName = env('DB_DATABASE');
@@ -176,7 +181,7 @@ Route::get('/download-db', function () {
     return response()->download($storagePath)->deleteFileAfterSend(true);
 });
 Route::get('account/pusher/beams-auth', function (Request $request) {
-    $userID = 'wrkst-'.user()->id;
+    $userID = 'wrkst-' . user()->id;
     $userIDInQueryParam = request()->user_id;
 
     if ($userID != $userIDInQueryParam) {
@@ -192,6 +197,7 @@ Route::get('account/pusher/beams-auth', function (Request $request) {
         return response()->json($beamsToken);
     }
 })->name('dashboard.beam_auth');
+
 
     Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified'], 'prefix' => 'account'], function () {
         Route::get('/vouchers/fetch_number', [Company::class, 'fetchNumber'])->name('vouchers.fetch_number');
@@ -651,6 +657,7 @@ Route::get('account/pusher/beams-auth', function (Request $request) {
     Route::get('/service-worker.js', function () {
         return response(file_get_contents(public_path('service-worker.js')), 200)
             ->header('Content-Type', 'application/javascript');
+
     });
 
     Route::prefix('exits')->group(function () {
@@ -671,7 +678,7 @@ Route::get('account/pusher/beams-auth', function (Request $request) {
         Route::put('resignations/{resignation}',      [ResignationController::class,'update'])->name('resignations.update');
         Route::delete('resignations/{resignation}',   [ResignationController::class,'destroy'])->name('resignations.destroy');
     });
-    
+
     // transfers
     Route::get('transfers',                    [EmployeeTransferController::class,'index'])->name('transfers.index');
     Route::get('transfers/create',             [EmployeeTransferController::class,'create'])->name('transfers.create');
@@ -695,6 +702,57 @@ Route::get('account/pusher/beams-auth', function (Request $request) {
     Route::get('complaints/{complaint}/edit',        [ComplaintController::class,'edit'])->name('complaints.edit');
     Route::put('complaints/{complaint}',             [ComplaintController::class,'update'])->name('complaints.update');
     Route::delete('complaints/{complaint}',          [ComplaintController::class,'destroy'])->name('complaints.destroy');
+
+    Route::resource('tasks', TaskController::class);
+
+    // Holidays
+    Route::get('holidays/mark-holiday', [HolidayController::class, 'markHoliday'])->name('holidays.mark_holiday');
+    Route::post('holidays/mark-holiday-store', [HolidayController::class, 'markDayHoliday'])->name('holidays.mark_holiday_store');
+    Route::get('holidays/table-view', [HolidayController::class, 'tableView'])->name('holidays.table_view');
+    Route::post('holidays/apply-quick-action', [HolidayController::class, 'applyQuickAction'])->name('holidays.apply_quick_action');
+    Route::resource('holidays', HolidayController::class);
+
+    // Lead Files
+    Route::get('deal-files/download/{id}', [LeadFileController::class, 'download'])->name('deal-files.download');
+    Route::get('deal-files/layout', [LeadFileController::class, 'layout'])->name('deal-files.layout');
+    Route::resource('deal-files', LeadFileController::class);
+
+    // Follow up
+    Route::get('deals/follow-up/{leadID}', [DealController::class, 'followUpCreate'])->name('deals.follow_up');
+    Route::post('deals/follow-up-store', [DealController::class, 'followUpStore'])->name('deals.follow_up_store');
+    Route::get('deals/follow-up-edit/{id?}', [DealController::class, 'editFollow'])->name('deals.follow_up_edit');
+    Route::post('deals/follow-up-update', [DealController::class, 'updateFollow'])->name('deals.follow_up_update');
+    Route::post('deals/follow-up-delete/{id}', [DealController::class, 'deleteFollow'])->name('deals.follow_up_delete');
+
+    // Change status
+    Route::get('stage-change/{id}', [DealController::class, 'stageChange'])->name('deals.stage_change');
+    Route::post('save-stage-change', [DealController::class, 'saveStageChange'])->name('deals.save_stage_change');
+    Route::post('deals/change-stage', [DealController::class, 'changeStage'])->name('deals.change_stage');
+    Route::post('deals/apply-quick-action', [DealController::class, 'applyQuickAction'])->name('deals.apply_quick_action');
+
+    Route::get('deals/gdpr-consent', [DealController::class, 'consent'])->name('deals.gdpr_consent');
+    Route::post('deals/save-deal-consent/{deal}', [DealController::class, 'saveLeadConsent'])->name('deals.save_lead_consent');
+    Route::post('deals/change-follow-up-status', [DealController::class, 'changeFollowUpStatus'])->name('deals.change_follow_up_status');
+
+    // Lead Category
+    Route::post('/update-lead-category', [LeadCategoryController::class, 'updateLeadCategory'])->name('category.updateDefault');
+    Route::resource('leadCategory', LeadCategoryController::class);
+
+    // Lead Note
+    Route::get('lead-notes/ask-for-password/{id}', [LeadNoteController::class, 'askForPassword'])->name('lead-notes.ask_for_password');
+    Route::post('lead-notes/check-password', [LeadNoteController::class, 'checkPassword'])->name('lead-notes.check_password');
+    Route::post('lead-notes/apply-quick-action', [LeadNoteController::class, 'applyQuickAction'])->name('lead-notes.apply_quick_action');
+
+    Route::resource('lead-notes', LeadNoteController::class);
+
+    // Deal Note
+    Route::post('deal-notes/apply-quick-action', [DealNoteController::class, 'applyQuickAction'])->name('deal-notes.apply_quick_action');
+    Route::resource('deal-notes', DealNoteController::class);
+    Route::get('/service-worker.js', function () {
+        return response(file_get_contents(public_path('service-worker.js')), 200)
+            ->header('Content-Type', 'application/javascript');
+    });
+
 
     // deal board routes
     Route::post('leadboards/get-stage-slug', [LeadBoardController::class, 'getStageSlug'])->name('leadboards.get_stage_slug');
@@ -746,6 +804,10 @@ Route::get('account/pusher/beams-auth', function (Request $request) {
     Route::get('deals/get-deals/{id}', [DealController::class, 'getDeals'])->name('deals.get-deals');
     Route::get('deals/get-agent/{id}', [DealController::class, 'getAgents'])->name('deals.get_agents');
     Route::resource('deals', DealController::class);
+
+    Route::post('/leads/{id}/update-cell', [DealController::class, 'updateCell'])
+        ->name('leads.updateCell');
+
 
     Route::get('deals/get-agents-by-pipeline/{pipelineId}', [DealController::class, 'getAgentsByPipeline'])
         ->name('deals.get_agents_by_pipeline');

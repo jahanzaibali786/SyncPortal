@@ -55,9 +55,17 @@ class DealsDataTable extends BaseDataTable
 
         $stagesData = PipelineStage::all();
 
-        $stages = $stagesData->filter(function ($value, $key) {
+        $stages = $stagesData;
+
+        // $stages = $stagesData->filter(function ($value, $key) {
+        //     return $value->lead_pipeline_id == $this->request()->pipeline;
+        // });
+
+        if ($this->request()->pipeline != 'all' && $this->request()->pipeline != '' && $this->request()->pipeline != null) {
+            $stages = $stagesData->filter(function ($value) {
             return $value->lead_pipeline_id == $this->request()->pipeline;
-        });
+            });
+        }
 
         $datatables = datatables()->eloquent($query);
         $datatables->addIndexColumn();

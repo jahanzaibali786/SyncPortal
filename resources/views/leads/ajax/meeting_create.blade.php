@@ -685,6 +685,8 @@
     }
 
     $(document).ready(function() {
+        let date = $('#date').val();
+        fetchAvailableTime(date);
         $('.sbtn').on('click', function() {
             $('.sbtn').removeClass('active'); // Remove 'active' from all buttons
             $(this).addClass('active'); // Add 'active' to the clicked button

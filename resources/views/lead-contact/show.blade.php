@@ -16,7 +16,7 @@ $viewDeals = user()->permission('view_deals');
     <div class="d-flex filter-box project-header bg-white">
 
         <div class="mobile-close-overlay w-100 h-100" id="close-client-overlay"></div>
-        <div class="project-menu d-lg-flex" id="mob-client-detail">
+        <div class="project-menu d-lg-flex" id="mob-client-detail" style="padding-left: 28px;">
             <a class="d-none close-it" href="javascript:;" id="close-client-detail" >
                 <i class="fa fa-times"></i>
             </a>

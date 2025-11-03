@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CallPushController;
+
 ApiRoute::group(['namespace' => 'Modules\RestAPI\Http\Controllers'], function () {
 
     ApiRoute::get('app', ['as' => 'api.app', 'uses' => 'AppController@app']);
@@ -22,7 +24,15 @@ ApiRoute::group(['namespace' => 'Modules\RestAPI\Http\Controllers'], function ()
     ApiRoute::post('/file', ['as' => 'file.store', 'uses' => 'FileController@upload']);
     ApiRoute::get('/lang', ['as' => 'lang', 'uses' => 'LanguageController@lang']);
 });
+Route::prefix('v1')->group(function () {
 
+    //call response 
+    Route::post('/call/send', [CallPushController::class, 'sendCall']);
+    Route::post('/call/response', [CallPushController::class, 'callResponse'])->middleware(['auth:sanctum', 'api.auth']);
+
+    Route::post('/mobile-device/register', [CallPushController::class, 'registerToken'])->middleware(['auth:sanctum', 'api.auth']);
+    Route::post('/mobile-device/unregister', [CallPushController::class, 'unregisterToken'])->middleware(['auth:sanctum', 'api.auth']);
+});
 ApiRoute::group(['namespace' => 'Modules\RestAPI\Http\Controllers', 'middleware' => ['auth:sanctum', 'api.auth']], function () {
 
     ApiRoute::post('daystart', ['as' => 'autoMonthlyTask', 'uses' => 'TrakerController@autoMonthlyTask']);

@@ -6,7 +6,6 @@
             border: none;
             width: auto;
         }
-
     </style>
 @endpush
 
@@ -31,7 +30,8 @@
             <x-slot name="header">
                 <div class="s-b-n-header" id="tabs">
                     <h2 class="mb-0 p-20 f-21 font-weight-normal  border-bottom-grey">
-                        @lang($pageTitle)</h2>
+                        @lang($pageTitle)
+                    </h2>
                 </div>
             </x-slot>
 
@@ -40,13 +40,23 @@
                     <div class="d-flex justify-content-between border rounded my-3 px-4 py-2 align-items-center">
                         <div>
                             <div class="heading-h4">{{ $role->display_name }}</div>
-                            <div class="simple-text text-lightest mt-1">{{ $role->name == 'employee' ? ($role->users_count - $otherRoleUserCount) : $role->users_count }} @lang('app.member')
+                            <div class="simple-text text-lightest mt-1">
+                                {{ $role->name == 'employee' ? ($role->users_count - $otherRoleUserCount) : $role->users_count }}
+                                @lang('app.member')
                             </div>
                         </div>
                         <div>
                             @if ($role->name == 'admin')
                                 <span class="text-lightest">@lang('messages.adminPermissionsCantChange')</span>
+                                <x-forms.button-secondary class="view-role-notifications" data-role-id="{{ $role->id }}"
+                                    icon="bell">
+                                    @lang('modules.permission.notifications-permissions')
+                                </x-forms.button-secondary>
                             @else
+                            <x-forms.button-secondary class="view-role-notifications" data-role-id="{{ $role->id }}"
+                                icon="bell">
+                                @lang('modules.permission.notifications-permissions')
+                            </x-forms.button-secondary>
                                 <x-forms.button-secondary class="view-permission" data-role-id="{{ $role->id }}" icon="key">
                                     @lang('modules.permission.permissions')
                                 </x-forms.button-secondary>
@@ -66,8 +76,16 @@
 
 @push('scripts')
     <script>
+        $('body').on('click', '.view-role-notifications', function () {
+            let roleId = $(this).data('role-id');
+            let url = "{{ route('role-notifications.index', ':id') }}";
+            url = url.replace(':id', roleId);
 
-        $('body').on('click', '.view-permission', function() {
+            // use Worksuite’s built-in modal helper
+            $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
+            $.ajaxModal(MODAL_LG, url);
+        });
+        $('body').on('click', '.view-permission', function () {
             var roleId = $(this).data('role-id');
             var url = "{{ route('role-permissions.permissions') }}";
 
@@ -80,7 +98,7 @@
                     'roleId': roleId,
                     '_token': '{{ csrf_token() }}'
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response.status == 'success') {
 
                         if ($('#role-permission-' + roleId).html() != '') {
@@ -89,7 +107,7 @@
                             $('.role-permissions').html('');
                             $('#role-permission-' + roleId).html(response.html);
 
-                            setTimeout(function(){
+                            setTimeout(function () {
                                 $('[data-toggle="popover"]').popover();
                             }, 300);
                         }
@@ -98,7 +116,7 @@
             });
         });
 
-        $('body').on('click', '.reset-permission', function() {
+        $('body').on('click', '.reset-permission', function () {
             var roleId = $(this).data('role-id');
             Swal.fire({
                 title: "@lang('messages.sweetAlertTitle')",
@@ -131,7 +149,7 @@
                             'roleId': roleId,
                             '_token': '{{ csrf_token() }}'
                         },
-                        success: function(response) {
+                        success: function (response) {
                             if (response.status == 'success') {
                                 window.location.reload();
                             }
@@ -141,7 +159,7 @@
             });
         });
 
-        $('body').on('change', '.role-permission-select', function() {
+        $('body').on('change', '.role-permission-select', function () {
             var permissionId = $(this).data('permission-id');
             var roleId = $(this).data('role-id');
             var permissionType = $(this).val();
@@ -161,7 +179,7 @@
             });
         });
 
-        $('body').on('click', '.show-custom-permission', function() {
+        $('body').on('click', '.show-custom-permission', function () {
             var moduleRow = $(this).closest('tr');
             var moduleId = $(this).data('module-id');
             var roleId = $(this).data('role-id');
@@ -178,10 +196,10 @@
                     'moduleId': moduleId,
                     '_token': '{{ csrf_token() }}'
                 },
-                success: function(response) {
+                success: function (response) {
                     if (response.status == 'success') {
                         if ($('#role-permission-' + roleId).find(
-                                'table.permisison-table tbody #module-custom-permission-' + moduleId)
+                            'table.permisison-table tbody #module-custom-permission-' + moduleId)
                             .length > 0) {
                             $('#role-permission-' + roleId).find(
                                 'table.permisison-table tbody #module-custom-permission-' + moduleId
@@ -198,7 +216,7 @@
         });
 
 
-        $('body').on('click', '#add-role', function() {
+        $('body').on('click', '#add-role', function () {
             var url = "{{ route('role-permissions.create') }}";
             $(MODAL_LG + ' ' + MODAL_HEADING).html('...');
             $.ajaxModal(MODAL_LG, url);
