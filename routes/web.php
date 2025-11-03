@@ -198,7 +198,6 @@ Route::get('account/pusher/beams-auth', function (Request $request) {
     }
 })->name('dashboard.beam_auth');
 
-
     Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified'], 'prefix' => 'account'], function () {
         Route::get('/vouchers/fetch_number', [Company::class, 'fetchNumber'])->name('vouchers.fetch_number');
         Route::resource('vouchers', VoucherController::class);
@@ -1127,6 +1126,7 @@ Route::get('account/pusher/beams-auth', function (Request $request) {
 
     Route::get('deal-report/chart', [LeadReportController::class, 'averageDealSizeReport'])->name('lead-report.chart');
     Route::get('deal-report/profile', [LeadReportController::class, 'profile'])->name('lead-report.profile');
+    Route::get('deal-report/subagent', [LeadReportController::class, 'subagent'])->name('lead-report.subagent');
     Route::get('deal-report/export/{year}/{pipeline}/{category}', [LeadReportController::class, 'exportDealReport'])->name('deal-report.export');
 
 
