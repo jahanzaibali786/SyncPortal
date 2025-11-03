@@ -22,8 +22,8 @@ trait ImportExcel
         $this->hasHeading = $request->has('heading');
         $this->heading = array();
         $this->fileHeading = array();
-
         $this->columns = $importClass::fields();
+        // dd($this->columns);
         $this->importMatchedColumns = array();
         $this->matchedColumns = array();
 
@@ -34,18 +34,17 @@ trait ImportExcel
             HeadingRowFormatter::default('none');
             $this->fileHeading = (new HeadingRowImport)->toArray(public_path(Files::UPLOAD_FOLDER . '/' . Files::IMPORT_FOLDER . '/' . $this->file))[0][0];
             HeadingRowFormatter::default(config('excel.imports.heading_row.formatter'));
-
+            // dd($this->columns,$this->heading,$this->fileHeading);
             array_shift($excelData);
             $this->matchedColumns = collect($this->columns)->whereIn('id', $this->heading)->pluck('id');
             $importMatchedColumns = array();
-
+            // dd($this->matchedColumns);
             foreach ($this->matchedColumns as $matchedColumn) {
                 $importMatchedColumns[$matchedColumn] = 1;
             }
 
             $this->importMatchedColumns = $importMatchedColumns;
         }
-
         $this->importSample = array_slice($excelData, 0, 5);
     }
 
