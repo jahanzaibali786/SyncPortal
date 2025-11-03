@@ -14,8 +14,7 @@
                     <div class="row">
                     <div class="col-md-6">
                         <b>@lang("messages.unmatchedColumns", ["unmatchCount" => (!empty($heading) ? collect($columns)->where('required','Yes')->whereNotIn('id', $heading)->count() : 0)])</b>
-                        <a href="javascript:void(0);"
-                                onclick="skipall()">@lang("app.skipAll")</a>
+                        <a href="javascript:void(0);" onclick="skipall()">@lang("app.skipAll")</a>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
@@ -35,14 +34,24 @@
                     <input type="hidden" name="has_heading" value="{{ $hasHeading }}">
 
                     <div class="row">
-                        @forelse ($importSample[0] as $key => $item)
-                            <div class="col-md-3 importBox  border-grey {{ !empty($heading) ? (collect($columns)->whereIn('id', $heading[$key])->first() ? 'matched' : 'unmatched') : 'unmatched' }}"
-                                id="box_{{ $key }}" data-key="{{ $key }}">
+                        @php
+                            $sampleHead = $importSample[0] ?? [];
+                        @endphp
+
+                        @forelse ($sampleHead as $key => $item)
+                            @php
+                                $headingValue = (!empty($heading) && isset($heading[$key])) ? $heading[$key] : null;
+                                $matchedColumn = $headingValue ? collect($columns)->firstWhere('id', $headingValue) : null;
+                                $boxClass = $matchedColumn ? 'matched' : 'unmatched';
+                                $fileHeadingValue = isset($fileHeading[$key]) ? $fileHeading[$key] : null;
+                            @endphp
+
+                            <div class="col-md-3 importBox  border-grey {{ $boxClass }}" id="box_{{ $key }}" data-key="{{ $key }}">
                                 <div class="importOptions w-100">
                                     <div class="col-sm-12 p-0">
-                                        @if (!empty($heading))
+                                        @if (!empty($heading) && $fileHeadingValue)
                                             <h4>
-                                                {{$fileHeading[$key]}}
+                                                {{ $fileHeadingValue }}
                                             </h4>
                                         @endif
                                     </div>
@@ -55,23 +64,25 @@
                                                     @lang('app.columnName')
                                                 </label>
                                                 <div id="selectOptionList_{{ $key }}">
+                                                    @php
+                                                        // Use headingValue for selected comparison; always render full options list
+                                                        $currentHeading = $headingValue;
+                                                    @endphp
+
                                                     <select class="form-control select-picker mb-2" id="columnName_{{ $key }}" name="columns[{{ $key }}]">
                                                         <option value="">@lang("app.selectAColumn")</option>
-                                                        @if (!empty($heading) && collect($columns)->whereIn('id', $heading[$key])->first())
-                                                            @foreach($columns as $selectKey => $selectColumn)
-                                                            <option value="{{ $selectColumn['id'] }}" {{ ($heading[$key]==$selectColumn['id']) ? 'selected' : '' }}>{{$selectColumn['name'] }}
-                                                            </option>
-                                                            @endforeach
-                                                        @endif
+                                                        @foreach($columns as $selectColumn)
+                                                            <option value="{{ $selectColumn['id'] }}" {{ ($currentHeading !== null && $currentHeading === $selectColumn['id']) ? 'selected' : '' }}>{{ $selectColumn['name'] }}</option>
+                                                        @endforeach
                                                     </select>
+
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-sm-12 p-0">
                                             <div class="form-group">
                                                 <button onclick="goBack({{ $key }})" class="btn btn-info btn-sm" type="button">@lang("app.btnBack")</button>
-                                                <button onclick="saveColumnBox({{ $key }})" class="btn btn-dark btn-sm"
-                                                    type="button">@lang("app.save")</button>
+                                                <button onclick="saveColumnBox({{ $key }})" class="btn btn-dark btn-sm" type="button">@lang("app.save")</button>
                                                 <a href="javascript:void(0);" onclick="skipColumnBox({{ $key }})">@lang("app.skip")</a>
                                             </div>
                                         </div>
@@ -80,26 +91,21 @@
                                     <div class="row columnDescriptionBox" id="columnDescriptionBox_{{ $key }}">
                                         <div class="col-sm-12">
                                             <p id="columnDescriptionBoxText_{{ $key }}">
-                                                @if (!empty($heading))
-                                                    @if(collect($columns)->whereIn('id', $heading[$key])->first())
-                                                        {{ collect($columns)->whereIn('id', $heading[$key])->first()['name'] }}
-                                                    @else
-                                                    <span class="unmatchedWarning" id="unmatchedWarning_{{$key}}">(@lang('app.unmatchedColumn'))</span>
-                                                    @endif
+                                                @if ($matchedColumn)
+                                                    {{ $matchedColumn['name'] }}
                                                 @else
-                                                <span class="unmatchedWarning" id="unmatchedWarning_{{$key}}">(@lang('app.unmatchedColumn'))</span>
+                                                    <span class="unmatchedWarning" id="unmatchedWarning_{{$key}}">(@lang('app.unmatchedColumn'))</span>
                                                 @endif
-                                                </p>
-                                                <p class="alert alert-warning notimported" style="display:none;" id="columnSkipBox_{{ $key }}">
-                                                    @lang("app.willNotBeImported")</p>
-                                            </div><!-- col-sm-12 -->
+                                            </p>
+                                            <p class="alert alert-warning notimported" style="display:none;" id="columnSkipBox_{{ $key }}">
+                                                @lang("app.willNotBeImported")</p>
+                                        </div><!-- col-sm-12 -->
                                     </div>
 
                                     <div class="row editAndSkipBox" id="editAndSkipBox_{{ $key }}">
                                         <div class="col-sm-12">
                                             <a href="javascript:void(0);" onclick="showColumnBox({{ $key }})">@lang("app.edit")</a>&nbsp;
-                                            <a href="javascript:void(0);" onclick="skipColumnBox({{ $key }})"
-                                                id="skipButton_{{ $key }}">@lang("app.skip")</a>
+                                            <a href="javascript:void(0);" onclick="skipColumnBox({{ $key }})" id="skipButton_{{ $key }}">@lang("app.skip")</a>
                                         </div><!-- col-sm-12 -->
                                     </div>
                                 </div>
@@ -108,13 +114,16 @@
 
 
                                     @foreach ($importSample as $dataKey => $value)
-                                    <p class="sample">
-                                        {{ $value[$key] }}
-                                    </p>
+                                        <p class="sample">
+                                            {{ $value[$key] ?? '' }}
+                                        </p>
                                     @endforeach
                                 </div>
                             </div>
                         @empty
+                            <div class="col-12">
+                                <p class="text-muted">@lang('app.noSampleAvailable')</p>
+                            </div>
                         @endforelse
                         <div class="col-md-12">
                         </div>
@@ -214,7 +223,7 @@
                 $("#process-{{ $importClassName }}-form").removeAttr("disabled");
             } else {
                 let str = _.join(_.map(requiredMatched, 'name'), ', ');
-                let msg = "@lang("messages.requiredColumnsUnmatched")";
+                let msg = "@lang(\"messages.requiredColumnsUnmatched\")";
                 msg = msg.replace(":columns", str);
                 $("#getUnMatchedSuccess").hide();
                 $("#requiredColumnsUnmatched").html(msg).show();
@@ -276,7 +285,7 @@
             if (selectedColumnID == "") {
                 Swal.fire({
                     icon: 'error',
-                    text: "@lang("messages.pleaseSelectAColumn")",
+                    text: "@lang(\"messages.pleaseSelectAColumn\")",
 
                     toast: true,
                     position: "top-end",
