@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\LeadCall;
 use Illuminate\Http\Request;
+use App\Models\Lead;
+use App\Models\LeadActivityLog;
+
+use Illuminate\Support\Facades\Auth;
 
 class LeadCallController extends Controller
 {
@@ -238,5 +242,116 @@ class LeadCallController extends Controller
             return redirect()->back()->with('error', __('Permission Denied.'))->with('status', 'calls');
         }
     }
+
+
+    /**
+     * Open Create Call Modal
+     */
+    public function callCreateModal(Request $request)
+    {
+        $leadId = $request->get('lead_id');
+        $lead = Lead::findOrFail($leadId);
+        return view('leads.ajax.call_create', compact('lead'));
+    }
+
+    /**
+     * Store Call from Modal
+     */
+    // public function callStoreModal(Request $request)
+    // {
+    //     $validatedData = $request->validate([
+    //         'lead_id' => ['required', 'exists:leads,id'],
+    //         'subject' => ['required', 'string', 'max:191'],
+    //         'call_type' => ['required', 'string', 'max:30'],
+    //         'to_number' => ['nullable', 'string', 'max:15', 'regex:/^[0-9+\-\s()]*$/'],
+    //         'start' => ['required', 'date'], // changed to date validation
+    //         'end' => ['required', 'date', 'after_or_equal:start'], // must be >= start
+    //         'status' => ['nullable', 'string', 'max:25'],
+    //         'description' => ['nullable', 'string'],
+    //         'call_result' => ['nullable', 'string'],
+    //     ]);
+
+    //     // Convert start & end to Carbon
+    //     $start = \Carbon\Carbon::parse($validatedData['start']);
+    //     $end = \Carbon\Carbon::parse($validatedData['end']);
+
+    //     // Calculate duration (in seconds)
+    //     $durationSeconds = $end->diffInSeconds($start);
+
+    //     // Format duration as H:i:s
+    //     $validatedData['duration'] = gmdate('H:i:s', $durationSeconds);
+
+    //     // Set default values
+    //     $validatedData['status'] = $validatedData['status'] ?? 'answer';
+    //     $validatedData['user_id'] = Auth::id();
+
+    //     // Store timestamps as strings (varchar)
+    //     $validatedData['start'] = $start->format('Y-m-d H:i:s');
+    //     $validatedData['end'] = $end->format('Y-m-d H:i:s');
+
+    //     // Create record
+    //     $call = LeadCall::create($validatedData);
+
+    //     // Log call history
+    //     \App\Traits\DealHistoryTrait::createDealHistory(
+    //         $call->lead_id,
+    //         'call-created',
+    //         callId: $call->id,
+    //     );
+
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => __('Call added successfully.'),
+    //         'data' => $call,
+    //     ], 201);
+    // }
+
+    public function callStoreModal(Request $request)
+    {
+        $validatedData = $request->validate([
+            'lead_id' => ['required', 'exists:leads,id'],
+            'subject' => ['required', 'string', 'max:191'],
+            'call_type' => ['required', 'string', 'max:30'],
+            'to_number' => ['nullable', 'string', 'max:15', 'regex:/^[0-9+\-\s()]*$/'],
+            'call_date' => ['required', 'date'],
+            'start_time' => ['required', 'date_format:H:i'],
+            'end_time' => ['required', 'date_format:H:i', 'after:start_time'],
+            'status' => ['nullable', 'string', 'max:25'],
+            'description' => ['nullable', 'string'],
+            'call_result' => ['nullable', 'string'],
+        ]);
+
+        // Combine date and times into full timestamps
+        $start = \Carbon\Carbon::parse($validatedData['call_date'] . ' ' . $validatedData['start_time']);
+        $end = \Carbon\Carbon::parse($validatedData['call_date'] . ' ' . $validatedData['end_time']);
+
+        // Calculate duration
+        $durationSeconds = $end->diffInSeconds($start);
+        $validatedData['duration'] = gmdate('H:i:s', $durationSeconds);
+
+        // Store as varchar (Y-m-d H:i:s)
+        $validatedData['start'] = $start->format('Y-m-d H:i:s');
+        $validatedData['end'] = $end->format('Y-m-d H:i:s');
+        $validatedData['user_id'] = Auth::id();
+        $validatedData['status'] = $validatedData['status'] ?? 'answer';
+
+        // Create call record
+        $call = LeadCall::create($validatedData);
+
+        // Log call history
+        \App\Traits\DealHistoryTrait::createDealHistory(
+            $call->lead_id,
+            'call-created',
+            callId: $call->id,
+        );
+
+        return response()->json([
+            'status' => 'success',
+            'message' => __('Call added successfully.'),
+            'data' => $call,
+        ], 201);
+    }
+
+
 
 }

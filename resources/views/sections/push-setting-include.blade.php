@@ -1,5 +1,5 @@
 @if (isset($pushSetting) && $pushSetting->status == 'active')
-    <link rel="manifest" href="{{ asset('manifest.json') }}"/>
+    <link rel="manifest" href="{{ asset('manifest.json') }}" />
     <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async=""></script>
     <script>
         var OneSignal = window.OneSignal || [];
@@ -96,7 +96,6 @@
 
 @if (isset($pushSetting) && $pushSetting->beams_push_status == 'active')
     <script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js" async></script>
-
     <script>
         if (localStorage.getItem('color-theme') === 'dark' || (!('color-theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark')
@@ -108,33 +107,33 @@
 
     <script>
         $(document).ready(function () {
-        const currentUserId = "wrkst-{{ user()->id }}"; // Get this from your auth system
+            const currentUserId = "wrkst-{{ user()->id }}"; // Get this from your auth system
 
-        const beamsClient = new PusherPushNotifications.Client({
-            instanceId: "{{ push_setting()->instance_id }}",
-        });
+            const beamsClient = new PusherPushNotifications.Client({
+                instanceId: "{{ push_setting()->instance_id }}",
+            });
 
-        const beamsTokenProvider = new PusherPushNotifications.TokenProvider({
-            url: "{{ route('dashboard.beam_auth') }}",
-        });
+            const beamsTokenProvider = new PusherPushNotifications.TokenProvider({
+                url: "{{ route('dashboard.beam_auth') }}",
+            });
+            
+            beamsClient.start()
+                .then(() => beamsClient.addDeviceInterest('cip'))
+                .then(() => beamsClient.setUserId(currentUserId, beamsTokenProvider))
+                .then(() => console.log('Successfully registered and subscribed!'))
+                .catch(console.error);
 
-        beamsClient.start()
-        .then(() => beamsClient.addDeviceInterest('Worksuite'))
-        .then(() => beamsClient.setUserId(currentUserId, beamsTokenProvider))
-        .then(() => console.log('Successfully registered and subscribed!'))
-        .catch(console.error);
-
-        beamsClient
-        .getUserId()
-        .then((userId) => {
-            console.log(userId, currentUserId);
-            // Check if the Beams user matches the user that is currently logged in
-            if (userId !== currentUserId) {
-            // Unregister for notifications
-            return beamsClient.stop();
-            }
-        })
-        .catch(console.error);
+            beamsClient
+                .getUserId()
+                .then((userId) => {
+                    console.log(userId, currentUserId);
+                    // Check if the Beams user matches the user that is currently logged in
+                    if (userId !== currentUserId) {
+                        // Unregister for notifications
+                        return beamsClient.stop();
+                    }
+                })
+                .catch(console.error);
         });
     </script>
 @endif

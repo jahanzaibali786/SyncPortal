@@ -538,37 +538,48 @@ class DashboardController extends AccountBaseController
 
     }
 
-    public function sendPushNotifications($usersIDs, $title, $body)
-    {
-        $setting = PushNotificationSetting::first();
-        if ($setting->beams_push_status && count($usersIDs) > 0) {
-            $beamsClient = new \Pusher\PushNotifications\PushNotifications([
-            'instanceId' =>  $setting->instance_id,
-            'secretKey' =>  $setting->beam_secret,
-            ]);
+   public function sendPushNotifications($usersIDs, $title, $body)
+{
+    $setting = PushNotificationSetting::first();
 
+    if ($setting->beams_push_status) {
+        $beamsClient = new \Pusher\PushNotifications\PushNotifications([
+            'instanceId' => $setting->instance_id,
+            'secretKey' => $setting->beam_secret,
+        ]);
 
-            $pushIDs = [];
-
-            foreach ($usersIDs[0] as $key => $uid) {
-                $pushIDs[] = 'wrkst-' . $uid;
-            }
-
-            $publishResponse = $beamsClient->publishToUsers(
-            $pushIDs,
-            array(
-              'web' => array(
-                'notification' => array(
-                  'title' => $title,
-                  'body' => $body,
-                  'icon' => companyOrGlobalSetting()->logo_url
-                  )
-              )
-            ));
-        }
-
-        return true;
+        // Example: send to the "cip" interest
+        $publishResponse = $beamsClient->publishToInterests(
+            ['cip'],
+            [
+                'web' => [
+                    'notification' => [
+                        'title' => $title,
+                        'body'  => $body,
+                        'icon'  => companyOrGlobalSetting()->logo_url,
+                    ],
+                ],
+                'fcm' => [
+                    'notification' => [
+                        'title' => $title,
+                        'body'  => $body,
+                    ],
+                ],
+                'apns' => [
+                    'aps' => [
+                        'alert' => [
+                            'title' => $title,
+                            'body'  => $body,
+                        ],
+                    ],
+                ],
+            ]
+        );
     }
+
+    return true;
+}
+
 
 
 }

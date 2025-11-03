@@ -36,13 +36,13 @@
                         @if (in_array(Request::segment($i), App\Enums\NonClickableSegments::getValues()))
                             {{ $segmentText }} &bull;
                         @else
-                            <a href="{{ $segmentLink }}" class="text-lightest">
+                            <a href="{{ $segmentLink }}" class="text-lightest text-truncate">
                                 {{ $segmentText }}
                             </a> &bull;
                         @endif
                     @endif
                 @else
-                    {{ $pageTitle }}
+                    {{ strlen($pageTitle ?? '') > 25 ? substr($pageTitle, 0, 25) . '...' : $pageTitle }}
                 @endif
             @endfor
         </span>

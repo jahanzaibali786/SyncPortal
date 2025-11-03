@@ -87,9 +87,13 @@ class ClientsDataTable extends BaseDataTable
 
             return '--';
         });
+        // $datatables->addColumn('category_name', function ($row) {
+        //     return !is_null($row->clientDetails->category_id) ? $row->cat_name : '--';
+        // });
         $datatables->addColumn('category_name', function ($row) {
-            return !is_null($row->clientDetails->category_id) ? $row->cat_name : '--';
+            return optional($row->clientDetails)->category_id ? $row->cat_name : '--';
         });
+
         $datatables->addColumn('added_by', fn($row) => optional($row->clientDetails)->addedBy ? $row->clientDetails->addedBy->name : '--');
         $datatables->editColumn('name', fn($row) => view('components.client', ['user' => $row]));
         $datatables->editColumn('id', fn($row) => $row->clientDetails?->id);
@@ -119,7 +123,7 @@ class ClientsDataTable extends BaseDataTable
             ->leftJoin('client_details', 'users.id', '=', 'client_details.user_id')
             ->leftJoin('client_categories', 'client_details.category_id', '=', 'client_categories.id')
             ->join('roles', 'roles.id', '=', 'role_user.role_id')
-            ->select('client_categories.category_name as cat_name','users.id','users.salutation','users.is_client_contact', 'users.name', 'client_details.company_name', 'users.email', 'users.mobile', 'users.country_phonecode', 'users.image', 'users.created_at', 'users.status', 'client_details.added_by', 'users.admin_approval')
+            ->select('client_categories.category_name as cat_name', 'users.id', 'users.salutation', 'users.is_client_contact', 'users.name', 'client_details.company_name', 'users.email', 'users.mobile', 'users.country_phonecode', 'users.image', 'users.created_at', 'users.status', 'client_details.added_by', 'users.admin_approval')
             ->where('roles.name', 'client')
             ->whereNull('users.is_client_contact');
 
@@ -170,8 +174,7 @@ class ClientsDataTable extends BaseDataTable
         if ($request->verification != 'all') {
             if ($request->verification == 'yes') {
                 $users->where('users.admin_approval', 1);
-            }
-            elseif ($request->verification == 'no') {
+            } elseif ($request->verification == 'no') {
                 $users->where('users.admin_approval', 0);
             }
         }
@@ -201,14 +204,14 @@ class ClientsDataTable extends BaseDataTable
     {
         $dataTable = $this->setBuilder('clients-table', 2)
             ->parameters([
-                'initComplete' => 'function () {
+            'initComplete' => 'function () {
                    window.LaravelDataTables["clients-table"].buttons().container()
                     .appendTo("#table-actions")
                 }',
-                'fnDrawCallback' => 'function( oSettings ) {
+            'fnDrawCallback' => 'function( oSettings ) {
                   //
                 }',
-            ]);
+        ]);
 
         if (canDataTableExport()) {
             $dataTable->buttons(Button::make(['extend' => 'excel', 'text' => '<i class="fa fa-file-export"></i> ' . trans('app.exportExcel')]));

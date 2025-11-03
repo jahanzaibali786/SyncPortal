@@ -11,9 +11,8 @@
         <div class="minimized rounded bg-additional-grey border-grey mr-3">
             <!-- TASK BOARD HEADER START -->
             <div class="d-flex mt-4 mx-1 b-p-header align-items-center">
-                <a href="javascript:;" class="d-grid f-8 mb-3 text-lightest collapse-column"
-                    data-column-id="{{ $column->id }}" data-type="maximize" data-toggle="tooltip"
-                    data-original-title=@lang('app.expand')>
+                <a href="javascript:;" class="d-grid f-8 mb-3 text-lightest collapse-column" data-column-id="{{ $column->id }}"
+                    data-type="maximize" data-toggle="tooltip" data-original-title=@lang('app.expand')>
                     <i class="fa fa-chevron-right ml-1"></i>
                     <i class="fa fa-chevron-left"></i>
                 </a>
@@ -56,8 +55,7 @@
                         </a>
                         @if ($addLeadPermission != 'none')
                             <div class="dropdown">
-                                <button
-                                    class="btn bg-white btn-lg f-10 px-2 py-1 text-dark-grey  rounded  dropdown-toggle"
+                                <button class="btn bg-white btn-lg f-10 px-2 py-1 text-dark-grey  rounded  dropdown-toggle"
                                     type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">
                                     <i class="fa fa-ellipsis-h"></i>
@@ -112,7 +110,8 @@
 
 
                     @foreach ($column['deals'] as $lead)
-                        <x-cards.lead-card :draggable="$changeStatusPermission == 'all' ? 'true' : 'false'" :lead="$lead" :allLabels="$allLabels" />
+                        <x-cards.lead-card :draggable="$changeStatusPermission == 'all' ? 'true' : 'false'" :lead="$lead"
+                            :allLabels="$allLabels" />
                     @endforeach
                 </div>
                 <!-- MAIN TASKS END -->
@@ -137,12 +136,15 @@
     </style>
 @endforeach
 
-<div id="bulkActionBar" class="position-fixed bg-white border-top shadow-sm p-2 d-none"
-    style="top: 20%; left: 57%; width: 720px; transform: translateX(-50%); z-index: 999999;">
+<div id="bulkActionBar" class="position-fixed border-top shadow-sm p-2 d-none"
+    style="top: 20%; left: 57%; width: 720px; transform: translateX(-50%); z-index: 1049; background-color: #FAFBFF;">
     <div class="container-fluid d-flex align-items-center justify-content-between">
+
+        {{-- @if($addLeadPermission) --}}
         <button type="button" id="btnBulkAssignAgents" class="btn btn-primary f-12">
-            <i class="fa fa-user-plus mr-1"></i> Assign Users
+            <i class="fa fa-user-plus mr-1"></i> Assign Agents
         </button>
+        {{-- @endif --}}
 
         <div class="d-flex align-items-center">
             <button type="button" id="clearSelection" class=" mr-3 f-11 bg-white">
@@ -150,6 +152,7 @@
             </button>
             <span id="selectedCount" class="font-weight-bold f-12">0 Card(s) Selected</span>
         </div>
+
         <div class="d-flex align-items-center">
 
             <select id="bulkPipelineSelect" class="form-control mr-3 pb-2 pt-2 f-12" style="width: 150px;">
@@ -172,38 +175,10 @@
 
 
 <!-- Bulk Assign Agents Modal -->
-<div class="modal fade" id="bulkAssignAgentsModal" tabindex="-1" role="dialog"
-    aria-labelledby="bulkAssignAgentsModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <form id="bulkAssignAgentsForm">
-                @csrf
-                <div class="modal-header">
-                    <h5 class="modal-title" id="bulkAssignAgentsModalLabel">Assign Users / Agents</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span>&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="bulkAssignAgentsSelect">Select Agents</label>
-                        <select id="bulkAssignAgentsSelect" class="form-control select-picker"
-                            data-live-search="true" multiple>
-                            <option value="">--</option>
-                        </select>
-                    </div>
-                    <small class="text-muted">
-                        Existing agents already assigned to selected deals will not be duplicated.
-                    </small>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+{{-- @if($addLeadPermission) --}}
+
+
+{{-- @endif --}}
 
 
 
@@ -212,28 +187,28 @@
     var arraylike = document.getElementsByClassName('b-p-tasks');
     var containers = Array.prototype.slice.call(arraylike);
     var drake = dragula({
-            containers: containers,
-            moves: function(el, source, handle, sibling) {
-                if (el.classList.contains('move-disable') || !KTUtil.isDesktopDevice()) {
-                    return false;
-                }
+        containers: containers,
+        moves: function (el, source, handle, sibling) {
+            if (el.classList.contains('move-disable') || !KTUtil.isDesktopDevice()) {
+                return false;
+            }
 
-                return true; // elements are always draggable by default
-            },
-        })
-        .on('drag', function(el) {
+            return true; // elements are always draggable by default
+        },
+    })
+        .on('drag', function (el) {
             el.className = el.className.replace('ex-moved', '');
-        }).on('drop', function(el) {
+        }).on('drop', function (el) {
             el.className += ' ex-moved';
-        }).on('over', function(el, container) {
+        }).on('over', function (el, container) {
             container.className += ' ex-over';
-        }).on('out', function(el, container) {
+        }).on('out', function (el, container) {
             container.className = container.className.replace('ex-over', '');
         });
 </script>
 
 <script>
-    drake.on('drop', function(element, target, source, sibling) {
+    drake.on('drop', function (element, target, source, sibling) {
         var elementId = element.id;
         $children = $('#' + target.id).children();
         var boardColumnId = $('#' + target.id).data('column-id');
@@ -245,7 +220,7 @@
         var taskIds = [];
         var prioritys = [];
 
-        $children.each(function(ind, el) {
+        $children.each(function (ind, el) {
             taskIds.push($(el).data('task-id'));
             prioritys.push($(el).index());
         });
@@ -263,7 +238,7 @@
                 prioritys: prioritys,
                 '_token': '{{ csrf_token() }}'
             },
-            success: function() {
+            success: function () {
                 let leadID = movingTaskId;
                 let statusID = boardColumnId;
 
@@ -284,7 +259,7 @@
                         statusID: statusID,
                         '_token': '{{ csrf_token() }}'
                     },
-                    success: function(response) {
+                    success: function (response) {
                         if (response.slug === 'win' || response.slug === 'lost') {
                             var modalUrl =
                                 "{{ route('deals.stage_change', ':id') }}?via=deal&leadID=" +
@@ -303,12 +278,12 @@
 </script>
 
 <script>
-    $(function() {
+    $(function () {
 
         selectedDeals = new Set();
 
         // ✅ Toggle individual checkbox
-        $(document).on('change', '.deal-select-checkbox', function() {
+        $(document).on('change', '.deal-select-checkbox', function () {
             let dealId = $(this).val();
             if ($(this).is(':checked')) {
                 selectedDeals.add(dealId);
@@ -319,21 +294,21 @@
         });
 
         // ✅ "Select All" per column
-        $(document).on('change', '.select-all-column', function() {
+        $(document).on('change', '.select-all-column', function () {
             let columnId = $(this).data('column-id');
             let isChecked = $(this).is(':checked');
-            $(`#drag-container-${columnId} .deal-select-checkbox`).each(function() {
+            $(`#drag-container-${columnId} .deal-select-checkbox`).each(function () {
                 $(this).prop('checked', isChecked).trigger('change');
             });
         });
 
         // ✅ Clear selection
-        $('#clearSelection').on('click', function() {
+        $('#clearSelection').on('click', function () {
             clearSelection();
         });
 
         // ✅ Handle pipeline change — only load stages dynamically
-        $('#bulkPipelineSelect').on('change', function() {
+        $('#bulkPipelineSelect').on('change', function () {
             let pipelineId = $(this).val();
             const $stageSelect = $('#bulkStageSelect');
 
@@ -350,10 +325,10 @@
                     pipeline_id: pipelineId
                 },
                 blockUI: true,
-                success: function(response) {
+                success: function (response) {
                     if (response.status === 'success') {
                         let html = '<option value="">Move to Stage...</option>';
-                        $.each(response.stages, function(i, stage) {
+                        $.each(response.stages, function (i, stage) {
                             html +=
                                 `<option value="${stage.id}">${stage.name}</option>`;
                         });
@@ -365,7 +340,7 @@
 
 
         // ✅ Move deals to selected stage (within selected pipeline)
-        $('#bulkStageSelect').on('change', function() {
+        $('#bulkStageSelect').on('change', function () {
             let stageId = $(this).val();
             if (!stageId || selectedDeals.size === 0) return;
 
@@ -378,7 +353,7 @@
                     deal_ids: Array.from(selectedDeals)
                 },
                 blockUI: true,
-                success: function(response) {
+                success: function (response) {
                     if (response.status === 'success') {
                         moveDealsToStage(stageId);
                         clearSelection();
@@ -398,7 +373,7 @@
                 const $sourceContainer = $card.closest('.b-p-tasks');
 
                 if ($card.length) {
-                    $card.fadeOut(150, function() {
+                    $card.fadeOut(150, function () {
                         // ✅ Move card to target column
                         $(this).appendTo($targetContainer).fadeIn(200);
 
@@ -431,7 +406,7 @@
                     data: {
                         deal_id: dealId
                     },
-                    success: function(response) {
+                    success: function (response) {
                         if (response.status === 'success') {
                             $('#bulkAssignAgents').selectpicker('val', response.agent_ids);
                         }
@@ -473,84 +448,55 @@
 
 
 
-        // 🔹 Load all agents + preselect assigned ones
-        function loadAgentsForBulk(preselectedIds = []) {
+        // 🔹 Load all agents (no preselect needed)
+        function loadAgentsForBulk() {
             $.easyAjax({
                 url: "{{ route('ajax.deals.active_agents') }}",
                 type: "GET",
                 blockUI: true,
-                success: function(response) {
-                    const $select = $('#bulkAssignAgentsSelect');
+                success: function (response) {
+                    const $select = $('#bulkAgentsSelect');
                     let optionsHtml = '<option value="">--</option>';
 
-                    // If response.data is HTML (your current setup)
                     if (typeof response.data === 'string') {
                         optionsHtml += response.data;
-                    }
-                    // If you ever return array data in future
-                    else if ($.isArray(response.data)) {
-                        $.each(response.data, function(index, value) {
-                            const selected = preselectedIds.includes(String(value.id)) ?
-                                'selected' : '';
-                            optionsHtml +=
-                                `<option value="${value.id}" ${selected}>${value.name}</option>`;
+                    } else if ($.isArray(response.data)) {
+                        $.each(response.data, function (index, value) {
+                            optionsHtml += `<option value="${value.id}">${value.name}</option>`;
                         });
                     }
 
                     $select.html(optionsHtml);
-
-                    // ✅ Apply selections explicitly (works even with HTML-based options)
                     $select.selectpicker('refresh');
-                    $select.selectpicker('val', preselectedIds); // <– this is the missing line
                 }
             });
         }
 
-
-        // 🔹 Open modal (get preselected agents first)
-        $('#btnBulkAssignAgents').on('click', function() {
+        // 🔹 Open modal
+        $('#btnBulkAssignAgents').on('click', function () {
             if (selectedDeals.size === 0) {
                 alert('Please select at least one deal.');
                 return;
             }
 
-            $.easyAjax({
-                url: "{{ route('ajax.deals.assigned_agents') }}",
-                type: "POST",
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    deal_ids: Array.from(selectedDeals)
-                },
-                blockUI: true,
-                success: function(response) {
-                    console.log(response);
-                    let preselectedIds = [];
-                    if (response.status === 'success' && Array.isArray(response
-                        .agent_ids)) {
-                        preselectedIds = response.agent_ids.map(String);
-                    }
-                    loadAgentsForBulk(preselectedIds);
-                    $('#bulkAssignAgentsModal').modal('show');
-                },
-                error: function() {
-                    alert('Failed to load assigned users.');
-                }
-            });
+            loadAgentsForBulk();
+            $('#bulkAssignAgentsModal').modal('show');
         });
 
-        // 🔹 Handle Save (assign selected agents)
-        $('#bulkAssignAgentsForm').on('submit', function(e) {
+        // 🔹 Handle Save
+        $('#bulkAssignAgentsForm').on('submit', function (e) {
             e.preventDefault();
 
-            const agentIds = $('#bulkAssignAgentsSelect').val() || [];
-            // ❌ REMOVE this check:
-            // if (agentIds.length === 0 || selectedDeals.size === 0) {
-            //     alert('Please select at least one agent and one deal.');
-            //     return;
-            // }
+            const selectedAgentIds = $('#bulkAgentsSelect').val() || [];
+            const actionType = $('input[name="bulkActionType"]:checked').val();
 
             if (selectedDeals.size === 0) {
                 alert('Please select at least one deal.');
+                return;
+            }
+
+            if (selectedAgentIds.length === 0) {
+                alert('Please select at least one agent.');
                 return;
             }
 
@@ -559,19 +505,20 @@
                 type: "POST",
                 data: {
                     _token: '{{ csrf_token() }}',
-                    agent_ids: agentIds, // ✅ may be empty
-                    deal_ids: Array.from(selectedDeals)
+                    deal_ids: Array.from(selectedDeals),
+                    agent_ids: selectedAgentIds,
+                    action_type: actionType
                 },
                 blockUI: true,
-                success: function(response) {
+                success: function (response) {
                     if (response.status === 'success') {
                         $('#bulkAssignAgentsModal').modal('hide');
-                        location.reload(); // ✅ simple reload
+                        location.reload();
                     } else {
                         alert(response.message || 'Something went wrong.');
                     }
                 },
-                error: function() {
+                error: function () {
                     alert('Server error. Please try again.');
                 }
             });
@@ -625,7 +572,7 @@
 </script> --}}
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
 
     });

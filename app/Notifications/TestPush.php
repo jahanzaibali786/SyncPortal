@@ -24,6 +24,7 @@ class TestPush extends BaseNotification
     // phpcs:ignore
     public function via($notifiable)
     {
+        // dd($notifiable,$this->pushNotificationSetting);
         if ($this->pushNotificationSetting->beams_push_status == 'active') {
             $pushNotification = new \App\Http\Controllers\DashboardController();
             $pushUsersIds = [[$notifiable->id]];

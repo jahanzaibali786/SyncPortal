@@ -6,6 +6,8 @@ return array(
     'pendingTimelog' => 'Pending Timelogs',
     'showContact' => 'Contact Details',
     'signBy' => 'Sign By',
+    'importFailedJobs' => 'Import Failed Jobs',
+    'selectAColumn' => 'Select a Column',
     'leaveArchive' => 'Inactive',
     'owner' => 'Lead Owner',
     'addUnit' => 'Add New Unit',

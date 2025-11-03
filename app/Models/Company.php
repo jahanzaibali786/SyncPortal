@@ -279,7 +279,9 @@ class Company extends BaseModel
     protected $with = [];
 
     protected $table = 'companies';
-
+    protected $default = [
+        'company_name'
+    ];
     public $dates = [
         'last_login',
         'subscription_updated_at', // WORKSUITESAAS

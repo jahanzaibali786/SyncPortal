@@ -130,6 +130,29 @@ class PipelineLabelController extends Controller
     }
 
     // ✅ Update labels for a specific deal
+    // public function updateDealLabels(Request $request)
+    // {
+    //     $request->validate([
+    //         'deal_id' => 'required|exists:deals,id',
+    //         'labels' => 'array'
+    //     ]);
+
+    //     $deal = Deal::findOrFail($request->deal_id);
+    //     $deal->dealLabels()->sync($request->labels ?? []);
+
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'labels' => $deal->dealLabels->map(function ($label) {
+    //             return [
+    //                 'id' => $label->id,
+    //                 'name' => $label->name,
+    //                 'label_color' => $label->label_color
+    //             ];
+    //         })
+    //     ]);
+
+    // }
+
     public function updateDealLabels(Request $request)
     {
         $request->validate([
@@ -138,7 +161,31 @@ class PipelineLabelController extends Controller
         ]);
 
         $deal = Deal::findOrFail($request->deal_id);
+
+        // Track old labels
+        $oldLabels = $deal->dealLabels()->pluck('pipeline_labels.id')->toArray();
+
+        // Sync new labels
         $deal->dealLabels()->sync($request->labels ?? []);
+
+        // Track new labels
+        $newLabels = $deal->dealLabels()->pluck('pipeline_labels.id')->toArray();
+
+        // Calculate added/removed
+        $added = array_diff($newLabels, $oldLabels);
+        $removed = array_diff($oldLabels, $newLabels);
+
+        // Log added
+        foreach ($added as $labelId) {
+            \App\Traits\DealHistoryTrait::createDealHistory($deal->id, 'label-added', labelId: $labelId);
+        }
+
+        // Log removed
+        foreach ($removed as $labelId) {
+            \App\Traits\DealHistoryTrait::createDealHistory($deal->id, 'label-removed', labelId: $labelId);
+        }
+
+        // dd($labelId);
 
         return response()->json([
             'status' => 'success',
@@ -150,8 +197,9 @@ class PipelineLabelController extends Controller
                 ];
             })
         ]);
-
     }
+
+
 
 
 }

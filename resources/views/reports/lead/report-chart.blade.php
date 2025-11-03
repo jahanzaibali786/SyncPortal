@@ -10,6 +10,8 @@
             </a>
             <x-tab :href="route('lead-report.index') . '?tab=profile'" :text="__('modules.deal.profile')" class="profile" />
             <x-tab :href="route('lead-report.chart') . '?tab=chart'" :text="__('modules.leadContact.leadReport')" class="chart" />
+            <x-tab :href="route('lead-report.subagent') . '?tab=profile'" :text="__('Subagent Report')"
+                class="subagent {{ request()->routeIs('lead-report.subagent') ? 'active' : '' }}" ajax="false" />
 
 
         </div>

@@ -584,90 +584,123 @@ class InvoiceController extends AccountBaseController
         return request()->view ? $pdf->stream($filename . '.pdf') : $pdf->download($filename . '.pdf');
     }
 
-    public function domPdfObjectForDownload($id)
-    {
-        $this->invoice = Invoice::with('items', 'items', 'items.unit')->findOrFail($id)->withCustomFields();
-        $this->invoiceSetting = InvoiceSetting::withoutGlobalScopes()->where('company_id', $this->invoice->company_id)->first();
-        App::setLocale($this->invoiceSetting->locale ?? 'en');
-        Carbon::setLocale($this->invoiceSetting->locale ?? 'en');
-        $this->paidAmount = $this->invoice->getPaidAmount();
-        $this->creditNote = 0;
+public function domPdfObjectForDownload($id)
+{
+    // Load invoice with all related items and units
+    $this->invoice = Invoice::with('items', 'items.unit')
+        ->findOrFail($id)
+        ->withCustomFields();
 
-        $getCustomFieldGroupsWithFields = $this->invoice->getCustomFieldGroupsWithFields();
+    // Load invoice settings for the company
+    $this->invoiceSetting = InvoiceSetting::withoutGlobalScopes()
+        ->where('company_id', $this->invoice->company_id)
+        ->first();
 
-        if ($getCustomFieldGroupsWithFields) {
-            $this->fields = $getCustomFieldGroupsWithFields->fields;
-        }
+    // Set language and locale
+    App::setLocale($this->invoiceSetting->locale ?? 'en');
+    Carbon::setLocale($this->invoiceSetting->locale ?? 'en');
 
-        if ($this->invoice->credit_note) {
-            $this->creditNote = CreditNotes::where('invoice_id', $id)
-                ->select('cn_number')
-                ->first();
-        }
+    // Initialize data variables
+    $this->paidAmount = $this->invoice->getPaidAmount();
+    $this->creditNote = 0;
+    $this->settings = company();
 
-        $this->discount = 0;
-
-        if ($this->invoice->discount > 0) {
-            if ($this->invoice->discount_type == 'percent') {
-                $this->discount = (($this->invoice->discount / 100) * $this->invoice->sub_total);
-            } else {
-                $this->discount = $this->invoice->discount;
-            }
-        }
-
-        $taxList = array();
-
-        $items = InvoiceItems::whereNotNull('taxes')->where('invoice_id', $this->invoice->id)->get();
-
-        foreach ($items as $item) {
-
-            foreach (json_decode($item->taxes) as $tax) {
-                $this->tax = InvoiceItems::taxbyid($tax)->first();
-
-                if (!isset($taxList[$this->tax->tax_name . ': ' . $this->tax->rate_percent . '%'])) {
-
-                    if ($this->invoice->calculate_tax == 'after_discount' && $this->discount > 0) {
-                        $taxList[$this->tax->tax_name . ': ' . $this->tax->rate_percent . '%'] = ($item->amount - ($item->amount / $this->invoice->sub_total) * $this->discount) * ($this->tax->rate_percent / 100);
-                    } else {
-                        $taxList[$this->tax->tax_name . ': ' . $this->tax->rate_percent . '%'] = $item->amount * ($this->tax->rate_percent / 100);
-                    }
-                } else {
-                    if ($this->invoice->calculate_tax == 'after_discount' && $this->discount > 0) {
-                        $taxList[$this->tax->tax_name . ': ' . $this->tax->rate_percent . '%'] = $taxList[$this->tax->tax_name . ': ' . $this->tax->rate_percent . '%'] + (($item->amount - ($item->amount / $this->invoice->sub_total) * $this->discount) * ($this->tax->rate_percent / 100));
-                    } else {
-                        $taxList[$this->tax->tax_name . ': ' . $this->tax->rate_percent . '%'] = $taxList[$this->tax->tax_name . ': ' . $this->tax->rate_percent . '%'] + ($item->amount * ($this->tax->rate_percent / 100));
-                    }
-                }
-            }
-        }
-
-        $this->taxes = $taxList;
-
-        $this->company = $this->invoice->company;
-
-        $this->invoiceSetting = $this->company->invoiceSetting;
-
-        $this->payments = Payment::with(['offlineMethod'])->where('invoice_id', $this->invoice->id)->where('status', 'complete')->orderByDesc('paid_on')->get();
-
-        $pdf = app('dompdf.wrapper');
-        $pdf->setOption('enable_php', true);
-        $pdf->setOption('isHtml5ParserEnabled', true);
-        $pdf->setOption('isRemoteEnabled', true);
-
-        // $pdf->loadView('invoices.pdf.' . $this->invoiceSetting->template, $this->data);
-        $customCss = '<style>
-                * { text-transform: none !important; }
-            </style>';
-
-        $pdf->loadHTML($customCss . view('invoices.pdf.' . $this->invoiceSetting->template, $this->data)->render());
-
-        $filename = $this->invoice->invoice_number;
-
-        return [
-            'pdf' => $pdf,
-            'fileName' => $filename
-        ];
+    // Load custom fields (if any)
+    $getCustomFieldGroupsWithFields = $this->invoice->getCustomFieldGroupsWithFields();
+    if ($getCustomFieldGroupsWithFields) {
+        $this->fields = $getCustomFieldGroupsWithFields->fields;
     }
+
+    // Load credit note if applicable
+    if ($this->invoice->credit_note) {
+        $this->creditNote = CreditNotes::where('invoice_id', $id)
+            ->select('cn_number')
+            ->first();
+    }
+
+    // Calculate discount
+    $this->discount = 0;
+    if ($this->invoice->discount > 0) {
+        if ($this->invoice->discount_type == 'percent') {
+            $this->discount = (($this->invoice->discount / 100) * $this->invoice->sub_total);
+        } else {
+            $this->discount = $this->invoice->discount;
+        }
+    }
+
+    // Calculate taxes for each item
+    $taxList = [];
+    $items = InvoiceItems::whereNotNull('taxes')
+        ->where('invoice_id', $this->invoice->id)
+        ->get();
+
+    foreach ($items as $item) {
+        foreach (json_decode($item->taxes) as $tax) {
+            $this->tax = InvoiceItems::taxbyid($tax)->first();
+
+            $taxKey = $this->tax->tax_name . ': ' . $this->tax->rate_percent . '%';
+            $taxAmount = $item->amount * ($this->tax->rate_percent / 100);
+
+            if ($this->invoice->calculate_tax == 'after_discount' && $this->discount > 0) {
+                $taxAmount = ($item->amount - ($item->amount / $this->invoice->sub_total) * $this->discount)
+                    * ($this->tax->rate_percent / 100);
+            }
+
+            if (!isset($taxList[$taxKey])) {
+                $taxList[$taxKey] = $taxAmount;
+            } else {
+                $taxList[$taxKey] += $taxAmount;
+            }
+        }
+    }
+
+    $this->taxes = $taxList;
+    $this->company = $this->invoice->company;
+    $this->invoiceSetting = $this->company->invoiceSetting;
+
+    // Load payments
+    $this->payments = Payment::with(['offlineMethod'])
+        ->where('invoice_id', $this->invoice->id)
+        ->where('status', 'complete')
+        ->orderByDesc('paid_on')
+        ->get();
+
+    // ✅ All variables passed to the PDF view
+    $this->data = [
+        'invoice' => $this->invoice,
+        'invoiceSetting' => $this->invoiceSetting,
+        'company' => $this->company,
+        'settings' => $this->settings,     // ✅ Added to prevent undefined variable error
+        'discount' => $this->discount,
+        'taxes' => $this->taxes,
+        'creditNote' => $this->creditNote,
+        'payments' => $this->payments,
+        'fields' => $this->fields ?? [],
+    ];
+
+    // ✅ Create DOMPDF instance with options
+    $pdf = app('dompdf.wrapper');
+    $pdf->setOption('enable_php', true);
+    $pdf->setOption('isHtml5ParserEnabled', true);
+    $pdf->setOption('isRemoteEnabled', true);
+
+    // Optional CSS override (prevents all-caps transformation)
+    $customCss = '<style>* { text-transform: none !important; }</style>';
+
+    // ✅ Load custom PDF view (your new template)
+    $pdf->loadHTML(
+        $customCss . view('invoices.pdf.' . $this->invoiceSetting->template, $this->data)->render()
+    );
+
+    $filename = $this->invoice->invoice_number;
+
+    // Return PDF object and filename
+    return [
+        'pdf' => $pdf,
+        'fileName' => $filename,
+    ];
+}
+
 
     public function domPdfObjectForConsoleDownload($id)
     {

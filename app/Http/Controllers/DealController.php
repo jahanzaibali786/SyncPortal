@@ -258,7 +258,7 @@ class DealController extends AccountBaseController
                 $lead = Lead::findOrFail($deal->lead_id);
 
                 // dd($id,$lead);
-                $this->dealCalls = LeadCall::where('lead_id', $lead->lead_id)
+                $this->dealCalls = LeadCall::where('lead_id', $lead->id)
                     ->with('user')
                     ->orderByDesc('created_at')
                     ->get();
@@ -876,8 +876,8 @@ class DealController extends AccountBaseController
 
     public function importStore(ImportRequest $request)
     {
+        // dd($request->all());
         $rvalue = $this->importFileProcess($request, DealImport::class);
-
         if ($rvalue == 'abort') {
             return Reply::error(__('messages.abortAction'));
         }
@@ -888,6 +888,7 @@ class DealController extends AccountBaseController
 
     public function importProcess(ImportProcessRequest $request)
     {
+        // dd($request->all());
         $batch = $this->importJobProcess($request, DealImport::class, ImportDealJob::class);
 
         return Reply::successWithData(__('messages.importProcessStart'), ['batch' => $batch]);
@@ -916,7 +917,14 @@ class DealController extends AccountBaseController
             session()->forget('is_deal');
         }
     }
-
+    public function updateLeadNote(Request $request)
+    {
+        $deal = Deal::findOrFail($request->deal_id);
+        $lead = Lead::findOrFail($deal->lead_id);
+        $lead->note = $request->note;
+        $lead->save();
+        return Reply::success(__('messages.updateSuccess'));
+    }
     public function notes()
     {
         $dataTable = new DealNotesDataTable();
@@ -1081,7 +1089,53 @@ class DealController extends AccountBaseController
 
         return Reply::success(__('messages.updateSuccess'));
     }
+    // addNumber
+    public function addNumber(Request $request)
+    {
+        // dd($request->all());
+        $request->validate([
+            'contact_id' => 'required|integer',
+            'number' => 'required|string'
+        ]);
+        $deal = Deal::findOrFail($request->contact_id);
 
+        $lead = Lead::findOrFail($deal->lead_id);
+        $existing = $lead->cell ? explode(',', $lead->cell) : [];
+        $existing = array_map('trim', $existing);
+
+        if (!in_array($request->number, $existing)) {
+            $existing[] = $request->number;
+            $lead->cell = implode(', ', $existing);
+            $lead->save();
+        }
+        // dd($existing);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Number added successfully',
+            'numbers' => $existing
+        ]);
+    }
+    // public function bulkMoveStage(Request $request)
+    // {
+    //     $request->validate([
+    //         'deal_ids' => 'required|array',
+    //         'stage_id' => 'required|integer|exists:pipeline_stages,id',
+    //     ]);
+
+    //     // Get the stage and its parent pipeline
+    //     $stage = PipelineStage::findOrFail($request->stage_id);
+
+    //     // Update all selected deals
+    //     Deal::whereIn('id', $request->deal_ids)->update([
+    //         'pipeline_stage_id' => $stage->id,
+    //         'lead_pipeline_id' => $stage->lead_pipeline_id, // keep pipeline consistent
+    //     ]);
+
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => 'Deals moved to the new stage successfully.',
+    //     ]);
+    // }
     public function bulkMoveStage(Request $request)
     {
         $request->validate([
@@ -1089,14 +1143,19 @@ class DealController extends AccountBaseController
             'stage_id' => 'required|integer|exists:pipeline_stages,id',
         ]);
 
-        // Get the stage and its parent pipeline
+        // Fetch the target stage and its parent pipeline
         $stage = PipelineStage::findOrFail($request->stage_id);
 
-        // Update all selected deals
-        Deal::whereIn('id', $request->deal_ids)->update([
-            'pipeline_stage_id' => $stage->id,
-            'lead_pipeline_id' => $stage->lead_pipeline_id, // keep pipeline consistent
-        ]);
+        // Retrieve all the deals as Eloquent models (important for triggering observers)
+        $deals = Deal::whereIn('id', $request->deal_ids)->get();
+
+        foreach ($deals as $deal) {
+            // Update each deal individually
+            $deal->update([
+                'pipeline_stage_id' => $stage->id,
+                'lead_pipeline_id' => $stage->lead_pipeline_id, // keep pipeline consistent
+            ]);
+        }
 
         return response()->json([
             'status' => 'success',
@@ -1129,13 +1188,81 @@ class DealController extends AccountBaseController
         ]);
     }
 
+    // public function bulkAssignAgents(Request $request)
+    // {
+    //     $dealIds = array_filter($request->deal_ids ?? []);
+    //     $agentIds = array_filter(array_unique($request->agent_ids ?? []));
+
+    //     if (empty($dealIds)) {
+    //         return response()->json(['status' => 'error', 'message' => 'No deals selected.']);
+    //     }
+
+    //     foreach ($dealIds as $dealId) {
+    //         $deal = Deal::find($dealId);
+    //         if (!$deal)
+    //             continue;
+
+    //         // get main agents and current sub agents
+    //         $mainAgents = array_filter(explode(',', $deal->agent_id ?? ''));
+    //         $existingSubAgents = array_filter(explode(',', $deal->sub_agents ?? ''));
+
+    //         // remove anyone who is a main agent (they cannot be subagents)
+    //         $cleanSelected = array_diff($agentIds, $mainAgents);
+    //         // dd($agentIds, $mainAgents, $cleanSelected);
+    //         // ✅ reassign sub_agents with only these selected
+    //         $deal->sub_agents = implode(',', $cleanSelected);
+    //         $deal->save();
+    //     }
+
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => 'Sub agents updated successfully.'
+    //     ]);
+    // }
+
+    // public function bulkAssignAgents(Request $request)
+    // {
+    //     $dealIds = array_filter($request->deal_ids ?? []);
+    //     $assignIds = array_filter(array_unique($request->assign_ids ?? []));
+    //     $unassignIds = array_filter(array_unique($request->unassign_ids ?? []));
+
+    //     if (empty($dealIds)) {
+    //         return response()->json(['status' => 'error', 'message' => 'No deals selected.']);
+    //     }
+
+    //     foreach ($dealIds as $dealId) {
+    //         $deal = Deal::find($dealId);
+    //         if (!$deal)
+    //             continue;
+
+    //         $mainAgents = array_filter(explode(',', $deal->agent_id ?? ''));
+    //         $subAgents = array_filter(explode(',', $deal->sub_agents ?? ''));
+
+    //         // ✅ Remove unassignIds only if present
+    //         $subAgents = array_diff($subAgents, $unassignIds);
+
+    //         // ✅ Add assignIds but skip main agents & existing sub_agents
+    //         $cleanAssign = array_diff($assignIds, $mainAgents, $subAgents);
+    //         $subAgents = array_merge($subAgents, $cleanAssign);
+
+    //         $deal->sub_agents = implode(',', $subAgents);
+    //         $deal->save();
+    //     }
+
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'message' => 'Sub agents updated successfully.'
+    //     ]);
+    // }
+
     public function bulkAssignAgents(Request $request)
     {
         $dealIds = array_filter($request->deal_ids ?? []);
         $agentIds = array_filter(array_unique($request->agent_ids ?? []));
-
-        if (empty($dealIds)) {
-            return response()->json(['status' => 'error', 'message' => 'No deals selected.']);
+        $actionType = $request->action_type;
+        // dd($request->all());
+        if (empty($dealIds) || empty($agentIds)) {
+            return response()->json(['status' => 'error', 'message' => 'Please select deals and agents.']);
         }
 
         foreach ($dealIds as $dealId) {
@@ -1143,24 +1270,27 @@ class DealController extends AccountBaseController
             if (!$deal)
                 continue;
 
-            // get main agents and current sub agents
             $mainAgents = array_filter(explode(',', $deal->agent_id ?? ''));
-            $existingSubAgents = array_filter(explode(',', $deal->sub_agents ?? ''));
+            $subAgents = array_filter(explode(',', $deal->sub_agents ?? ''));
 
-            // remove anyone who is a main agent (they cannot be subagents)
-            $cleanSelected = array_diff($agentIds, $mainAgents);
-            // dd($agentIds, $mainAgents, $cleanSelected);
-            // ✅ reassign sub_agents with only these selected
-            $deal->sub_agents = implode(',', $cleanSelected);
+            if ($actionType === 'assign') {
+                // ✅ Add only new agents (not already main or sub)
+                $cleanAssign = array_diff($agentIds, $mainAgents, $subAgents);
+                $subAgents = array_merge($subAgents, $cleanAssign);
+            } elseif ($actionType === 'unassign') {
+                // ✅ Remove selected agents only if they exist
+                $subAgents = array_diff($subAgents, $agentIds);
+            }
+
+            $deal->sub_agents = implode(',', $subAgents);
             $deal->save();
         }
 
         return response()->json([
             'status' => 'success',
-            'message' => 'Sub agents updated successfully.'
+            'message' => 'Agents updated successfully.'
         ]);
     }
-
 
 
 
@@ -1188,7 +1318,6 @@ class DealController extends AccountBaseController
             ->filter(fn($agent) => $agent->user->status !== 'deactive');
 
         $data = [];
-
         foreach ($enabledAgents as $agent) {
             $data[] = view('components.user-option', [
                 'user' => $agent->user,
@@ -1302,11 +1431,6 @@ class DealController extends AccountBaseController
         $this->startDate = $request->get('start_date') ?? now()->startOfMonth()->format('Y-m-d');
         $this->endDate = $request->get('end_date') ?? now()->endOfDay()->format('Y-m-d');
 
-        $this->data['startDate'] = $this->startDate;
-        $this->data['endDate'] = $this->endDate;
-        $this->data['reportType'] = $type;
-        $this->data['pageTitle'] = $this->pageTitle;
-
         // ✅ Only show status filter for specific reports (example)
         $this->data['showStatusFilter'] = in_array($type, [
             'lead-calls-report',
@@ -1314,11 +1438,18 @@ class DealController extends AccountBaseController
             'user-performance',
         ]);
 
+        // ✅ Add user filter only for "lead-calls"
+        $this->data['showUserFilter'] = ($type === 'lead-calls');
+
         switch ($type) {
             case 'lead-calls-report':
+                $this->startDate = $request->get('start_date') ?? now()->startOfDay()
+                    ->format('Y-m-d');
                 $dataTable = app(LeadCallsDataTable::class);
                 break;
             case 'user-performance':
+                $this->startDate = $request->get('start_date') ?? now()->startOfDay()
+                    ->format('Y-m-d');
                 $dataTable = app(UserPerformanceDataTable::class);
                 break;
             case 'call-date':
@@ -1328,11 +1459,18 @@ class DealController extends AccountBaseController
                 $dataTable = app(UserProductivityDataTable::class);
                 break;
             case "lead-calls":
+                $this->startDate = $request->get('start_date') ?? now()->startOfDay()
+                    ->format('Y-m-d');
                 $dataTable = app(LeadCallsDataTableFullReport::class);
                 break;
             default:
                 abort(404, 'Invalid report type');
         }
+
+        $this->data['startDate'] = $this->startDate;
+        $this->data['endDate'] = $this->endDate;
+        $this->data['reportType'] = $type;
+        $this->data['pageTitle'] = $this->pageTitle;
 
         if ($request->ajax()) {
             return $dataTable->ajax();
@@ -1341,6 +1479,43 @@ class DealController extends AccountBaseController
         return $dataTable->render('leads.reports.lead_calls', $this->data);
     }
 
+    public function updateCell(Request $request, $id)
+    {
+        $lead = Lead::findOrFail($id);
+
+        $request->validate([
+            'name' => 'nullable|string|max:255',
+            'number' => ['required', 'regex:/^[0-9]+$/', 'max:50'],
+        ], [
+            'number.regex' => 'The number field must contain only digits.',
+        ]);
+
+        $name = trim($request->input('name'));
+        $number = trim($request->input('number'));
+
+        $existing = $lead->cell;
+        $decoded = json_decode($existing, true);
+
+        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+            $decoded[$name] = $number;
+            $lead->cell = json_encode($decoded);
+        } else {
+            $numbers = array_filter(array_map('trim', explode(',', $existing)));
+            $assoc = [];
+            foreach ($numbers as $num) {
+                $assoc[""] = isset($assoc[""]) ? $assoc[""] . ',' . $num : $num;
+            }
+            $assoc[$name] = $number;
+            $lead->cell = json_encode($assoc);
+        }
+
+        $lead->save();
+
+        return response()->json([
+            'success' => true,
+            'cell' => $lead->cell,
+        ]);
+    }
 
 
 

@@ -66,7 +66,26 @@
                                         {{ __(ucfirst($history->event_type)) }} @lang('app.by') @if ($history->user && $history->user->image_url)<span
                                             class="text-darkest-grey">{{ $history->user->name }}</span>@endif
                                         @break
-                                        @endswitch
+                                    @case("label-added")
+                                        {{ __('Label added') }} @lang('app.by') <span class="text-darkest-grey">{{ $history->user->name }}</span>
+                                        <span class="text-darkest-grey">({{ $history->label->name ?? '' }})</span>
+                                        @break
+
+                                    @case("label-removed")
+                                            {{ __('Label removed') }} @lang('app.by') <span class="text-darkest-grey">{{ $history->user->name }}</span>
+                                            <span class="text-darkest-grey">({{ $history->label->name ?? '' }})</span>
+                                            @break
+                                    @case("call-created")
+                                        {{ __('Call added') }} @lang('app.by') 
+                                        <span class="text-darkest-grey">{{ $history->user->name }}</span>
+                                        <span class="text-darkest-grey">
+                                            {{-- @dd($history->call_id) --}}
+                                            ({{ $history->call->subject ?? __('No subject') }} 
+                                            - {{ $history->call->call_type ?? '' }} 
+                                            - {{ $history->call->to_number ?? '' }})
+                                        </span>
+                                        @break
+                                    @endswitch
                                 </h4>
 
                         </div>

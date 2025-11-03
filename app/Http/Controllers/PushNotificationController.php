@@ -37,9 +37,9 @@ class PushNotificationController extends AccountBaseController
             $setting->onesignal_rest_api_key = $request->onesignal_rest_api_key;
             $setting->status = ($request->has('status') ? $request->status : 'inactive');
             $setting->beams_push_status = ($request->has('beams_push_status') ? $request->beams_push_status : 'inactive');
-        $setting->instance_id = $request->instance_id;
-        $setting->beam_secret = $request->beam_secret;
-        $setting->save();
+            $setting->instance_id = $request->instance_id;
+            $setting->beam_secret = $request->beam_secret;
+            $setting->save();
         }
 
         session()->forget('email_notification_setting');

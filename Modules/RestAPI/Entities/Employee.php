@@ -32,12 +32,14 @@ class Employee extends \App\Models\User
         'id',
         'name',
         'email',
+        'employee_detail',
+        'empDetails',
     ];
 
-    protected $hidden = [
-        'employee_detail.department_id',
-        'employee_detail.designation_id',
-    ];
+    // protected $hidden = [
+    //     'employee_detail.department_id',
+    //     'employee_detail.designation_id',
+    // ];
 
     protected $guarded = [
         'id',
@@ -54,7 +56,9 @@ class Employee extends \App\Models\User
     {
         return $this->hasOne(EmployeeDetails::class);
     }
-
+    public function empDetails(){
+        return $this->belongsTo(EmployeeDetails::class, 'id','user_id');
+    }
     public function getPendingTaskAttribute()
     {
         $completedTaskColumn = TaskboardColumn::completeColumn();

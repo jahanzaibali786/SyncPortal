@@ -460,7 +460,7 @@ class LeadContactController extends AccountBaseController
 
         return Reply::successWithData(__('messages.importProcessStart'), ['batch' => $batch]);
     }
-
+    
     public function destroySession(){
 
         if (session()->has('is_imported')) {

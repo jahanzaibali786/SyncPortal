@@ -27051,9 +27051,30 @@ table {
 
 .project-header .project-menu .p-sub-menu {
   position: relative;
-  font-size: 14px;
+  font-size: 12px;
   display: block;
+  margin-block: 12px;
+  border-radius: 3rem;
+  margin-inline: 4px;
+  color: rgb(100, 116, 139);
+  background: rgb(236, 240, 245);
 }
+
+/* .project-header .project-menu .p-sub-menu {
+  color: rgb(100, 116, 139);
+  font-size: 12px;
+  text-align: center;
+  margin-right: 8px;
+  border-radius: 50px;
+  background: rgb(236, 240, 245);
+  border-width: initial;
+  border-style: none;
+  border-color: initial;
+  border-image: initial;
+  padding: 8px 16px;
+  margin-block: 12px;
+  transition: transform 0.2s ease-in-out;
+} */
 
 @media (max-width: 991.98px) {
   .project-header .project-menu .p-sub-menu {
@@ -27072,8 +27093,31 @@ table {
   content: "";
 }
 
+.project-header .project-menu .p-sub-menu.active:after,
+.project-header .project-menu .p-sub-menu.active:hover:after,
+.project-header .project-menu .p-sub-menu:after {
+  display: none;
+}
+
+.project-header .project-menu .p-sub-menu span,
+.project-header .project-menu .p-sub-menu:hover span,
+.project-header .project-menu .p-sub-menu:hover span {
+  transition: transform 0.2s ease-in-out;
+}
+
+
+.project-header .project-menu .p-sub-menu.active span,
+.project-header .project-menu .p-sub-menu.active:hover span,
+.project-header .project-menu .p-sub-menu:hover span {
+  background: linear-gradient(90deg, var(--gradientColor1) -0.06%, var(--gradientColor2) 33.96%, var(--gradientColor3) 72.98%, var(--gradientColor4) 100%);
+  color: white !important;
+  border-radius: 3rem;
+}
+
+.project-header .project-menu .p-sub-menu.active span {}
+
 .project-header .project-menu .p-sub-menu span {
-  padding: 13px 26px;
+  padding: 8px 16px;
   display: block;
   white-space: nowrap;
   text-align: center;
@@ -27258,7 +27302,18 @@ button {
 
 .tabs .-primary {
   display: flex;
+  /* padding-left: 24px; */
 }
+
+
+.tabs .-primary li:first-child {
+  /* padding-left: 24px; */
+}
+
+.project-menu {
+  padding-left: 24px;
+}
+
 
 .tabs .-primary>li {
   flex-grow: 1;
@@ -27301,7 +27356,7 @@ button {
 }
 
 .tabs.--show-secondary .-secondary li {
-  border-bottom: 1px solid #e8eef3;
+  /* border-bottom: 1px solid #e8eef3; */
 }
 
 .tabs.--show-secondary .-secondary li span {
@@ -28799,7 +28854,7 @@ a:hover {
 
 @media (min-width: 992px) {
   .page-header-right {
-    width: 65% !important;
+    width: 63% !important;
   }
 }
 

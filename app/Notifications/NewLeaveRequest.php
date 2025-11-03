@@ -53,6 +53,7 @@ class NewLeaveRequest extends BaseNotification
         if ($this->emailSetting->send_push == 'yes' && push_setting()->beams_push_status == 'active') {
             $pushNotification = new \App\Http\Controllers\DashboardController();
             $pushUsersIds = [[$notifiable->id]];
+            // dd($pushNotification);
             $pushNotification->sendPushNotifications($pushUsersIds, __('email.leaves.subject') . ' by: ' . $this->leave->user->name, $this->leave->leave_date->format($this->company->date_format) . ' ' . $this->leave->type->type_name);
         }
 
