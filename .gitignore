@@ -15,11 +15,11 @@ npm-debug.log
 yarn-error.log
 .php-cs-fixer.cache
 /.idea
-/.vscode
 /.vagrant
 *.zip
 .DS_Store
 mix.js.map
+temp_auto_push.bat
 mix-manifest.json
 ngrok
 /storage/installed
@@ -41,3 +41,5 @@ public/css/theme-custom.css
 public/css/custom-css/theme-custom.css
 Modules\LanguagePack
 .envold
+.gitignore
+branch_structure.json

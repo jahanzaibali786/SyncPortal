@@ -7,7 +7,6 @@ use Illuminate\View\Component;
 
 class Datepicker extends Component
 {
-
     public $fieldLabel;
     public $fieldRequired;
     public $fieldPlaceholder;
@@ -18,32 +17,30 @@ class Datepicker extends Component
     public $custom;
     public $popover;
 
-    /**
-     * Create a new component instance.
-     *
-     * @return void
-     */
-    public function __construct($fieldLabel, $fieldPlaceholder, $fieldName, $fieldId, $fieldRequired = false, $fieldValue = null, $fieldHelp = null, $custom = false, $popover = null)
-    {
-        $this->fieldLabel = $fieldLabel;
-        $this->fieldRequired = $fieldRequired;
-        $this->fieldPlaceholder = $fieldPlaceholder;
-        $this->fieldValue = $fieldValue;
-        $this->fieldName = $fieldName;
-        $this->fieldId = $fieldId;
-        $this->fieldHelp = $fieldHelp;
-        $this->custom = $custom; // If used in custom fields
-        $this->popover = $popover;
+    public function __construct(
+        $fieldLabel = null,
+        $fieldPlaceholder = null,          // <-- now optional
+        $fieldName = null,
+        $fieldId = null,
+        $fieldRequired = false,
+        $fieldValue = null,
+        $fieldHelp = null,
+        $custom = false,
+        $popover = null
+    ) {
+        $this->fieldLabel       = $fieldLabel;
+        $this->fieldRequired    = (bool) $fieldRequired;
+        $this->fieldPlaceholder = $fieldPlaceholder ?? __('placeholders.date'); // <-- default text
+        $this->fieldValue       = $fieldValue;
+        $this->fieldName        = $fieldName;
+        $this->fieldId          = $fieldId;
+        $this->fieldHelp        = $fieldHelp;
+        $this->custom           = (bool) $custom;
+        $this->popover          = $popover;
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     *
-     * @return View|string
-     */
-    public function render()
+    public function render(): View|string
     {
         return view('components.forms.datepicker');
     }
-
 }
