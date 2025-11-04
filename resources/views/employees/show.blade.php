@@ -5,33 +5,34 @@
 @endpush
 
 @php
-$viewEmployeeTasks = user()->permission('view_employee_tasks');
-$viewEmployeeAttendance = user()->permission('view_attendance');
-$viewTickets = user()->permission('view_tickets');
-$viewEmployeeProjects = user()->permission('view_employee_projects');
-$viewEmployeeTimelogs = user()->permission('view_employee_timelogs');
-$manageEmergencyContact = user()->permission('manage_emergency_contact');
-$manageRolePermissionSetting = user()->permission('manage_role_permission_setting');
-$manageShiftPermission = user()->permission('view_shift_roster');
-$viewLeavePermission = user()->permission('view_leave');
-$viewDocumentPermission = user()->permission('view_documents');
-$viewAppreciationPermission = user()->permission('view_appreciation');
-$viewImmigrationPermission = user()->permission('view_immigration');
-$viewIncrementPermission = user()->permission('view_increment_promotion');
+    $viewEmployeeTasks = user()->permission('view_employee_tasks');
+    $viewEmployeeAttendance = user()->permission('view_attendance');
+    $viewTickets = user()->permission('view_tickets');
+    $viewEmployeeProjects = user()->permission('view_employee_projects');
+    $viewEmployeeTimelogs = user()->permission('view_employee_timelogs');
+    $manageEmergencyContact = user()->permission('manage_emergency_contact');
+    $manageRolePermissionSetting = user()->permission('manage_role_permission_setting');
+    $manageShiftPermission = user()->permission('view_shift_roster');
+    $viewLeavePermission = user()->permission('view_leave');
+    $viewDocumentPermission = user()->permission('view_documents');
+    $viewAppreciationPermission = user()->permission('view_appreciation');
+    $viewImmigrationPermission = user()->permission('view_immigration');
+    $viewIncrementPermission = user()->permission('view_increment_promotion');
 @endphp
 
 @php
 
-$showFullProfile = false;
-$employeeDetail = $employee->employeeDetail;
+    $showFullProfile = false;
+    $employeeDetail = $employee->employeeDetail;
 
-if ($viewPermission == 'all'
-    || ($viewPermission == 'added' && $employeeDetail->added_by == user()->id)
-    || ($viewPermission == 'owned' && $employeeDetail->user_id == user()->id)
-    || ($viewPermission == 'both' && ($employeeDetail->user_id == user()->id || $employeeDetail->added_by == user()->id))
-) {
-    $showFullProfile = true;
-}
+    if (
+        $viewPermission == 'all'
+        || ($viewPermission == 'added' && $employeeDetail->added_by == user()->id)
+        || ($viewPermission == 'owned' && $employeeDetail->user_id == user()->id)
+        || ($viewPermission == 'both' && ($employeeDetail->user_id == user()->id || $employeeDetail->added_by == user()->id))
+    ) {
+        $showFullProfile = true;
+    }
 
 @endphp
 
@@ -50,101 +51,126 @@ if ($viewPermission == 'all'
             <nav class="tabs">
                 <ul class="-primary">
                     <li>
-                        <x-tab :href="route('employees.show', $employee->id)" :text="__('modules.employees.profile')" class="profile" />
+                        <x-tab :href="route('employees.show', $employee->id)" :text="__('modules.employees.profile')"
+                            class="profile" />
                     </li>
 
                     @if ($viewEmployeeProjects == 'all' && in_array('projects', user_modules()))
                         <li>
-                            <x-tab :href="route('employees.show', $employee->id) . '?tab=projects'" :text="__('app.menu.projects')" ajax="false" class="projects" />
+                            <x-tab :href="route('employees.show', $employee->id) . '?tab=projects'"
+                                :text="__('app.menu.projects')" ajax="false" class="projects" />
                         </li>
                     @endif
 
                     @if ($viewEmployeeTasks == 'all' && in_array('tasks', user_modules()))
                         <li>
-                            <x-tab :href="route('employees.show', $employee->id) . '?tab=tasks'" :text="__('app.menu.tasks')" ajax="false" class="tasks" />
+                            <x-tab :href="route('employees.show', $employee->id) . '?tab=tasks'" :text="__('app.menu.tasks')"
+                                ajax="false" class="tasks" />
                         </li>
                     @endif
 
                     @if ($viewEmployeeAttendance != 'none' && $viewEmployeeAttendance != 5 && in_array('attendance', user_modules()))
                         <li>
-                            <x-tab :href="route('employees.show', $employee->id) . '?tab=attendance'" :text="__('app.menu.attendance')" ajax="false" class="attendance" />
+                            <x-tab :href="route('employees.show', $employee->id) . '?tab=attendance'"
+                                :text="__('app.menu.attendance')" ajax="false" class="attendance" />
                         </li>
                     @endif
 
-                    @if (in_array('leaves', user_modules()) && ($viewLeavePermission == 'all' || ($viewLeavePermission == 'owned' || $viewLeavePermission == 'both') && $employee->id == user()->id ))
+                    @if (in_array('leaves', user_modules()) && ($viewLeavePermission == 'all' || ($viewLeavePermission == 'owned' || $viewLeavePermission == 'both') && $employee->id == user()->id))
                         <li>
-                            <x-tab :href="route('employees.show', $employee->id) . '?tab=leaves'" :text="__('app.menu.leaves')" ajax="false" class="leaves" />
+                            <x-tab :href="route('employees.show', $employee->id) . '?tab=leaves'" :text="__('app.menu.leaves')"
+                                ajax="false" class="leaves" />
                         </li>
 
-                    <li>
-                        <x-tab :href="route('employees.show', $employee->id) . '?tab=leaves-quota'" :text="__('app.menu.leavesQuota')" class="leaves-quota" />
-                    </li>
+                        <li>
+                            <x-tab :href="route('employees.show', $employee->id) . '?tab=leaves-quota'"
+                                :text="__('app.menu.leavesQuota')" class="leaves-quota" />
+                        </li>
                     @endif
 
                     @if ($viewEmployeeTimelogs == 'all' && in_array('timelogs', user_modules()))
                         <li>
-                            <x-tab :href="route('employees.show', $employee->id) . '?tab=timelogs'" :text="__('app.menu.timeLogs')" ajax="false" class="timelogs" />
+                            <x-tab :href="route('employees.show', $employee->id) . '?tab=timelogs'"
+                                :text="__('app.menu.timeLogs')" ajax="false" class="timelogs" />
                         </li>
                     @endif
 
                     @if ($viewDocumentPermission != 'none')
                         <li>
-                            <x-tab :href="route('employees.show', $employee->id) . '?tab=documents'" :text="__('app.menu.documents')" class="documents" />
+                            <x-tab :href="route('employees.show', $employee->id) . '?tab=documents'"
+                                :text="__('app.menu.documents')" class="documents" />
                         </li>
                     @endif
 
                     @if ($showFullProfile && ($manageEmergencyContact == 'all' || $employee->id == user()->id))
                         <li>
-                            <x-tab :href="route('employees.show', $employee->id) . '?tab=emergency-contacts'" :text="__('modules.emergencyContact.emergencyContact')" class="emergency-contacts" />
+                            <x-tab :href="route('employees.show', $employee->id) . '?tab=emergency-contacts'"
+                                :text="__('modules.emergencyContact.emergencyContact')" class="emergency-contacts" />
                         </li>
                     @endif
 
                     @if ($viewIncrementPermission != 'none')
                         <li>
-                            <x-tab :href="route('employees.show', $employee->id) . '?tab=increment-promotions'" :text="__('modules.incrementPromotion.incrementPromotions')" class="increment-promotions" />
+                            <x-tab :href="route('employees.show', $employee->id) . '?tab=increment-promotions'"
+                                :text="__('modules.incrementPromotion.incrementPromotions')" class="increment-promotions" />
                         </li>
                     @endif
 
                     @if ($viewTickets == 'all' && in_array('tickets', user_modules()))
                         <li>
-                            <x-tab :href="route('employees.show', $employee->id) . '?tab=tickets'" :text="__('modules.tickets.ticket')" ajax="false" class="tickets" />
+                            <x-tab :href="route('employees.show', $employee->id) . '?tab=tickets'"
+                                :text="__('modules.tickets.ticket')" ajax="false" class="tickets" />
                         </li>
                     @endif
 
                     @if ($showFullProfile && !in_array('client', user_roles()))
                         <li>
-                            <x-tab :href="route('employees.show', $employee->id) . '?tab=appreciation'" :text="__('app.menu.appreciation')" class="appreciation" />
+                            <x-tab :href="route('employees.show', $employee->id) . '?tab=appreciation'"
+                                :text="__('app.menu.appreciation')" class="appreciation" />
                         </li>
                     @endif
 
                     @if ($manageShiftPermission == 'all' && in_array('attendance', user_modules()))
                         <li>
-                            <x-tab :href="route('employees.show', $employee->id) . '?tab=shifts'" :text="__('app.menu.shiftRoster')" class="shifts" />
+                            <x-tab :href="route('employees.show', $employee->id) . '?tab=shifts'"
+                                :text="__('app.menu.shiftRoster')" class="shifts" />
                         </li>
                     @endif
 
                     @if ($manageRolePermissionSetting == 'all')
                         <li>
-                            <x-tab :href="route('employees.show', $employee->id) . '?tab=permissions'" :text="__('modules.permission.permissions')" class="permissions" />
+                            <x-tab :href="route('employees.show', $employee->id) . '?tab=permissions'"
+                                :text="__('modules.permission.permissions')" class="permissions" />
                         </li>
                     @endif
 
                     @if ($showFullProfile)
                         <li>
-                            <x-tab :href="route('employees.show', $employee->id) . '?tab=activity'" :text="__('modules.employees.activity')" class="activity" />
+                            <x-tab :href="route('employees.show', $employee->id) . '?tab=activity'"
+                                :text="__('modules.employees.activity')" class="activity" />
                         </li>
                     @endif
 
-                    @if($viewImmigrationPermission == 'all' ||  (in_array($viewImmigrationPermission, ['added', 'owned', 'both']) && user()->id == $employee->id))
+                    @if($viewImmigrationPermission == 'all' || (in_array($viewImmigrationPermission, ['added', 'owned', 'both']) && user()->id == $employee->id))
                         <li>
-                            <x-tab :href="route('employees.show', $employee->id) . '?tab=immigration'" :text="__('modules.employees.immigration')" class="immigration" />
+                            <x-tab :href="route('employees.show', $employee->id) . '?tab=immigration'"
+                                :text="__('modules.employees.immigration')" class="immigration" />
                         </li>
                     @endif
+
+                    @if($showFullProfile)
+                        <li>
+                            <x-tab :href="route('employees.joining-letter.pdf', $employee->id)" :text="__('Joining Letter')"
+                                ajax="false" class="joining-letter" />
+                        </li>
+                    @endif
+
                 </ul>
             </nav>
         </div>
 
-        <a class="mb-0 d-block d-lg-none text-dark-grey ml-auto mr-2 border-left-grey" onclick="openClientDetailSidebar()"><i class="fa fa-ellipsis-v "></i></a>
+        <a class="mb-0 d-block d-lg-none text-dark-grey ml-auto mr-2 border-left-grey"
+            onclick="openClientDetailSidebar()"><i class="fa fa-ellipsis-v "></i></a>
     </div>
 
     <!-- PROJECT HEADER END -->
@@ -158,7 +184,7 @@ if ($viewPermission == 'all'
 
 @push('scripts')
     <script>
-        $("body").on("click", ".project-menu .ajax-tab", function(event) {
+        $("body").on("click", ".project-menu .ajax-tab", function (event) {
             event.preventDefault();
 
             $('.project-menu .p-sub-menu').removeClass('active');
@@ -171,7 +197,7 @@ if ($viewPermission == 'all'
                 blockUI: true,
                 container: ".content-wrapper",
                 historyPush: true,
-                success: function(response) {
+                success: function (response) {
                     if (response.status == "success") {
                         $('.content-wrapper').html(response.html);
                         init('.content-wrapper');
@@ -197,15 +223,15 @@ if ($viewPermission == 'all'
         container.classList.add('--jsfied'); // insert "more" button and duplicate the list
 
         primary.insertAdjacentHTML('beforeend', `
-        <li class="-more">
-            <button type="button" class="px-4 h-100 bg-grey d-none d-lg-flex align-items-center" aria-haspopup="true" aria-expanded="false">
-            {{__('app.more')}} <span>&darr;</span>
-            </button>
-            <ul class="-secondary" id="hide-project-menues">
-            ${primary.innerHTML}
-            </ul>
-        </li>
-        `);
+                <li class="-more">
+                    <button type="button" class="px-4 h-100 bg-grey d-none d-lg-flex align-items-center" aria-haspopup="true" aria-expanded="false">
+                    {{__('app.more')}} <span>&darr;</span>
+                    </button>
+                    <ul class="-secondary" id="hide-project-menues">
+                    ${primary.innerHTML}
+                    </ul>
+                </li>
+                `);
         const secondary = container.querySelector('.-secondary');
         const secondaryItems = secondary.querySelectorAll('li');
         const allItems = container.querySelectorAll('li');
