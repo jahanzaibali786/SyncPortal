@@ -961,8 +961,8 @@
         });
 
         $(document).on('click', '#add-lead-calls', function () {
-            console.log('clicked');
-            const leadId = "{{ $lead->id ?? $deal->id ?? '' }}"; // fallback safety
+            // console.log('clicked');
+            const leadId = "{{ $deal->id ?? '' }}"; // fallback safety
             const url = "{{ route('lead-calls.create-modal') }}" + "?lead_id=" + leadId;
 
             $(MODAL_LG + ' ' + MODAL_HEADING).html("@lang('modules.call.addCalls')");

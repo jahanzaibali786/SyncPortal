@@ -185,10 +185,6 @@
                             @lang('app.inviteEmployee')
                         </x-forms.button-secondary>
 
-                        <x-forms.link-secondary :link="route('templates.joining')" class="mr-3 mb-2 mb-lg-0 d-none d-lg-block"
-                            icon="file">
-                            @lang('Joining Letter Setup')
-                        </x-forms.link-secondary>
                     @endif
 
                     @if ($addEmployeePermission == 'all')

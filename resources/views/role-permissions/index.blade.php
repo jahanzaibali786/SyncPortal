@@ -19,10 +19,16 @@
         <x-setting-card>
             <x-slot name="buttons">
                 <div class="row">
-                    <div class="col-md-12 mb-2">
+                    <div class="col-md-8 mb-2">
                         <x-forms.button-primary icon="users-cog" id="add-role" class="mb-2">
                             @lang('modules.roles.addRole')
                         </x-forms.button-primary>
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <x-forms.link-secondary :link="route('templates.joining')"
+                            class="mr-3 mb-2 mb-lg-0 d-none d-lg-block" icon="file">
+                            @lang('Joining Letter Setup')
+                        </x-forms.link-secondary>
                     </div>
                 </div>
             </x-slot>
@@ -53,10 +59,10 @@
                                     @lang('modules.permission.notifications-permissions')
                                 </x-forms.button-secondary>
                             @else
-                            <x-forms.button-secondary class="view-role-notifications" data-role-id="{{ $role->id }}"
-                                icon="bell">
-                                @lang('modules.permission.notifications-permissions')
-                            </x-forms.button-secondary>
+                                <x-forms.button-secondary class="view-role-notifications" data-role-id="{{ $role->id }}"
+                                    icon="bell">
+                                    @lang('modules.permission.notifications-permissions')
+                                </x-forms.button-secondary>
                                 <x-forms.button-secondary class="view-permission" data-role-id="{{ $role->id }}" icon="key">
                                     @lang('modules.permission.permissions')
                                 </x-forms.button-secondary>

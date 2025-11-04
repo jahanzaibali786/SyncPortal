@@ -16,7 +16,7 @@
     </div>
     {{-- Call Table --}}
     <div class="d-flex flex-wrap" id="call-list">
-        @if ($viewLeadCallPermission6 == 'all' || $viewLeadCallPermission == 'added')
+        @if ($viewLeadCallPermission == 'all' || $viewLeadCallPermission == 'added')
             <div class="table-responsive">
                 <x-table class="table-bordered text-nowrap align-middle call-table" headType="thead-light">
                     <x-slot name="thead">

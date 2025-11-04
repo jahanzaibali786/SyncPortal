@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Deal;
 use App\Models\LeadCall;
 use Illuminate\Http\Request;
 use App\Models\Lead;
@@ -250,7 +251,8 @@ class LeadCallController extends Controller
     public function callCreateModal(Request $request)
     {
         $leadId = $request->get('lead_id');
-        $lead = Lead::findOrFail($leadId);
+        // dd($leadId);
+        $lead = Deal::findOrFail($leadId);
         return view('leads.ajax.call_create', compact('lead'));
     }
 
@@ -308,8 +310,9 @@ class LeadCallController extends Controller
 
     public function callStoreModal(Request $request)
     {
+        // dd($request->lead_id);
         $validatedData = $request->validate([
-            'lead_id' => ['required', 'exists:leads,id'],
+            'lead_id' => ['required', 'exists:deals,id'],
             'subject' => ['required', 'string', 'max:191'],
             'call_type' => ['required', 'string', 'max:30'],
             'to_number' => ['nullable', 'string', 'max:15', 'regex:/^[0-9+\-\s()]*$/'],
@@ -320,6 +323,7 @@ class LeadCallController extends Controller
             'description' => ['nullable', 'string'],
             'call_result' => ['nullable', 'string'],
         ]);
+
 
         // Combine date and times into full timestamps
         $start = \Carbon\Carbon::parse($validatedData['call_date'] . ' ' . $validatedData['start_time']);
