@@ -163,12 +163,37 @@ class DealController extends AccountBaseController
 
         $this->viewPermission = user()->permission('view_deals');
 
+        // abort_403(!(
+        //     $this->viewPermission == 'all'
+        //     || ($this->viewPermission == 'added' && $this->deal->added_by == user()->id)
+        //     || ($this->viewPermission == 'owned' && (($this->leadAgentId == user()->id) || (!is_null($this->deal->deal_watcher) && user()->id == $this->deal->deal_watcher)))
+        //     || ($this->viewPermission == 'both' && ($this->deal->added_by == user()->id || $this->leadAgentId == user()->id || (!is_null($this->deal->deal_watcher) && user()->id == $this->deal->deal_watcher)))
+        // ));
+
+        // Convert comma-separated sub_agents into an array
+        $subAgentIds = $this->deal->sub_agents
+            ? array_map('intval', explode(',', $this->deal->sub_agents))
+            : [];
+
+        // Check if current user is one of the sub agents
+        $isSubAgent = in_array(user()->id, $subAgentIds);
+
         abort_403(!(
             $this->viewPermission == 'all'
             || ($this->viewPermission == 'added' && $this->deal->added_by == user()->id)
-            || ($this->viewPermission == 'owned' && (($this->leadAgentId == user()->id) || (!is_null($this->deal->deal_watcher) && user()->id == $this->deal->deal_watcher)))
-            || ($this->viewPermission == 'both' && ($this->deal->added_by == user()->id || $this->leadAgentId == user()->id || (!is_null($this->deal->deal_watcher) && user()->id == $this->deal->deal_watcher)))
+            || ($this->viewPermission == 'owned' && (
+                $this->leadAgentId == user()->id
+                || $isSubAgent
+                || (!is_null($this->deal->deal_watcher) && user()->id == $this->deal->deal_watcher)
+            ))
+            || ($this->viewPermission == 'both' && (
+                $this->deal->added_by == user()->id
+                || $this->leadAgentId == user()->id
+                || $isSubAgent
+                || (!is_null($this->deal->deal_watcher) && user()->id == $this->deal->deal_watcher)
+            ))
         ));
+
 
         $this->pageTitle = $this->deal->name;
 
@@ -1307,6 +1332,80 @@ class DealController extends AccountBaseController
         $agentIds = $deal->sub_agents ? explode(',', $deal->sub_agents) : [];
         return response()->json(['status' => 'success', 'agent_ids' => $agentIds]);
     }
+
+    public function bulkAssignPipeline(Request $request)
+    {
+        $leadPipelineId = $request->input('lead_pipeline_id');
+        $agentIds = array_filter(array_unique($request->input('agent_ids', [])));
+        $actionType = $request->input('action_type', 'assign');
+
+        if (empty($leadPipelineId)) {
+            return response()->json(['status' => 'error', 'message' => 'Please select a pipeline.'], 422);
+        }
+
+        if (empty($agentIds)) {
+            return response()->json(['status' => 'error', 'message' => 'Please select one or more agents.'], 422);
+        }
+
+        // Normalize all IDs as strings for consistency
+        $agentIds = array_values(array_filter(array_map(fn($v) => (string) trim($v), $agentIds)));
+
+        DB::beginTransaction();
+        try {
+            // Fetch deals from this pipeline, eager load leadAgent->user for efficiency
+            $dealsQuery = Deal::with('leadAgent.user')->where('lead_pipeline_id', $leadPipelineId);
+            $affected = 0;
+
+            $dealsQuery->chunk(200, function ($deals) use ($agentIds, $actionType, &$affected) {
+                foreach ($deals as $deal) {
+                    // Get main agent's linked user ID (if exists)
+                    $mainUserId = optional(optional($deal->leadAgent)->user)->id;
+
+                    // Current sub agents (user IDs)
+                    $subAgents = array_filter(array_map('trim', explode(',', (string) $deal->sub_agents)));
+
+                    if ($actionType === 'assign') {
+                        // 🔹 Filter out any sub-agents that are the main user for this deal
+                        $filteredToAdd = array_filter($agentIds, function ($id) use ($mainUserId, $subAgents) {
+                            return $id != $mainUserId && !in_array($id, $subAgents);
+                        });
+
+                        if (empty($filteredToAdd)) {
+                            continue;
+                        }
+
+                        $subAgents = array_values(array_unique(array_merge($subAgents, $filteredToAdd)));
+
+                    } else { // 🔹 unassign mode
+                        $newSub = array_diff($subAgents, $agentIds);
+                        if (count($newSub) === count($subAgents)) {
+                            continue;
+                        }
+                        $subAgents = array_values($newSub);
+                    }
+
+                    $deal->sub_agents = empty($subAgents) ? null : implode(',', $subAgents);
+                    $deal->save();
+                    $affected++;
+                }
+            });
+
+            DB::commit();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => "Updated {$affected} deal(s) in the pipeline.",
+                'affected' => $affected
+            ]);
+
+        } catch (\Throwable $e) {
+            DB::rollBack();
+            \Log::error('bulkAssignPipeline error: ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+            return response()->json(['status' => 'error', 'message' => 'Server error while updating deals.'], 500);
+        }
+    }
+
+
 
     public function getAgentsByPipeline($pipelineId)
     {

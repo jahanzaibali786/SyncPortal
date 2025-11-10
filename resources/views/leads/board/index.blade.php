@@ -42,11 +42,15 @@
 
             <x-alert type="warning" icon="info" class="d-lg-none">@lang('messages.dragDropScreenInfo')</x-alert>
 
-            <div id="table-actions" class="flex-grow-1 align-items-center">
+            <div id="table-actions" class="d-flex flex-wrap align-items-center gap-2 flex-grow-1">
                 @if ($addLeadPermission == 'all' || $addLeadPermission == 'added')
-                    <x-forms.link-primary :link="route('deals.create')" class="mr-3 openRightModal float-left" icon="plus">
+                    <x-forms.link-primary :link="route('deals.create')" class="mr-2 openRightModal" icon="plus">
                         @lang('modules.deal.addDeal')
                     </x-forms.link-primary>
+                    <button type="button" id="btnBulkPipelineAssign" class="btn btn-primary f-14 mr-2" data-toggle="tooltip"
+                        title="Assign Full Pipeline">
+                        <i class="fa fa-user-plus mr-1"></i> Assign Full Pipeline
+                    </button>
                 @endif
 
                 <x-forms.button-secondary icon="plus" id="add-column">
@@ -54,6 +58,7 @@
                 </x-forms.button-secondary>
 
             </div>
+
 
             <div class="btn-group mt-2 mt-lg-0 mt-md-0 ml-0 ml-lg-3 ml-md-3" role="group">
                 <a href="{{ route('deals.index') }}" class="btn btn-secondary f-14" data-toggle="tooltip"
@@ -69,11 +74,151 @@
 
         </div>
     </div>
+
+
 @endsection
 
 @push('scripts')
     @include('sections.daterange_js')
     <script src="{{ asset('vendor/jquery/dragula.js') }}"></script>
+
+    <!-- Bulk Assign Full Pipeline Modal -->
+    <div class="modal fade" id="bulkPipelineAssignModal" tabindex="-1" role="dialog"
+        aria-labelledby="bulkPipelineAssignModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form id="bulkPipelineAssignForm">
+                    @csrf
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="bulkPipelineAssignModalLabel">Assign Full Pipeline to Sub-Agent</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span>&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Select Pipeline</label>
+                            <select id="assignPipelineSelect" name="lead_pipeline_id" class="form-control selectpicker  "
+                                required>
+                                <option value="">Select Pipeline...</option>
+                                @foreach ($pipelines as $pipe)
+                                    <option value="{{ $pipe->id }}">{{ $pipe->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label>Select Sub-Agents</label>
+                            <select id="assignSubAgentsSelect" name="agent_ids[]" class="form-control selectpicker" multiple
+                                data-live-search="true" required>
+                                {{-- Options filled by AJAX --}}
+                            </select>
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label>Action Type</label><br>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="action_type" value="assign" checked>
+                                <label class="form-check-label">Assign</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="action_type" value="unassign">
+                                <label class="form-check-label">Unassign</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Apply</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">@lang('app.close')</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+
+            // Open modal and load agents
+            $('#btnBulkPipelineAssign').on('click', function () {
+                $.easyAjax({
+                    url: "{{ route('ajax.deals.active_agents') }}",
+                    type: "GET",
+                    blockUI: true,
+                    success: function (response) {
+                        const $select = $('#assignSubAgentsSelect');
+                        let html = '';
+
+                        // backend may return array of agents or HTML - handle both
+                        if ($.isArray(response.data)) {
+                            $.each(response.data, function (index, agent) {
+                                html += `<option value="${agent.id}">${agent.name}</option>`;
+                            });
+                        } else {
+                            html = response.data || '';
+                        }
+
+                        $select.html(html);
+                        $select.selectpicker('refresh');
+                        $('#bulkPipelineAssignModal').modal('show');
+                    },
+                    error: function () {
+                        alert('Could not load agents. Try again.');
+                    }
+                });
+            });
+
+            // Submit bulk assign pipeline form
+            $('#bulkPipelineAssignForm').on('submit', function (e) {
+                e.preventDefault();
+
+                // Simple validation
+                const pipelineId = $('#assignPipelineSelect').val();
+                const agentIds = $('#assignSubAgentsSelect').val() || [];
+                if (!pipelineId) {
+                    alert('Please select a pipeline.');
+                    return;
+                }
+                if (agentIds.length === 0) {
+                    alert('Please select at least one agent.');
+                    return;
+                }
+
+                $.easyAjax({
+                    url: "{{ route('deals.bulk-assign-pipeline') }}",
+                    type: "POST",
+                    data: $(this).serialize(),
+                    blockUI: true,
+                    success: function (response) {
+                        if (response.status === 'success') {
+                            $('#bulkPipelineAssignModal').modal('hide');
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Done',
+                                text: response.message || 'Pipeline updated'
+                            });
+                            // refresh to reflect avatars / badges — reload after a short delay
+                            setTimeout(function () {
+                                location.reload();
+                            }, 900);
+                        } else {
+                            Swal.fire('Error', response.message || 'Something went wrong', 'error');
+                        }
+                    },
+                    error: function (xhr) {
+                        let msg = 'Server error. Try again.';
+                        if (xhr && xhr.responseJSON && xhr.responseJSON.message) msg = xhr.responseJSON.message;
+                        Swal.fire('Error', msg, 'error');
+                    }
+                });
+            });
+
+        });
+    </script>
+
+
 
     <script>
         function showTable() {
@@ -379,5 +524,5 @@
             </div>
         </div>
     </div>
-    
+
 @endpush

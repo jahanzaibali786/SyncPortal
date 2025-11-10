@@ -791,6 +791,10 @@ Route::group(['middleware' => ['auth', 'multi-company-select', 'email_verified']
     Route::get('/deals/get-agents-for-deal', [DealController::class, 'getAgentsForDeal'])
         ->name('deals.get-agents-for-deal');
 
+    Route::post('/deals/bulk-assign-pipeline', [DealController::class, 'bulkAssignPipeline'])
+        ->name('deals.bulk-assign-pipeline');
+
+
     // Abdullah Ali ALA REPORTS
     // Route::get('/lead-calls-report', [DealController::class, 'LeadCallReport'])->name('lead.calls');
     // Route::get('/user-performance-report', [DealController::class, 'UserPerformanceReport'])->name('lead.calls');
